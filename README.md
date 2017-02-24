@@ -74,7 +74,12 @@ Check out the screenshots folder a view on the UI.
     - Understanding why the iBEACON setup fails
     - Waiting for my HappyBubbles devices to arrive to explore alternatives for microlocation
   - Understanding how Zwave exactly works and expanding usage beyond the current multisensor
+  - Reboot through shell command (root issue)
+  - Append text containing template values to text file (root issue I think)
+  - Relevant automations (beyond the fun to implement them, also actually useful)
   - Sleep more again...
+
+!!! Help/suggestions welcome !!!
 
 **Some links:**
   - www.canakit.com
