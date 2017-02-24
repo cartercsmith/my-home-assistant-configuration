@@ -1,0 +1,15 @@
+###############################################################################################################
+# CUSTOMIZE_GENERAL:
+###############################################################################################################
+
+    proximity.home:
+      friendly_name: "Distance to home"
+      icon: mdi:crosshairs-gps
+
+    sun.sun:
+      friendly_name: "Position of the sun"
+
+    climate.living_room:
+      friendly_name: "NEST thermostat"
+      icon: mdi:nest-thermostat
+

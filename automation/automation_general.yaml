@@ -1,0 +1,109 @@
+###############################################################################################################
+# AUTOMATION_GENERAL:
+###############################################################################################################
+#
+# Various automations
+#
+###############################################################################################################
+  - alias: iBEACON change
+
+    trigger:
+      platform: state
+      entity_id:
+        - sensor.jurgen_sleeping
+        - sensor.benoit_sleeping
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: notify.telegram
+        data_template:
+          message: "iBEACON presence change detected: {{ trigger.to_state.attributes.friendly_name }} is now '{{ trigger.to_state.state }}'"
+
+###############################################################################################################
+  - alias: HA Startup
+
+    trigger:
+      platform: event
+      event_type: homeassistant_start
+
+    action:
+      - delay: 30
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.disable_all_automations
+      - delay: 60
+      - service: notify.telegram
+        data_template:
+          message: "HASS reboot ended. Someone home: {{ states.sensor.someone_home.state }} - Target temp slider: {{ states.input_slider.temperature.state }}°C - Target temp NEST: {{ states.sensor.living_room_thermostat_target.state }}°C - Time of day: {{ states.sensor.time_of_day.state }} - Elevation: {{ states.sun.sun.attributes.elevation }}"
+      - condition: state
+        entity_id: sensor.someone_home
+        state: 'yes'
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.reboot_trigger
+
+###############################################################################################################
+  - alias: Group visibility for presence
+
+    trigger:
+      - platform: state
+        entity_id: sensor.someone_home
+      - platform: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: group.set_visibility
+        entity_id: group.presence_home
+        data_template:
+          visible: >
+            {% if states.sensor.someone_home.state == 'yes' %}
+              true
+            {% else %}
+              false
+            {% endif %}
+      - service: group.set_visibility
+        entity_id: group.presence_not_home
+        data_template:
+          visible: >
+            {% if states.sensor.someone_home.state == 'no' %}
+              true
+            {% else %}
+              false
+            {% endif %}
+
+###############################################################################################################
+  - alias: Automatic restart at 3pm every day
+
+    trigger:
+      - platform: time
+        after: '14:54:00'
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: notify.telegram
+        data_template:
+          message: >
+            {% if is_state('sensor.someone_home','yes') and is_state('input_boolean.reboot_trigger','off') %}
+              Someone is home, automatic restart of Home Assistant at 3PM is not active.  Activate if necessary.
+            {% else %}
+              Home Assistant automatically reboots in 5 minutes, cancel if necessary.
+            {% endif %}
+      - delay:
+          minutes: 5
+      - condition: state
+        entity_id: input_boolean.reboot_trigger
+        state: 'on'
+      - service: script.daily_reboot
+

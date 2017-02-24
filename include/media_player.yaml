@@ -1,0 +1,37 @@
+###############################################################################################################
+# MEDIA_PLAYER:
+###############################################################################################################
+
+# Plex
+  - platform: plex
+    entity_namespace: plex
+
+###############################################################################################################
+# Bose
+  - platform: soundtouch
+    host: !secret media_player_soundtouch_bathroom_host
+    port: !secret media_player_soundtouch_bathroom_port
+    name: Soundtouch bathroom
+
+  - platform: soundtouch
+    host: !secret media_player_soundtouch_living_room_host
+    port: !secret media_player_soundtouch_living_room_port
+    name: Soundtouch living room
+
+###############################################################################################################
+#Chromecast & Google home
+  - platform: cast
+    host: !secret media_player_cast_host1
+
+  - platform: cast
+    host: !secret media_player_cast_host2
+
+  - platform: cast
+    host: !secret media_player_cast_host3
+
+###############################################################################################################
+#AppleTV
+  - platform: apple_tv
+    host: !secret media_player_apple_tv_host
+    login_id: !secret media_player_apple_tv_logon_id
+

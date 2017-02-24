@@ -1,0 +1,269 @@
+###############################################################################################################
+# AUTOMATION_MEDIAPLAYER_AUDIO:
+###############################################################################################################
+#
+# Controls for soundtouch, chromecast audio & google home
+#
+###############################################################################################################
+  - alias: Soundtouch ON or OFF and device or preset change
+
+    trigger:
+      - platform: state
+        entity_id:
+          - input_select.soundtouch_device
+          - input_select.soundtouch_presets
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: media_player.turn_off
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.soundtouch_device", "Bathroom") %}
+              media_player.soundtouch_living_room
+            {% elif is_state("input_select.soundtouch_device", "Living room") %}
+              media_player.soundtouch_living_room, media_player.soundtouch_bathroom, media_player.google_home, media_player.chromecast, media_player.plex_apple_tv
+            {% elif is_state("input_select.soundtouch_device", "Both") %}
+              media_player.soundtouch_living_room, media_player.soundtouch_bathroom, media_player.google_home, media_player.chromecast, media_player.plex_apple_tv
+            {% elif is_state("input_select.soundtouch_device", "OFF") %}
+              media_player.soundtouch_living_room, media_player.soundtouch_bathroom
+            {% endif %}
+      - condition: template
+        value_template: "{{ states.input_select.soundtouch_device.state != 'OFF' }}"
+      - service: media_player.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.soundtouch_device", "Bathroom") %}
+              media_player.soundtouch_bathroom
+            {% elif is_state("input_select.soundtouch_device", "Living room") %}
+              media_player.soundtouch_living_room
+            {% elif is_state("input_select.soundtouch_device", "Both") %}
+              media_player.soundtouch_living_room, media_player.soundtouch_bathroom
+            {% endif %}
+      - service: media_player.play_media
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.soundtouch_device", "Bathroom") %}
+              media_player.soundtouch_bathroom
+            {% elif is_state("input_select.soundtouch_device", "Living room") %}
+              media_player.soundtouch_living_room
+            {% elif is_state("input_select.soundtouch_device", "Both") %}
+              media_player.soundtouch_living_room
+            {% endif %}
+          media_content_id: >
+            {% if is_state("input_select.soundtouch_presets", "Radio 1") %}
+              1
+            {% elif is_state("input_select.soundtouch_presets", "Q-Music") %}
+              2
+            {% elif is_state("input_select.soundtouch_presets", "JOEfm") %}
+              3
+            {% elif is_state("input_select.soundtouch_presets", "MNM") %}
+              4
+            {% elif is_state("input_select.soundtouch_presets", "My favorites (spotify)") %}
+              5
+            {% elif is_state("input_select.soundtouch_presets", "Songs I like (spotify)") %}
+              6
+            {% endif %}
+          media_content_type: PLAYLIST
+      - service: media_player.volume_set
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.soundtouch_device", "Bathroom") %}
+              media_player.soundtouch_bathroom
+            {% elif is_state("input_select.soundtouch_device", "Living room") %}
+              media_player.soundtouch_living_room
+            {% elif is_state("input_select.soundtouch_device", "Both") %}
+              media_player.soundtouch_living_room, media_player.soundtouch_bathroom
+            {% endif %}
+          volume_level: 0.35
+      - service: media_player.media_next_track
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.soundtouch_device", "Bathroom") %}
+              media_player.soundtouch_bathroom
+            {% elif is_state("input_select.soundtouch_device", "Living room") %}
+              media_player.soundtouch_living_room
+            {% elif is_state("input_select.soundtouch_device", "Both") %}
+              media_player.soundtouch_living_room, media_player.soundtouch_bathroom
+            {% endif %}
+      - condition: state
+        entity_id: input_select.soundtouch_device
+        state: 'Both'
+      - service: media_player.soundtouch_play_everywhere
+        data:
+          master: media_player.soundtouch_living_room
+
+###############################################################################################################
+  - alias: Update OFF for Soundtouch player with real status
+
+    trigger:
+      - platform: state
+        entity_id:
+          - media_player.soundtouch_bathroom
+          - media_player.soundtouch_living_room
+        state: 'off'
+
+    condition:
+      - condition: state
+        entity_id: media_player.soundtouch_bathroom
+        state: 'off'
+      - condition: state
+        entity_id: media_player.soundtouch_living_room
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.soundtouch_device
+          option: 'OFF'
+
+###############################################################################################################
+  - alias: change volume soundtouch
+
+    trigger:
+      - platform: state
+        entity_id: input_slider.soundtouch_volume
+
+    condition:
+      - condition: template
+        value_template: "{{ states.input_select.soundtouch_device.state != 'OFF' }}"
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: media_player.volume_set
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.soundtouch_device", "Bathroom") %}
+              media_player.soundtouch_bathroom
+            {% elif is_state("input_select.soundtouch_device", "Living room") %}
+              media_player.soundtouch_living_room
+            {% elif is_state("input_select.soundtouch_device", "Both") %}
+              media_player.soundtouch_living_room, media_player.soundtouch_bathroom
+            {% endif %}
+          volume_level: "{{ states.input_slider.soundtouch_volume.state | float / 10 }}"
+
+###############################################################################################################
+  - alias: Google ON or OFF and device or preset change
+
+    trigger:
+      - platform: state
+        entity_id:
+          - input_select.google_device
+          - input_select.google_presets
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: media_player.turn_off
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.google_device", "chromecast audio") %}
+              media_player.google_home
+            {% elif is_state("input_select.google_device", "google home") %}
+              media_player.soundtouch_living_room, media_player.soundtouch_bathroom, media_player.google_home, media_player.chromecast, media_player.plex_apple_tv
+            {% elif is_state("input_select.google_device", "OFF") %}
+              media_player.google_home, media_player.chromecastaudio
+            {% endif %}
+      - condition: template
+        value_template: "{{ states.input_select.google_device.state != 'OFF' }}"
+      - service: media_player.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.google_device", "chromecast audio") %}
+              media_player.chromecastaudio
+            {% elif is_state("input_select.google_device", "google home") %}
+              media_player.google_home
+            {% endif %}
+      - service: media_player.play_media
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.google_device", "chromecast audio") %}
+              media_player.chromecastaudio
+            {% elif is_state("input_select.google_device", "google home") %}
+              media_player.google_home
+            {% endif %}
+          media_content_id: >
+            {% if is_state("input_select.google_presets", "Radio 1") %}
+              http://mp3.streampower.be/radio1-high.mp3
+            {% elif is_state("input_select.google_presets", "Q-Music") %}
+              http://icecast-qmusic.cdp.triple-it.nl/Qmusic_be_live_96.mp3
+            {% elif is_state("input_select.google_presets", "JOEfm") %}
+              http://icecast-qmusic.cdp.triple-it.nl/JOEfm_be_live_128.mp3
+            {% elif is_state("input_select.google_presets", "MNM") %}
+              http://mp3.streampower.be/mnm-high.mp3
+            {% elif is_state("input_select.google_presets", "VRT radio nieuws") %}
+              http://download.stream.vrt.be/apps/services_sac/published/web/fixed/11_11niws-snip_hi.mp3
+            {% endif %}
+          media_content_type: audio/mp3
+      - service: media_player.volume_set
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.google_device", "chromecast audio") %}
+              media_player.chromecastaudio
+            {% elif is_state("input_select.google_device", "google home") %}
+              media_player.google_home
+            {% endif %}
+          volume_level: 0.35
+
+###############################################################################################################
+  - alias: Update OFF for Google player with real status
+
+    trigger:
+      - platform: state
+        entity_id:
+          - media_player.chromecastaudio
+          - media_player.google_home
+        from: 'playing'
+
+    condition:
+      - condition: state
+        entity_id: media_player.chromecastaudio
+        state: 'off'
+      - condition: state
+        entity_id: media_player.google_home
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.google_device
+          option: 'OFF'
+
+###############################################################################################################
+  - alias: change volume google
+
+    trigger:
+      - platform: state
+        entity_id: input_slider.google_volume
+
+    condition:
+      - condition: template
+        value_template: "{{ states.input_select.google_device.state != 'OFF' }}"
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: media_player.volume_set
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.google_device", "chromecast audio") %}
+              media_player.chromecastaudio
+            {% elif is_state("input_select.google_device", "google home") %}
+              media_player.google_home
+            {% endif %}
+          volume_level: "{{ states.input_slider.google_volume.state | float / 10 }}"

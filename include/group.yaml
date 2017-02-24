@@ -1,0 +1,363 @@
+###############################################################################################################
+# GROUP:
+###############################################################################################################
+
+  default_view:
+    view: yes
+    entities:
+      - group.presence_home
+      - group.presence_not_home
+      - group.climate_inside
+      - group.climate_outside
+      - group.lights_scenes
+      - group.google_player
+      - group.soundtouch_player
+#      - group.zwave
+      - group.important
+      - group.manual_override
+      - group.alert
+
+###############################################################################################################
+  tab_media:
+    name: "media"
+    icon: mdi:speaker
+    view: yes
+    entities:
+      - group.all_media_players
+
+###############################################################################################################
+  tab_benoit:
+    name: "benoit"
+    icon: mdi:account
+    view: yes
+    entities:
+      - group.soundtouch_player
+      - group.presence_benoit
+      - group.items_benoit
+      - group.important
+
+###############################################################################################################
+  tab_mobile:
+    name: "mobile"
+    icon: mdi:cellphone-iphone
+    view: yes
+    entities:
+      - group.mobile_items
+
+###############################################################################################################
+  tab_tech:
+    name: "tech"
+    icon: mdi:settings
+    view: yes
+    entities:
+      - group.climate_all
+      - group.synology
+      - group.presence_all
+#      - group.zwave
+      - group.all_lights
+      - group.all_livingroom_lights
+      - group.all_bedroom_lights
+      - group.location_benoit
+      - group.location_jurgen
+      - group.manual_override
+      - group.alert
+
+###############################################################################################################
+  mobile_items:
+    name: " "
+    view: no
+    control: hidden
+    entities:
+      - group.all_livingroom_lights
+      - group.all_bedroom_lights
+      - input_select.scenes_livingroom
+      - input_select.nightlamps
+      - input_select.standinglamp
+      - script.everything_off
+      - input_boolean.reboot_trigger
+      - climate.living_room
+
+###############################################################################################################
+  presence_home:
+    name: "presence"
+    view: no
+    control: hidden
+    entities:
+      - sensor.location_jurgen
+      - sensor.jurgen_sleeping
+      - sensor.travel_loc_jurgen_to_work_jurgen
+      - sensor.duration_home_to_work_jurgen_via_work_benoit
+      - sensor.location_benoit
+      - sensor.benoit_sleeping
+      - sensor.travel_loc_benoit_to_work_benoit
+
+###############################################################################################################
+  presence_not_home:
+    name: "presence"
+    view: no
+    control: hidden
+    entities:
+      - sensor.location_jurgen
+      - sensor.travel_loc_jurgen_to_home
+      - sensor.travel_loc_jurgen_to_work_jurgen
+      - sensor.travel_work_benoit_to_work_jurgen
+      - sensor.location_benoit
+      - sensor.travel_loc_benoit_to_home
+      - sensor.travel_loc_benoit_to_work_benoit
+      - sensor.proximity_person
+      - proximity.home
+
+###############################################################################################################
+  presence_benoit:
+    name: "benoit"
+    view: no
+    control: hidden
+    entities:
+      - sensor.location_benoit
+      - sensor.travel_loc_benoit_to_home
+      - sensor.travel_loc_benoit_to_work_benoit
+      - sensor.uberpool_time
+      - sensor.uberpool_price
+      - sensor.uberx_time
+      - sensor.uberx_price
+
+###############################################################################################################
+  presence_all:
+    name: "presence all"
+    view: no
+    control: hidden
+    entities:
+      - sensor.location_jurgen
+      - sensor.location_benoit
+      - sensor.jurgen_sleeping
+      - sensor.benoit_sleeping
+      - sensor.travel_home_to_work_jurgen
+      - sensor.travel_home_to_work_benoit
+      - sensor.travel_loc_jurgen_to_home
+      - sensor.travel_loc_benoit_to_home
+      - sensor.travel_loc_jurgen_to_work_jurgen
+      - sensor.travel_loc_benoit_to_work_benoit
+      - sensor.travel_work_benoit_to_work_jurgen
+      - sensor.duration_home_to_work_jurgen_via_work_benoit
+      - sensor.proximity_person
+      - proximity.home
+      - sensor.uberpool_time
+      - sensor.uberpool_price
+      - sensor.uberx_time
+      - sensor.uberx_price
+
+###############################################################################################################
+  climate_inside:
+    name: "climate indoor"
+    view: no
+    control: hidden
+    entities:
+      - sensor.living_room_thermostat_temperature
+      - sensor.living_room_thermostat_target
+      - sensor.living_room_thermostat_operation_mode
+      - sensor.living_room_thermostat_humidity
+      - binary_sensor.living_room_thermostat_fan
+      - sensor.time_of_day
+      - input_slider.temperature
+
+###############################################################################################################
+  climate_outside:
+    name: "climate outdoor"
+    view: no
+    control: hidden
+    entities:
+      - sensor.dark_sky_summary
+      - sensor.yr_temperature
+      - sun.sun
+      - sensor.moon
+      - sensor.dark_sky_cloud_coverage
+      - script.weather_forecast
+
+###############################################################################################################
+  all_media_players:
+    name: " "
+    view: no
+    entities:
+      - media_player.soundtouch_living_room
+      - media_player.soundtouch_bathroom
+      - media_player.chromecast
+      - media_player.chromecastaudio
+      - media_player.google_home
+      - media_player.apple_tv
+      - media_player.plex_apple_tv
+
+###############################################################################################################
+  all_livingroom_lights:
+    name: "All living room lights"
+    view: no
+    entities:
+      - group.living_diningtablelights
+      - light.livinggolight
+      - light.livingarcolamp
+      - light.livingtelevisionledstrip
+
+###############################################################################################################
+  all_bedroom_lights:
+    name: "All bedroom lights"
+    view: no
+    entities:
+      - light.bednightlamp_benoit
+      - light.bednightlamp_jurgen
+      - group.bed_standinglamp
+
+###############################################################################################################
+  bed_standinglamp:
+    name: "Standing lamp"
+    view: no
+    entities:
+      - light.BedStandingLampBulb1
+      - light.BedStandingLampBulb2
+
+###############################################################################################################
+  living_diningtablelights:
+    name: "Dining table lights"
+    view: no
+    entities:
+      - light.livingtabledownlightbulb1
+      - light.livingtabledownlightbulb2
+      - light.livingtabledownlightbulb3
+
+###############################################################################################################
+  lights_scenes:
+    name: "lights & scenes"
+    view: no
+    control: hidden
+    entities:
+      - group.all_livingroom_lights
+      - input_select.scenes_livingroom
+      - group.all_bedroom_lights
+      - input_select.nightlamps
+      - input_select.standinglamp
+
+###############################################################################################################
+  location_benoit:
+    name: "location Benoit"
+    view: no
+    entities:
+      - device_tracker.benoitphone_location_benoit
+      - device_tracker.benoitusiphone6shsd1cacomcastnet
+
+
+###############################################################################################################
+  location_jurgen:
+    name: "location Jurgen"
+    view: no
+    entities:
+      - device_tracker.jurgenphone_location_jurgen
+      - device_tracker.jurgenusiphone7hsd1cacomcastnet
+
+###############################################################################################################
+  google_player:
+    name: "google player"
+    view: no
+    control: hidden
+    entities:
+      - input_select.google_device
+      - input_select.google_presets
+      - input_slider.google_volume
+
+###############################################################################################################
+  items_benoit:
+    name: "other"
+    view: no
+    control: hidden
+    entities:
+      - climate.living_room
+      - group.all_livingroom_lights
+      - group.all_bedroom_lights
+
+###############################################################################################################
+  soundtouch_player:
+    name: "soundtouch player"
+    view: no
+    control: hidden
+    entities:
+      - input_select.soundtouch_device
+      - input_select.soundtouch_presets
+      - script.soundtouch_nextsong
+      - script.soundtouch_previoussong
+      - input_slider.soundtouch_volume
+
+###############################################################################################################
+  synology:
+    name: "synology"
+    view: no
+    entities:
+      - sensor.cpu_load_total
+      - sensor.memory_usage_real
+      - sensor.status_volume_2
+      - sensor.volume_used_volume_2
+      - sensor.maximum_disk_temp_volume_2
+      - sensor.status_sda
+      - sensor.status_sdb
+
+###############################################################################################################
+  climate_all:
+    name: "climate all"
+    view: no
+    entities:
+      - climate.living_room
+      - sensor.living_room_thermostat_temperature
+      - sensor.living_room_thermostat_target
+      - sensor.living_room_thermostat_operation_mode
+      - sensor.living_room_thermostat_humidity
+      - binary_sensor.living_room_thermostat_fan
+      - sensor.time_of_day
+      - input_slider.temperature
+      - sensor.dark_sky_summary
+      - sensor.yr_temperature
+      - sun.sun
+      - sensor.moon
+      - sensor.dark_sky_cloud_coverage
+      - script.weather_forecast
+
+###############################################################################################################
+#  zwave:
+#    name: "zwave"
+#    view: no
+#    entities:
+#      - sensor.aeotec_zw100_multisensor_6_alarm_level_2_1
+#      - sensor.aeotec_zw100_multisensor_6_alarm_type_2_0
+#      - sensor.aeotec_zw100_multisensor_6_burglar_2_10
+#      - sensor.aeotec_zw100_multisensor_6_luminance_2_3
+#      - sensor.aeotec_zw100_multisensor_6_relative_humidity_2_5
+#      - sensor.aeotec_zw100_multisensor_6_sourcenodeid_2_2
+#      - sensor.aeotec_zw100_multisensor_6_temperature_2_1
+#      - sensor.aeotec_zw100_multisensor_6_ultraviolet_2_27
+
+###############################################################################################################
+  important:
+    name: "important"
+    view: no
+    control: hidden
+    entities:
+      - script.everything_off
+      - script.daily_reboot
+      - input_boolean.reboot_trigger
+
+###############################################################################################################
+  manual_override:
+    name: "manual overrides"
+    view: no
+    control: hidden
+    entities:
+      - input_boolean.disable_all_automations
+      - input_select.presence_detection_jurgen
+      - input_select.presence_detection_benoit
+
+###############################################################################################################
+  alert:
+    name: "alert"
+    view: no
+    control: hidden
+    entities:
+      - alert.location_jurgen_unknown
+      - alert.location_benoit_unknown
+      - alert.light_on_when_away
+      - alert.media_player_playing_when_away
+      - alert.automations_disabled

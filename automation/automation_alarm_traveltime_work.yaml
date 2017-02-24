@@ -1,0 +1,134 @@
+###############################################################################################################
+# AUTOMATION_ALARM_TRAVELTIME_WORK:
+###############################################################################################################
+#
+# Checks travel time to work and plays TTS message when higher than treshold
+#
+###############################################################################################################
+  - alias: travel time Benoit to work above 20 minutes
+
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.duration_home_to_work_benoit
+        above: 20
+        below: 99
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.alarm_benoit_onoff
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: group.all_livingroom_lights
+          color_name: red
+          brightness: 255
+          flash: short
+      - service: media_player.turn_on
+        entity_id: media_player.google_home
+      - service: media_player.volume_set
+        entity_id: media_player.google_home
+        data:
+          volume_level: 0.80
+      - service: tts.google_say
+        entity_id: media_player.google_home
+        data_template:
+          message: !secret automation_alarm_traveltime_work_message1
+#         message: "Opgepast, reistijd naar XXX bedraagt momenteel al {{ states.sensor.duration_home_to_work_benoit.state }} minuten."
+          language: 'nl'
+      - service: scene.turn_on
+        entity_id: scene.morning
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.alarm_benoit_onoff
+
+###############################################################################################################
+  - alias: travel time Jurgen to work above 20 minutes when Benoit not home
+
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.duration_home_to_work_jurgen
+        above: 20
+        below: 99
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.alarm_jurgen_onoff
+        state: 'on'
+      - condition: state
+        entity_id: sensor.location_benoit
+        state: 'away'
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: group.all_livingroom_lights
+          color_name: red
+          brightness: 255
+          flash: short
+      - service: media_player.turn_on
+        entity_id: media_player.google_home
+      - service: media_player.volume_set
+        entity_id: media_player.google_home
+        data:
+          volume_level: 0.80
+      - service: tts.google_say
+        entity_id: media_player.google_home
+        data_template:
+          message: !secret automation_alarm_traveltime_work_message2
+#         message: "Opgepast, reistijd naar XXX bedraagt momenteel al {{ states.sensor.duration_home_to_work_jurgen.state }} minuten."
+          language: 'nl'
+      - service: scene.turn_on
+        entity_id: scene.morning
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.alarm_jurgen_onoff
+
+##############################################################################################################
+  - alias: travel time Jurgen to work via work Benoit above 40 minutes
+
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.duration_home_to_work_jurgen_via_work_benoit
+        above: 40
+        below: 99
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.alarm_jurgen_onoff
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: group.all_livingroom_lights
+          color_name: red
+          brightness: 255
+          flash: short
+      - service: media_player.turn_on
+        entity_id: media_player.google_home
+      - service: media_player.volume_set
+        entity_id: media_player.google_home
+        data:
+          volume_level: 0.80
+      - service: tts.google_say
+        entity_id: media_player.google_home
+        data_template:
+          message: !secret automation_alarm_traveltime_work_message3
+#         message: "Opgepast, reistijd naar XXX via XXX bedraagt momenteel al {{ states.sensor.duration_home_to_work_jurgen_via_work_benoit.state }} minuten.  Ter informatie, reistijd tot XXX bedraagt {{ states.sensor.duration_home_to_work_benoit.state }} minuten, reistijd van XXX naar XXX is {{ states.sensor.duration_work_benoit_to_work_jurgen.state }} minuten."
+          language: 'nl'
+      - service: scene.turn_on
+        entity_id: scene.morning
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.alarm_jurgen_onoff

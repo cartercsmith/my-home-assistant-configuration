@@ -1,0 +1,236 @@
+homeassistant:
+  name: Home
+  latitude: !secret homeassistant_latitude
+  longitude: !secret homeassistant_longitude
+  elevation: 13
+  unit_system: metric
+  time_zone: !secret homeassistant_time_zone
+
+# Customization of entities
+  customize: !include_dir_merge_named customize/
+
+###########################################################################################
+sensor: !include include/sensor.yaml
+automation: !include_dir_merge_list automation/
+script: !include include/script.yaml
+group: !include include/group.yaml
+zone: !include include/zone.yaml
+scene: !include include/scene.yaml
+media_player: !include include/media_player.yaml
+binary_sensor: !include include/binary_sensor.yaml
+input_select: !include include/input_select.yaml
+alert: !include include/alert.yaml
+
+###########################################################################################
+# Enables the frontend
+frontend:
+
+# Number of days history is stored in DB
+recorder:
+  purge_days: 7
+  db_url: postgres://@/homeassistant
+
+# Password to log on to Front-End
+http:
+  api_password: !secret http_api_password
+  base_url: !secret http_base_url
+
+# Checks for available updates
+updater:
+
+# Discover some devices automatically
+#discovery:
+
+# Enables support for tracking state changes over time.
+history:
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+sun:
+
+###########################################################################################
+# mqtt used for presence detection through owntracks
+mqtt:
+  broker: !secret mqtt_broker
+  port: !secret mqtt_port
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  client_id: !secret mqtt_client_id
+  keepalive: 60
+
+###########################################################################################
+#zwave:
+#  usb_path: !secret zwave_usb_path
+
+###########################################################################################
+device_tracker:
+
+# NMAP
+  - platform: nmap_tracker
+    hosts:
+      - !secret device_tracker_nmap_tracker_ip1
+      - !secret device_tracker_nmap_tracker_ip2
+    consider_home: 180
+
+# OwnTracks
+  - platform: owntracks
+    max_gps_accuracy: 150
+    consider_home: 60
+
+#  - platform: bluetooth_tracker
+#    track_new_devices: false
+
+# iCLOUD
+#  - platform: icloud
+#    username: !secret device_tracker_icloud_username1
+#    password: !secret device_tracker_icloud_password2
+#    account_name: Benoit
+
+###########################################################################################
+proximity:
+  home:
+    devices:
+      - device_tracker.benoitphone_location_benoit
+      - device_tracker.jurgenphone_location_jurgen
+    tolerance: 100
+    unit_of_measurement: km
+
+###########################################################################################
+google:
+  client_id: !secret google_client_id
+  client_secret: !secret google_client_secret
+
+# Text to speech
+tts:
+  - platform: google
+    cache: true
+    cache_dir: tts
+    time_memory: 300
+
+###########################################################################################
+ifttt:
+  key: !secret ifttt_key
+
+###########################################################################################
+# Emulated Hue
+emulated_hue:
+  type: google_home
+  listen_port: !secret emulated_hue_listen_port
+  host_ip: !secret emulated_hue_host_ip
+  off_maps_to_on_domains:
+    - script
+    - scene
+  expose_by_default: true
+  exposed_domains:
+    - light
+    - switch
+    - scene
+    - script
+    - media_player
+    - group
+
+###########################################################################################
+light:
+
+#Hue
+  - platform: hue
+    host: !secret lights_hue_host
+
+#Flux
+# !!! added entry in hosts file to translate device names into IP addresses !!!
+  - platform: flux_led
+    devices:
+      flux-nightlamp-benoit:
+        name: bednightlamp_benoit
+        mode: "rgbw"
+      flux-nightlamp-jurgen:
+        name: bednightlamp_jurgen
+        mode: "rgbw"
+
+###########################################################################################
+notify:
+  - name: Telegram
+    platform: telegram
+    api_key: !secret notify_telegram_api_key
+    chat_id: !secret notify_telegram_chat_id
+
+###########################################################################################
+input_boolean:
+  tv_onoff:
+    initial: off
+
+  alarm_benoit_onoff:
+    initial: off
+
+  alarm_jurgen_onoff:
+    initial: off
+
+  reboot_trigger:
+    initial: on
+    name: "Automatic restart (not active / active)"
+    icon: mdi:restart
+
+  disable_all_automations:
+    initial: on
+    name: "Automations (not active / active)"
+    icon: mdi:close-network
+
+###########################################################################################
+input_slider:
+  google_volume:
+    name: Volume
+    initial: 3
+    min: 0
+    max: 10
+    step: 0.5
+    icon: mdi:volume-medium
+
+  soundtouch_volume:
+    name: Volume
+    initial: 3
+    min: 0
+    max: 10
+    step: 0.5
+    icon: mdi:volume-medium
+
+  temperature:
+    name: Change temperature
+    initial: 10
+    min: 10.0
+    max: 25.0
+    step: 0.5
+    icon: mdi:thermometer
+
+###########################################################################################
+nest:
+  client_id: !secret nest_client_id
+  client_secret: !secret nest_client_secret
+
+###########################################################################################
+panel_iframe:
+  router:
+    title: 'Router'
+    url: !secret panel_iframe_router_url
+    icon: mdi:access-point-network
+
+  plex:
+    title: 'Plex'
+    url: !secret panel_iframe_plex_url
+    icon: mdi:plex
+
+  hass_website:
+    title: 'HASS website'
+    url: 'http://home-assistant.io'
+    icon: mdi:home
+
+  dyn_dns:
+    title: 'Dyn-DNS'
+    url: 'http://dyn.com'
+    icon: mdi:dns
+
+  materialdesign:
+    title: 'MD Icons'
+    url: 'https://materialdesignicons.com'
+    icon: mdi:paperclip

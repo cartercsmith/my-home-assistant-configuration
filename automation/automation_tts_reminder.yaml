@@ -1,0 +1,49 @@
+###############################################################################################################
+# AUTOMATION_TTS_REMINDER:
+###############################################################################################################
+#
+# Text-to-speech reminders imported from Google calendar through google home
+#
+###############################################################################################################
+  - alias: Text-to-speech reminder via Google calendar
+
+    trigger:
+      - platform: state
+        entity_id: calendar.google_reminder
+        to: 'on'
+
+    condition:
+      - condition: state
+        entity_id: sensor.someone_home
+        state: 'yes'
+      - condition: template
+        value_template: "{{ states.calendar.google_reminder.attributes.location.upper() != 'JURGEN' }}"
+      - condition: template
+        value_template: "{{ states.calendar.google_reminder.attributes.location.upper() != 'BENOIT' }}"
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: media_player.turn_on
+        entity_id: media_player.google_home
+      - service: media_player.volume_set
+        entity_id: media_player.google_home
+        data:
+          volume_level: 0.50
+      - service: light.turn_on
+        data:
+          entity_id: group.all_livingroom_lights
+          flash: short
+      - service: tts.google_say
+        entity_id: media_player.google_home
+        data_template:
+          language: 'nl'
+          message: >
+            {% if states.calendar.google_reminder.attributes.location.upper() == 'JURGEN' and states.sensor.location_jurgen.state == 'home' %}
+              Herinnering enkel voor Jurgen {{ states.calendar.google_reminder.attributes.message.replace("#REMINDER#"," ") }}
+            {% elif states.calendar.google_reminder.attributes.location.upper() == 'BENOIT' and states.sensor.location_benoit.state == 'home' %}
+              Herinnering enkel voor Benoit {{ states.calendar.google_reminder.attributes.message.replace("#REMINDER#"," ") }}
+            {% else %}
+              Herinnering {{ states.calendar.google_reminder.attributes.message.replace("#REMINDER#"," ") }}
+            {% endif %}

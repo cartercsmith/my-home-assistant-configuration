@@ -1,0 +1,55 @@
+###############################################################################################################
+# BINARY_SENSOR:
+###############################################################################################################
+
+  - platform: template
+    sensors:
+
+      alert_automations_disabled:
+        value_template: "{{ is_state('input_boolean.disable_all_automations','on') and is_state('input_boolean.disable_all_automations','off') }}"
+        entity_id:
+          - input_boolean.disable_all_automations
+
+      alert_location_jurgen_unknown:
+        value_template: "{{ is_state('sensor.location_jurgen','unknown') and is_state('input_boolean.disable_all_automations','off') }}"
+        entity_id: sensor.location_jurgen
+
+      alert_location_benoit_unknown:
+        value_template: "{{ is_state('sensor.location_benoit','unknown') and is_state('input_boolean.disable_all_automations','off') }}"
+        entity_id: sensor.location_benoit
+
+      alert_light_on_when_away:
+        value_template: "{{ is_state('group.all_lights','on') and is_state('sensor.someone_home','no') }}"
+        entity_id:
+          - sensor.someone_home
+          - group.all_lights
+
+      alert_media_player_playing_when_away:
+        value_template: >
+          {% if is_state("sensor.someone_home","no") %}
+            {% if is_state("media_player.soundtouch_living_room","playing") %}
+              true
+            {% elif is_state("media_player.soundtouch_bathroom","playing") %}
+              true
+            {% elif is_state("media_player.chromecast","playing") %}
+              true
+            {% elif is_state("media_player.chromecastaudio","playing") %}
+              true
+            {% elif is_state("media_player.google_home","playing") %}
+              true
+            {% elif is_state("media_player.apple_tv","playing") %}
+              true
+            {% else %}
+              false
+            {% endif %}
+          {% else %}
+            false
+          {% endif %}
+        entity_id:
+          - media_player.soundtouch_living_room
+          - media_player.soundtouch_bathroom
+          - media_player.chromecast
+          - media_player.chromecastaudio
+          - media_player.google_home
+          - media_player.apple_tv
+          - sensor.someone_home

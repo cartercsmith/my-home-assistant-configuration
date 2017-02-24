@@ -1,0 +1,65 @@
+###############################################################################################################
+# ALERT:
+###############################################################################################################
+
+  automations_disabled:
+    name: "ALERT: All automations DISABLED"
+    entity_id: binary_sensor.alert_automations_disabled
+    repeat:
+      - 2
+      - 60
+    can_acknowledge: true
+    skip_first: true
+    notifiers: telegram
+
+  location_jurgen_unknown:
+    name: "ALERT: Location Jurgen UNKNOWN"
+    entity_id: binary_sensor.alert_location_jurgen_unknown
+    repeat:
+      - 5
+      - 10
+      - 15
+      - 30
+      - 60
+    can_acknowledge: true
+    skip_first: false
+    notifiers: telegram
+
+  location_benoit_unknown:
+    name: "ALERT: Location Benoit UNKNOWN"
+    entity_id: binary_sensor.alert_location_benoit_unknown
+    repeat:
+      - 5
+      - 10
+      - 15
+      - 30
+      - 60
+    can_acknowledge: true
+    skip_first: false
+    notifiers: telegram
+
+  light_on_when_away:
+    name: "ALERT: Light ON while nobody home"
+    entity_id: binary_sensor.alert_light_on_when_away
+    repeat:
+      - 5
+      - 10
+      - 15
+      - 30
+      - 60
+    can_acknowledge: true
+    skip_first: true
+    notifiers: telegram
+
+  media_player_playing_when_away:
+    name: "ALERT: Media player PLAYING while nobody home"
+    entity_id: binary_sensor.alert_media_player_playing_when_away
+    repeat:
+      - 5
+      - 10
+      - 15
+      - 30
+      - 60
+    can_acknowledge: true
+    skip_first: true
+    notifiers: telegram

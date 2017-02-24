@@ -1,0 +1,15 @@
+###############################################################################################################
+# CUSTOMIZE_DEVICE_TRACKER:
+###############################################################################################################
+
+    device_tracker.jurgenphone_location_jurgen:
+      icon: mdi:account
+
+    device_tracker.benoitphone_location_benoit:
+      icon: mdi:account
+
+    device_tracker.jurgenusiphone7hsd1cacomcastnet:
+      icon: mdi:account
+
+    device_tracker.benoitusiphone6shsd1cacomcastnet:
+      icon: mdi:account

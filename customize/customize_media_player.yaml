@@ -1,0 +1,19 @@
+###############################################################################################################
+# CUSTOMIZE_MEDIA_PLAYER:
+###############################################################################################################
+
+    media_player.apple_tv:
+      friendly_name: "Apple TV living room"
+
+    media_player.chromecast:
+      friendly_name: "Chromecast video living room"
+
+    media_player.chromecastaudio:
+      friendly_name: "Chromecast audio bedroom"
+
+    media_player.google_home:
+      friendly_name: "Google home living room"
+
+    media_player.plex_apple_tv:
+      friendly_name: "Plex on Apple TV living room"
+

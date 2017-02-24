@@ -1,0 +1,54 @@
+###############################################################################################################
+# AUTOMATION_TEMPERATURE:
+###############################################################################################################
+#
+# Automations to set target temperature based on distance to home and time of day
+#
+###############################################################################################################
+  - alias: change thermostat target temp after change temp input slider
+
+    trigger:
+      - platform: state
+        entity_id: input_slider.temperature
+
+    condition:
+      - condition: template
+        value_template: "{{ is_state_attr('climate.living_room', 'away_mode', 'off') }}"
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: climate.set_temperature
+        data_template:
+          temperature: "{{ states.input_slider.temperature.state | float }}"
+          operation_mode: Heat
+      - delay: 5
+      - service: notify.telegram
+        data_template:
+          message: "Temp input slider: {{ states.input_slider.temperature.state }} °C - Thermostat target temp: {{ states.sensor.living_room_thermostat_target.state }} °C - Actual current temp: {{ states.sensor.living_room_thermostat_temperature.state }} °C"
+
+###############################################################################################################
+  - alias: change temp input slider after change target temp sensor or HASS reboot
+
+    trigger:
+      - platform: state
+        entity_id:
+          - sensor.target_temperature
+      - platform: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+        for:
+          minutes: 1
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: input_slider.select_value
+        data_template:
+          entity_id: input_slider.temperature
+          value: "{{ states.sensor.target_temperature.state | float }}"
+

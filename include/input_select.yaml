@@ -1,0 +1,98 @@
+###############################################################################################################
+# INPUT_SELECT:
+###############################################################################################################
+
+  soundtouch_presets:
+    name: Presets
+    options:
+      - 'My favorites (spotify)'
+      - 'Songs I like (spotify)'
+      - 'JOEfm'
+      - 'Radio 1'
+      - 'Q-Music'
+    initial: 'Songs I like (spotify)'
+
+  soundtouch_device:
+    name: Device
+    options:
+      - 'OFF'
+      - 'Living room'
+      - 'Bathroom'
+      - 'Both'
+    initial: 'OFF'
+    icon: mdi:speaker-wireless
+
+  google_presets:
+    name: Presets
+    options:
+      - 'Radio 1'
+      - 'Q-Music'
+      - 'JOEfm'
+      - 'MNM'
+      - 'VRT radio nieuws'
+    initial: 'VRT radio nieuws'
+
+  google_device:
+    name: Device
+    options:
+      - 'OFF'
+      - 'chromecast audio'
+      - 'google home'
+    initial: 'OFF'
+    icon: mdi:speaker-wireless
+
+  nightlamps:
+    name: Night lamps
+    options:
+      - 'Choose'
+      - 'Blue'
+      - 'Red'
+      - 'Yellow'
+      - 'OFF'
+    initial: 'Choose'
+    icon: mdi:lightbulb
+
+  standinglamp:
+    name: Standing lamp
+    options:
+      - 'Choose'
+      - 'Low'
+      - 'Medium'
+      - 'High'
+      - 'OFF'
+    initial: 'Choose'
+    icon: mdi:lightbulb
+
+  scenes_livingroom:
+    name: Living room
+    options:
+      - 'Choose'
+      - 'Morning'
+      - 'Dinner'
+      - 'Dimmed'
+      - 'Watch TV blue'
+      - 'Watch TV red'
+      - 'Maximum'
+      - 'Late arrival'
+      - 'OFF'
+    initial: 'Choose'
+    icon: mdi:google-pages
+
+  presence_detection_jurgen:
+    name: Presence detection Jurgen
+    options:
+      - 'Automatic'
+      - 'Manual home'
+      - 'Manual away'
+    initial: 'Automatic'
+    icon: mdi:account-location
+
+  presence_detection_benoit:
+    name: Presence detection Benoit
+    options:
+      - 'Automatic'
+      - 'Manual home'
+      - 'Manual away'
+    initial: 'Automatic'
+    icon: mdi:account-location
+

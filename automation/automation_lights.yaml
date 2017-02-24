@@ -1,0 +1,177 @@
+###############################################################################################################
+# AUTOMATION_LIGHTS:
+###############################################################################################################
+#
+# Automations for lights and scenes
+#
+###############################################################################################################
+  - alias: Benoit sleeping nightlamps
+
+    trigger:
+      platform: state
+      entity_id: sensor.benoit_sleeping
+      state: 'on - REMOVE THIS'
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'night'
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'evening'
+    action:
+      - service: scene.turn_on
+        entity_id: scene.nightlamp_benoit_sleeping
+      - delay: 10
+      - service: scene.turn_on
+        entity_id: scene.nightlamp_benoit_off
+
+###############################################################################################################
+  - alias: Jurgen sleeping nightlamps
+
+    trigger:
+      platform: state
+      entity_id: sensor.jurgen_sleeping
+      state: 'on - REMOVE THIS'
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'night'
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'evening'
+
+    action:
+      - service: scene.turn_on
+        entity_id: scene.nightlamp_jurgen_sleeping
+      - delay: 10
+      - service: scene.turn_on
+        entity_id: scene.nightlamp_jurgen_off
+
+###############################################################################################################
+  - alias: Change lights based on change time of day
+
+    trigger:
+      - platform: state
+        entity_id: sensor.time_of_day
+
+    condition:
+      - condition: template
+        value_template: "{{ states.sensor.time_of_day.state != 'unknown' }}"
+      - condition: state
+        entity_id: sensor.someone_home
+        state: 'yes'
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: script.change_lights_based_on_time_of_day
+
+###############################################################################################################
+  - alias: nightlamps select
+
+    trigger:
+      - platform: state
+        entity_id: input_select.nightlamps
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: scene.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.nightlamps", "Blue") %}
+              scene.nightlamps_blue
+            {% elif is_state("input_select.nightlamps", "Yellow") %}
+              scene.nightlamps_yellow
+            {% elif is_state("input_select.nightlamps", "Red") %}
+              scene.nightlamps_red
+            {% else %}
+              scene.nightlamps_off
+            {% endif %}
+
+###############################################################################################################
+  - alias: standinglamp select
+
+    trigger:
+      - platform: state
+        entity_id: input_select.standinglamp
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: scene.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.standinglamp", "Low") %}
+              scene.standinglamp_low
+            {% elif is_state("input_select.standinglamp", "Medium") %}
+              scene.standinglamp_medium
+            {% elif is_state("input_select.standinglamp", "High") %}
+              scene.standinglamp_high
+            {% else %}
+              scene.standinglamp_off
+            {% endif %}
+
+###############################################################################################################
+  - alias: livingroom scene select
+
+    trigger:
+      - platform: state
+        entity_id: input_select.scenes_livingroom
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: scene.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.scenes_livingroom", "Morning") %}
+              scene.morning
+            {% elif is_state("input_select.scenes_livingroom", "Dinner") %}
+              scene.dinner
+            {% elif is_state("input_select.scenes_livingroom", "Dimmed") %}
+              scene.dimmed
+            {% elif is_state("input_select.scenes_livingroom", "Watch TV blue") %}
+              scene.watch_tv_blue
+            {% elif is_state("input_select.scenes_livingroom", "Watch TV red") %}
+              scene.watch_tv_red
+            {% elif is_state("input_select.scenes_livingroom", "Maximum") %}
+              scene.maximum
+            {% elif is_state("input_select.scenes_livingroom", "Late arrival") %}
+              scene.late_arrival
+            {% else %}
+              scene.dummy
+            {% endif %}
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_select.scenes_livingroom
+            state: 'OFF'
+          - condition: state
+            entity_id: input_select.scenes_livingroom
+            state: 'Choose'
+      - service: homeassistant.turn_off
+        entity_id: group.all_livingroom_lights
+

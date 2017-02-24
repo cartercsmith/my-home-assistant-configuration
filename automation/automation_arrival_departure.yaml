@@ -1,0 +1,121 @@
+###############################################################################################################
+# AUTOMATION_ARRIVAL_DEPARTURE:
+###############################################################################################################
+#
+# Automations triggerd by entering/leaving the house
+#
+###############################################################################################################
+  - alias: Everything off
+
+    trigger:
+      platform: state
+      entity_id: sensor.someone_home
+      from: 'yes'
+      to: 'no'
+      for:
+        minutes: 2
+
+    action:
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.reboot_trigger
+      - service: script.everything_off
+      - service: notify.telegram
+        data:
+          message: "Everything off"
+
+###############################################################################################################
+  - alias: Turn on lights on arrival
+
+    trigger:
+      - platform: state
+        entity_id:
+          - sensor.location_jurgen
+          - sensor.location_benoit
+        state: 'on'
+
+    condition:
+      - condition: template
+        value_template: "{{ states.sensor.time_of_day.state != 'unknown' }}"
+      - condition: state
+        entity_id: group.all_livingroom_lights
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+      - condition: state
+        entity_id: group.all_livingroom_lights
+        state: 'off'
+
+    action:
+      - service: script.change_lights_based_on_time_of_day
+
+###############################################################################################################
+  - alias: Benoit arrives home alone
+
+    trigger:
+      - platform: state
+        entity_id: sensor.location_benoit
+        to: 'home'
+        for:
+          seconds: 3
+
+    condition:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'morning'
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'day'
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'evening'
+      - condition: state
+        entity_id: sensor.location_jurgen
+        state: 'away'
+        for:
+          minutes: 2
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.reboot_trigger
+      - service: script.benoits_favorite_music
+
+###############################################################################################################
+  - alias: Jurgen arrives home alone
+
+    trigger:
+      platform: state
+      entity_id: sensor.location_jurgen
+      to: 'home'
+
+    condition:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'morning'
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'day'
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'evening'
+      - condition: state
+        entity_id: sensor.location_benoit
+        state: 'away'
+        for:
+          minutes: 2
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.reboot_trigger
+      - service: script.jurgens_favorite_music
+

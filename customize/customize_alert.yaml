@@ -1,0 +1,18 @@
+###############################################################################################################
+# CUSTOMIZE_ALERT:
+###############################################################################################################
+
+    alert.location_jurgen_unknown:
+      icon: mdi:account-alert
+
+    alert.location_benoit_unknown:
+      icon: mdi:account-alert
+
+    alert.light_on_when_away:
+      icon: mdi:alert
+
+    alert.media_player_playing_when_away:
+      icon: mdi:alert
+
+    alert.automations_disabled:
+      icon: mdi:alert

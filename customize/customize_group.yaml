@@ -1,0 +1,77 @@
+###############################################################################################################
+# CUSTOMIZE_GROUP:
+###############################################################################################################
+
+    group.living_diningtablelights:
+      icon: mdi:lightbulb
+
+    group.bed_standinglamp:
+      icon: mdi:lightbulb
+
+    group.location_jurgen:
+      icon: mdi:account
+      emulated_hue: false
+
+    group.location_benoit:
+      icon: mdi:account
+      emulated_hue: false
+
+    group.all_livingroom_lights:
+      icon: mdi:lightbulb
+      emulated_hue: false
+
+    group.all_bedroom_lights:
+      icon: mdi:lightbulb
+      emulated_hue: false
+
+    group.synology:
+      emulated_hue: false
+
+    group.zwave:
+      emulated_hue: false
+
+    group.important:
+      emulated_hue: false
+
+    group.climate_all:
+      emulated_hue: false
+
+    group.soundtouch_player:
+      emulated_hue: false
+
+    group.items_benoit:
+      emulated_hue: false
+
+    group.google_player:
+      emulated_hue: false
+
+    group.scenes_bedroom:
+      emulated_hue: false
+
+    group.scenes_livingroom:
+      emulated_hue: false
+
+    group.climate_outside:
+      emulated_hue: false
+
+    group.climate_inside:
+      emulated_hue: false
+
+    group.presence_all:
+      emulated_hue: false
+
+    group.presence_benoit:
+      emulated_hue: false
+
+    group.presence_not_home:
+      emulated_hue: false
+
+    group.presence_home:
+      emulated_hue: false
+
+    group.mobile_items:
+      emulated_hue: false
+
+    group.all_media_players:
+      emulated_hue: false
+

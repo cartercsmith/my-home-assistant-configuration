@@ -1,0 +1,241 @@
+###############################################################################################################
+# SCRIPT:
+###############################################################################################################
+
+###############################################################################################################
+  soundtouch_nextsong:
+    sequence:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: media_player.soundtouch_bathroom
+            state: 'playing'
+          - condition: state
+            entity_id: media_player.soundtouch_living_room
+            state: 'playing'
+      - service: media_player.media_next_track
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.soundtouch_device", "Living room") %}
+              media_player.soundtouch_living_room
+            {% elif is_state("input_select.soundtouch_device", "Bathroom") %}
+              media_player.soundtouch_bathroom
+            {% else %}
+              media_player.soundtouch_living_room
+            {% endif %}
+
+###############################################################################################################
+  soundtouch_previoussong:
+    sequence:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: media_player.soundtouch_bathroom
+            state: 'playing'
+          - condition: state
+            entity_id: media_player.soundtouch_living_room
+            state: 'playing'
+      - service: media_player.media_previous_track
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.soundtouch_device", "Living room") %}
+              media_player.soundtouch_living_room
+            {% elif is_state("input_select.soundtouch_device", "Bathroom") %}
+              media_player.soundtouch_bathroom
+            {% else %}
+              media_player.soundtouch_living_room
+            {% endif %}
+
+###############################################################################################################
+  weather_forecast:
+    sequence:
+      - service: tts.google_say
+        entity_id: media_player.google_home
+        data_template:
+          message: "This is the weather forecast for today and the coming days. Today, {{ states.sensor.dark_sky_hourly_summary.state }}. {{ states.sensor.dark_sky_daily_summary.state }}"
+          language: 'en'
+
+###############################################################################################################
+  everything_off:
+    sequence:
+      - service: light.turn_off
+      - service: media_player.turn_off
+      - service: input_boolean.turn_off
+        entity_id:
+          - input_boolean.alarm_jurgen_onoff
+          - input_boolean.alarm_benoit_onoff
+
+###############################################################################################################
+  change_lights_based_on_time_of_day:
+    sequence:
+      - service: scene.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state('sensor.time_of_day','morning') %}
+              scene.morning
+            {% elif is_state('sensor.time_of_day','evening') %}
+              scene.dinner
+            {% elif is_state('sensor.time_of_day','night') %}
+              scene.late_arrival
+            {% else %}
+              scene.late_arrival
+            {% endif %}
+      - condition: state
+        entity_id: sensor.time_of_day
+        state: 'day'
+      - service: light.turn_off
+        entity_id: group.all_lights
+
+###############################################################################################################
+  jurgens_favorite_music:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.soundtouch_presets
+          option: 'JOEfm'
+      - delay:
+          seconds: 1
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.soundtouch_device
+          option: 'Living room'
+
+###############################################################################################################
+  benoits_favorite_music:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.soundtouch_presets
+          option: 'Songs I like (spotify)'
+      - delay:
+          seconds: 1
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.soundtouch_device
+          option: 'Living room'
+
+
+###############################################################################################################
+  daily_reboot:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id: group.all_livingroom_lights
+          color_name: red
+          brightness: 255
+          flash: long
+      - service: light.turn_off
+        data:
+          entity_id: group.all_livingroom_lights
+      - service: notify.telegram
+        data:
+          message: "Home Assistant reboots now"
+      - delay: 5
+      - service: homeassistant.restart
+
+###############################################################################################################
+  nightlamps_morning:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 1
+      - delay: 2
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 3
+      - delay: 2
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 5
+      - delay: 2
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 7
+      - delay: 2
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 9
+      - delay: 2
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 11
+      - delay: 2
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 13
+      - delay: 2
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 15
+      - delay: 2
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 17
+      - delay: 2
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 19
+      - delay: 2
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 21
+      - delay: 2
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 23
+      - delay: 2
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.bednightlamp_jurgen
+            - light.bednightlamp_benoit
+          rgb_color: [255,128,0]
+          brightness: 25

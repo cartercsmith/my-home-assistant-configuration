@@ -1,0 +1,281 @@
+###############################################################################################################
+# SENSOR:
+###############################################################################################################
+
+###############################################################################################################
+# Travel
+  - platform: google_travel_time
+    name: travel_loc_benoit_to_home
+    api_key: !secret sensor_google_travel
+    origin: device_tracker.benoitphone_location_benoit
+    destination: zone.home
+
+  - platform: google_travel_time
+    name: travel_loc_jurgen_to_home
+    api_key: !secret sensor_google_travel
+    origin: device_tracker.jurgenphone_location_jurgen
+    destination: zone.home
+
+  - platform: google_travel_time
+    name: travel_loc_benoit_to_work_benoit
+    api_key: !secret sensor_google_travel
+    origin: device_tracker.benoitphone_location_benoit
+    destination: zone.work_benoit
+
+  - platform: google_travel_time
+    name: travel_loc_jurgen_to_work_jurgen
+    api_key: !secret sensor_google_travel
+    origin: device_tracker.jurgenphone_location_jurgen
+    destination: zone.work_jurgen
+
+  - platform: google_travel_time
+    name: travel_home_to_work_benoit
+    api_key: !secret sensor_google_travel
+    origin: zone.home
+    destination: zone.work_benoit
+
+  - platform: google_travel_time
+    name: travel_home_to_work_jurgen
+    api_key: !secret sensor_google_travel
+    origin: zone.home
+    destination: zone.work_jurgen
+
+  - platform: google_travel_time
+    name: travel_work_benoit_to_work_jurgen
+    api_key: !secret sensor_google_travel
+    origin: zone.work_benoit
+    destination: zone.work_jurgen
+
+  - platform: uber
+    server_token: !secret sensor_uber_server_token
+    start_latitude: !secret sensor_uber_start_latitude
+    start_longitude: !secret sensor_uber_start_longitude
+    end_latitude: !secret sensor_uber_end_latitude
+    end_longitude: !secret sensor_uber_end_longitude
+    product_ids:
+      - !secret sensor_uber_product_id1
+      - !secret sensor_uber_product_id2
+
+###############################################################################################################
+# Synology
+  - platform: synologydsm
+    host: !secret sensor_synology_host
+    username: !secret sensor_synology_username
+    password: !secret sensor_synology_password
+    monitored_conditions:
+      - cpu_total_load
+      - memory_real_usage
+      - disk_status
+      - volume_status
+      - volume_percentage_used
+      - volume_disk_temp_max
+
+###############################################################################################################
+# Climate
+  - platform: yr
+    monitored_conditions:
+      - temperature
+
+  - platform: darksky
+    api_key: !secret sensor_darksky_api_key
+    monitored_conditions:
+      - summary
+      - cloud_cover
+      - hourly_summary
+      - daily_summary
+
+  - platform: moon
+
+###############################################################################################################
+# Template
+  - platform: template
+    sensors:
+
+      duration_home_to_work_benoit:
+        value_template: >
+          {% if states.sensor.travel_home_to_work_benoit.state %}
+            {{ states.sensor.travel_home_to_work_benoit.attributes.duration_in_traffic.split(' ')[0] | int }}
+          {% else %}
+            0
+          {% endif %}
+        entity_id: sensor.travel_home_to_work_benoit
+        unit_of_measurement: 'min'
+
+      duration_home_to_work_jurgen:
+        value_template: >
+          {% if states.sensor.travel_home_to_work_jurgen.state %}
+            {{ states.sensor.travel_home_to_work_jurgen.attributes.duration_in_traffic.split(' ')[0] | int }}
+          {% else %}
+            0
+          {% endif %}
+        entity_id: sensor.travel_home_to_work_jurgen
+        unit_of_measurement: 'min'
+
+      duration_work_benoit_to_work_jurgen:
+        value_template: >
+          {% if states.sensor.travel_work_benoit_to_work_jurgen.state %}
+            {{ states.sensor.travel_work_benoit_to_work_jurgen.attributes.duration_in_traffic.split(' ')[0] | int }}
+          {% else %}
+            0
+          {% endif %}
+        entity_id: sensor.travel_work_benoit_to_work_jurgen
+        unit_of_measurement: 'min'
+
+      duration_home_to_work_jurgen_via_work_benoit:
+        value_template: >
+          {% if states.sensor.duration_work_benoit_to_work_jurgen.state and states.sensor.duration_home_to_work_benoit.state %}
+            {{ (states.sensor.duration_work_benoit_to_work_jurgen.state | int ) + (states.sensor.duration_home_to_work_benoit.state | int) }}
+          {% else %}
+            0
+          {% endif %}
+        entity_id:
+          - sensor.duration_work_benoit_to_work_jurgen
+          - sensor.duration_home_to_work_benoit
+        unit_of_measurement: 'min'
+
+      proximity_person:
+        value_template: >
+          {% if states.proximity.home.state %}
+            {{ states.proximity.home.attributes.nearest.split(' ')[0] }}
+          {% else %}
+            unknown
+          {% endif %}
+        entity_id: proximity.home
+
+      time_of_day:
+        value_template: >
+          {% if states.input_boolean.alarm_benoit_onoff.state and states.input_boolean.alarm_jurgen_onoff.state and states.sun.sun.state %}
+            {% if (is_state("input_boolean.alarm_benoit_onoff", "on") or is_state("input_boolean.alarm_jurgen_onoff", "on")) and now().strftime("%H") | int < 9 %}
+              morning
+            {% elif now().strftime("%H") | int >= 9 and states.sun.sun.attributes.elevation > 7 %}
+              day
+            {% elif states.sun.sun.attributes.elevation <= 7 and now().strftime("%H") | int > 9 and now().strftime("%H") | int < 23 %}
+              evening
+            {% elif states.sun.sun.attributes.elevation <= 7 or now().strftime("%H") | int <9 %}
+              night
+            {% else %}
+              unknown
+            {% endif %}
+          {% else %}
+            unknown
+          {% endif %}
+        entity_id:
+          - sun.sun
+          - input_boolean.alarm_benoit_onoff
+          - input_boolean.alarm_jurgen_onoff
+
+      target_temperature:
+        value_template: >
+          {% if states.sensor.time_of_day.state and states.sensor.temperature_offset.state and states.input_boolean.disable_all_automations.state =='off' %}
+            {% if is_state("sensor.time_of_day", "night") %}
+              {{ (15.0 - (states('sensor.temperature_offset') | float )) | float }}
+            {% elif is_state("sensor.time_of_day", "morning") %}
+              {{ (20.0 - (states('sensor.temperature_offset') | float )) | float }}
+            {% elif is_state("sensor.time_of_day", "day") %}
+              {{ (19.0 - (states('sensor.temperature_offset') | float )) | float }}
+            {% elif is_state("sensor.time_of_day", "evening") %}
+              {{ (22.0 - (states('sensor.temperature_offset') | float )) | float }}
+            {% else %}
+              {{ (15.0 - (states('sensor.temperature_offset') | float )) | float }}
+            {% endif %}
+          {% else %}
+            15
+          {% endif %}
+        entity_id:
+          - sensor.time_of_day
+          - sensor.temperature_offset
+          - input_boolean.disable_all_automations
+        unit_of_measurement: "°C"
+
+      temperature_offset:
+        value_template: >
+          {% if states.proximity.home.state %}
+            {% if ((states('proximity.home') | float ) <= 10 ) %}
+              {{ (states('proximity.home') | float ) / 2 }}
+            {% else %}
+              5
+            {% endif %}
+          {% else %}
+            5
+          {% endif %}
+        entity_id: proximity.home
+        unit_of_measurement: "°C"
+
+      location_jurgen:
+        friendly_name: 'Location Jurgen'
+        value_template: >
+          {% if is_state("input_select.presence_detection_jurgen","Manual home") %}
+            home
+          {% elif is_state("input_select.presence_detection_jurgen","Manual away") %}
+            away
+          {% elif is_state("group.location_jurgen","home") %}
+            home
+          {% elif is_state("group.location_jurgen","not_home") %}
+            away
+          {% else %}
+            unknown
+          {% endif %}
+        icon_template: >
+          {% if is_state("input_select.presence_detection_jurgen","Manual home") %}
+            mdi:account
+          {% elif is_state("input_select.presence_detection_jurgen","Manual away") %}
+            mdi:account-off
+          {% elif is_state("group.location_jurgen","home") %}
+            mdi:account
+          {% elif is_state("group.location_jurgen","not_home") %}
+            mdi:account-off
+          {% else %}
+            mdi:help
+          {% endif %}
+        entity_id:
+          - group.location_jurgen
+          - input_select.presence_detection_jurgen
+
+      location_benoit:
+        friendly_name: 'Location Benoit'
+        value_template: >
+          {% if is_state("input_select.presence_detection_benoit","Manual home") %}
+            home
+          {% elif is_state("input_select.presence_detection_benoit","Manual away") %}
+            away
+          {% elif is_state("group.location_benoit","home") %}
+            home
+          {% elif is_state("group.location_benoit","not_home") %}
+            away
+          {% else %}
+            unknown
+          {% endif %}
+        icon_template: >
+          {% if is_state("input_select.presence_detection_benoit","Manual home") %}
+            mdi:account
+          {% elif is_state("input_select.presence_detection_benoit","Manual away") %}
+            mdi:account-off
+          {% elif is_state("group.location_benoit","home") %}
+            mdi:account
+          {% elif is_state("group.location_benoit","not_home") %}
+            mdi:account-off
+          {% else %}
+            mdi:help
+          {% endif %}
+        entity_id:
+          - group.location_benoit
+          - input_select.presence_detection_benoit
+
+      someone_home:
+        value_template: '{% if is_state("sensor.location_benoit", "home") or is_state("sensor.location_jurgen", "home") %}yes{% else %}no{% endif %}'
+        entity_id:
+          - sensor.location_benoit
+          - sensor.location_jurgen
+
+      jurgen_sleeping:
+        value_template: '{% if is_state("binary_sensor.jurgen_sleeping_ifttt","on") %}on{% else %}off{% endif %}'
+        icon_template: '{% if is_state("binary_sensor.jurgen_sleeping_ifttt","on") %}mdi:sleep{% else %}mdi:sleep-off{% endif %}'
+        friendly_name: "Jurgen sleeping"
+        entity_id: binary_sensor.jurgen_sleeping_ifttt
+
+      benoit_sleeping:
+        value_template: '{% if is_state("binary_sensor.benoit_sleeping_ifttt","on") %}on{% else %}off{% endif %}'
+        icon_template: '{% if is_state("binary_sensor.benoit_sleeping_ifttt","on") %}mdi:sleep{% else %}mdi:sleep-off{% endif %}'
+        friendly_name: "Benoit sleeping"
+        entity_id: binary_sensor.benoit_sleeping_ifttt
+

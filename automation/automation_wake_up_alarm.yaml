@@ -1,0 +1,109 @@
+###############################################################################################################
+# AUTOMATION_WAKE_UP_ALARM:
+###############################################################################################################
+#
+# Wake up routine, triggered by alarm in google calendar
+#
+###############################################################################################################
+  - alias: Morning alarm offset
+
+    trigger:
+      - platform: template
+        value_template: "{% if is_state_attr('calendar.google_alarm_clock', 'offset_reached', true) %}true{% endif %}"
+
+    condition:
+      - condition: state
+        entity_id: sensor.someone_home
+        state: 'yes'
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: script.nightlamps_morning
+
+###############################################################################################################
+  - alias: Morning alarm
+
+    trigger:
+      - platform: state
+        entity_id: calendar.google_alarm_clock
+        to: 'on'
+
+    condition:
+      - condition: state
+        entity_id: sensor.someone_home
+        state: 'yes'
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: input_boolean.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state("sensor.location_jurgen", "home") %}
+              {% if is_state("sensor.location_benoit", "home") %}
+                input_boolean.alarm_benoit_onoff, input_boolean.alarm_jurgen_onoff
+              {% else %}
+                input_boolean.alarm_jurgen_onoff
+              {% endif %}
+            {% else %}
+              input_boolean.alarm_benoit_onoff
+            {% endif %}
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.soundtouch_presets
+          option: 'JOEfm'
+      - delay:
+          seconds: 1
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.soundtouch_device
+          option: 'Both'
+      - delay:
+          seconds: 1
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.google_presets
+          option: 'VRT radio nieuws'
+      - delay:
+          seconds: 1
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.google_device
+          option: 'chromecast audio'
+      - delay:
+          seconds: 60
+      - delay: >-
+          {% set duration = states.media_player.chromecastaudio.attributes.media_duration %}
+          {% if duration > 60 %}
+            {% set duration = duration - 54 %}
+          {% endif %}
+          {% set seconds = duration % 60 %}
+          {% set seconds = seconds |int %}
+          {% if seconds < 10 %}
+            {% set strsec = ['0', seconds]|join('') %}
+          {% else %}
+            {% set strsec = seconds|string %}
+          {% endif %}
+          {% set minutes = (duration / 60)|int % 60 %}
+          {% set minutes = minutes |int %}
+          {% if minutes < 10 %}
+            {% set strmin = ['0', minutes]|join('') %}
+          {% else %}
+            {% set strmin = minutes|string %}
+          {% endif %}
+          {% set hours = (duration / 3600) %}
+          {% set hours = hours |int %}
+          {% if hours  < 10 %}
+            {% set strhou = ['0', hours]|join('') %}
+          {% else %}
+            {% set strhou = hours|string %}
+          {% endif %}
+          {{ [strhou, strmin, strsec]|join(':') }}
+      - service: tts.google_say
+        entity_id: media_player.chromecastaudio
+        data_template:
+          message: "This is the weather forecast for today and the coming days.   Today, {{ states.sensor.dark_sky_hourly_summary.state }}.  {{ states.sensor.dark_sky_daily_summary.state }}"
+          language: 'en'

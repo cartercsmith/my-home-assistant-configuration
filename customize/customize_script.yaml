@@ -1,0 +1,60 @@
+###############################################################################################################
+# CUSTOMIZE_SCRIPT:
+###############################################################################################################
+
+    script.soundtouch_nextsong:
+      icon: mdi:skip-next
+      friendly_name: "Next song"
+      emulated_hue: false
+
+    script.soundtouch_previoussong:
+      icon: mdi:skip-previous
+      friendly_name: "Previous song"
+      emulated_hue: false
+
+    script.weather_forecast:
+      friendly_name: "Weather forecast (Google Home)"
+      icon: mdi:voice
+      emulated_hue_name: "Weather forecast"
+
+    script.everything_off:
+      friendly_name: "Turn off all lights & media-players"
+      icon: mdi:stop-circle
+      emulated_hue: false
+
+    script.daily_reboot:
+      friendly_name: "Restart Home Assistant now"
+      icon: mdi:close-network
+      emulated_hue: false
+
+    script.jurgens_favorite_music:
+      friendly_name: "Jurgen's favorite music"
+      emulated_hue_name: "Jurgens favorite music"
+
+    script.benoits_favorite_music:
+      friendly_name: "Benoit's favorite music"
+      emulated_hue_name: "Benoits favorite music"
+
+    script.nightlamps_yellow:
+      friendly_name: "Night lamps yellow"
+      icon: mdi:lightbulb
+
+    script.nightlamps_red:
+      friendly_name: "Night lamps red"
+      icon: mdi:lightbulb
+
+    script.nightlamps_blue:
+      friendly_name: "Night lamps blue"
+      icon: mdi:lightbulb
+
+    script.standinglamp_low:
+      friendly_name: "Standing lamp low"
+      icon: mdi:lightbulb
+
+    script.standinglamp_medium:
+      friendly_name: "Standing lamp medium"
+      icon: mdi:lightbulb
+
+    script.standinglamp_high:
+      friendly_name: "Standing lamp high"
+      icon: mdi:lightbulb
