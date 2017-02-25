@@ -1,0 +1,22 @@
+###############################################################################################################
+# INPUT_BOOLEAN:
+###############################################################################################################
+
+  tv_onoff:
+    initial: off
+
+  alarm_benoit_onoff:
+    initial: off
+
+  alarm_jurgen_onoff:
+    initial: off
+
+  reboot_trigger:
+    initial: on
+    name: "Automatic restart (not active / active)"
+    icon: mdi:restart
+
+  disable_all_automations:
+    initial: on
+    name: "Automations (not active / active)"
+    icon: mdi:close-network

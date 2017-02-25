@@ -1,0 +1,28 @@
+###############################################################################################################
+# PANEL_IFRAME:
+###############################################################################################################
+
+  router:
+    title: 'Router'
+    url: !secret panel_iframe_router_url
+    icon: mdi:access-point-network
+
+  plex:
+    title: 'Plex'
+    url: !secret panel_iframe_plex_url
+    icon: mdi:plex
+
+  hass_website:
+    title: 'HASS website'
+    url: 'http://home-assistant.io'
+    icon: mdi:home
+
+  dyn_dns:
+    title: 'Dyn-DNS'
+    url: 'http://dyn.com'
+    icon: mdi:dns
+
+  materialdesign:
+    title: 'MD Icons'
+    url: 'https://materialdesignicons.com'
+    icon: mdi:paperclip

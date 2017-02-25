@@ -41,6 +41,7 @@
     can_acknowledge: true
     skip_first: false
     notifiers:
+      - iphone_benoit
       - iphone_jurgen
       - telegram
 
@@ -56,6 +57,7 @@
     can_acknowledge: true
     skip_first: true
     notifiers:
+      - iphone_benoit
       - iphone_jurgen
       - telegram
 
@@ -71,5 +73,6 @@
     can_acknowledge: true
     skip_first: true
     notifiers:
+      - iphone_benoit
       - iphone_jurgen
       - telegram
