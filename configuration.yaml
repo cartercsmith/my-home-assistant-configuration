@@ -133,7 +133,6 @@ emulated_hue:
 
 ###########################################################################################
 light:
-
 #Hue
   - platform: hue
     host: !secret lights_hue_host
@@ -151,10 +150,26 @@ light:
 
 ###########################################################################################
 notify:
+#Telegram
   - name: Telegram
     platform: telegram
     api_key: !secret notify_telegram_api_key
     chat_id: !secret notify_telegram_chat_id
+
+#InstaPush
+  - name: iphone_benoit
+    platform: instapush
+    api_key: !secret notify_instapush_iphone_benoit_api_key
+    app_secret: !secret notify_instapush_iphone_benoit_app_secret
+    event: notification
+    tracker: message
+
+  - name: iphone_jurgen
+    platform: instapush
+    api_key: !secret notify_instapush_iphone_jurgen_api_key
+    app_secret: !secret notify_instapush_iphone_jurgen_app_secret
+    event: notification
+    tracker: message
 
 ###########################################################################################
 input_boolean:

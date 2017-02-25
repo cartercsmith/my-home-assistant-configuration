@@ -10,7 +10,9 @@
       - 60
     can_acknowledge: true
     skip_first: true
-    notifiers: telegram
+    notifiers:
+      - iphone_jurgen
+      - telegram
 
   location_jurgen_unknown:
     name: "ALERT: Location Jurgen UNKNOWN"
@@ -23,7 +25,9 @@
       - 60
     can_acknowledge: true
     skip_first: false
-    notifiers: telegram
+    notifiers:
+      - iphone_jurgen
+      - telegram
 
   location_benoit_unknown:
     name: "ALERT: Location Benoit UNKNOWN"
@@ -36,7 +40,9 @@
       - 60
     can_acknowledge: true
     skip_first: false
-    notifiers: telegram
+    notifiers:
+      - iphone_jurgen
+      - telegram
 
   light_on_when_away:
     name: "ALERT: Light ON while nobody home"
@@ -49,7 +55,9 @@
       - 60
     can_acknowledge: true
     skip_first: true
-    notifiers: telegram
+    notifiers:
+      - iphone_jurgen
+      - telegram
 
   media_player_playing_when_away:
     name: "ALERT: Media player PLAYING while nobody home"
@@ -62,4 +70,6 @@
       - 60
     can_acknowledge: true
     skip_first: true
-    notifiers: telegram
+    notifiers:
+      - iphone_jurgen
+      - telegram

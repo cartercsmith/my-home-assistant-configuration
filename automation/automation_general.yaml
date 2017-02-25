@@ -34,10 +34,9 @@
       - delay: 30
       - service: input_boolean.turn_off
         entity_id: input_boolean.disable_all_automations
-      - delay: 60
-      - service: notify.telegram
+      - service: notify.iphone_jurgen
         data_template:
-          message: "HASS reboot ended. Someone home: {{ states.sensor.someone_home.state }} - Target temp slider: {{ states.input_slider.temperature.state }}°C - Target temp NEST: {{ states.sensor.living_room_thermostat_target.state }}°C - Time of day: {{ states.sensor.time_of_day.state }} - Elevation: {{ states.sun.sun.attributes.elevation }}"
+          message: "restart completed"
       - condition: state
         entity_id: sensor.someone_home
         state: 'yes'
