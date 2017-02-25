@@ -39,7 +39,7 @@ Check out the screenshots folder a view on the UI.
   - Thermostat: Nest
   - Motion sensor: Zwave multisensor (not used currently because f*cking complicated)
   - iBeacons: estimote (not used currently because no reliable results)
-  - Media-players: Bose SoundTouch, Google Home, Chromecast & Chromecast audio
+  - Media-players: Bose SoundTouch, Apple TV, Google Home, Chromecast & Chromecast audio
     
 **Components used:**
   - automations
@@ -66,7 +66,7 @@ Check out the screenshots folder a view on the UI.
   - proximity
   - tts (google)
   - emulated hue (google home)
-  - notify (telegram)
+  - notify (telegram & instapush)
   - plex
   
 **On the to-do list:**
