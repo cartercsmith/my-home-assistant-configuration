@@ -14,6 +14,7 @@
   - control different audio media-players through one user interface (on/off - devices - presets - volum control, ...)
   - automatically modify light scenes when playing/stopping different video media-players
   - automatically receive TTS reminders, per user (when present) or for all users in the household
+  - motion triggered lights in bedroom
 
 Check out the screenshots folder a view on the UI.
   
@@ -37,7 +38,7 @@ Check out the screenshots folder a view on the UI.
 **Hardware devices installed:**
   - Lights: Philips Hue (color, white, go, led, etc..) & Flux WiFi Smart LED Light Bulbs
   - Thermostat: Nest
-  - Motion sensor: Zwave multisensor (not used currently because f*cking complicated)
+  - Motion sensor: Zwave multisensor 
   - iBeacons: estimote (not used currently because no reliable results)
   - Media-players: Bose SoundTouch, Apple TV, Google Home, Chromecast & Chromecast audio
     
@@ -73,7 +74,6 @@ Check out the screenshots folder a view on the UI.
   - Microlocation (reliably knowing who is in which room):
     - Understanding why the iBEACON setup fails
     - Waiting for my HappyBubbles devices to arrive to explore alternatives for microlocation
-  - Understanding how Zwave exactly works and expanding usage beyond the current multisensor
   - Reboot through shell command (root issue)
   - Append text containing template values to text file (root issue I think)
   - Relevant automations (beyond the fun to implement them, also actually useful)
