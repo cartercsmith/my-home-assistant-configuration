@@ -16,3 +16,14 @@
 
     alert.automations_disabled:
       icon: mdi:alert
+
+    alert.usd_xrate_limit:
+      icon: mdi:alert
+
+    alert.onlyone_home_error:
+      icon: mdi:account-alert
+
+    alert.nobody_home_motion:
+      icon: mdi:account-alert
+
+

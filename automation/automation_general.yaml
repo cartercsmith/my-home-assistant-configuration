@@ -5,23 +5,23 @@
 # Various automations
 #
 ###############################################################################################################
-  - alias: iBEACON change
-
-    trigger:
-      platform: state
-      entity_id:
-        - sensor.jurgen_sleeping
-        - sensor.benoit_sleeping
-
-    condition:
-      - condition: state
-        entity_id: input_boolean.disable_all_automations
-        state: 'off'
-
-    action:
-      - service: notify.telegram
-        data_template:
-          message: "iBEACON presence change detected: {{ trigger.to_state.attributes.friendly_name }} is now '{{ trigger.to_state.state }}'"
+#  - alias: iBEACON change
+#
+#    trigger:
+#      platform: state
+#      entity_id:
+#        - sensor.jurgen_sleeping
+#        - sensor.benoit_sleeping
+#
+#    condition:
+#      - condition: state
+#        entity_id: input_boolean.disable_all_automations
+#        state: 'off'
+#
+#    action:
+#      - service: notify.telegram
+#        data_template:
+#          message: "iBEACON presence change detected: {{ trigger.to_state.attributes.friendly_name }} is now '{{ trigger.to_state.state }}'"
 
 ###############################################################################################################
   - alias: HA Startup
@@ -31,6 +31,10 @@
       event_type: homeassistant_start
 
     action:
+      - service: persistent_notification.create
+        data:
+          title: "home assistant restarted"
+          message: "Automations available in 30 seconds"
       - delay: 30
       - service: input_boolean.turn_off
         entity_id: input_boolean.disable_all_automations
@@ -106,3 +110,30 @@
         state: 'on'
       - service: script.daily_reboot
 
+###############################################################################################################
+  - alias: Turn off disable motion alarm after 3h
+
+    trigger:
+      - platform: state
+        entity_id: input_boolean.disable_motion_alarm
+        state: 'on'
+        for:
+          hours: 3
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.disable_motion_alarm
+      - service: notify.telegram
+        data:
+          message: "Motion alarm when nobody is home is enabled again (after 3h)"
+      - service: notify.iphone_jurgen
+        data:
+          message: "Motion alarm enabled again"
+      - service: notify.iphone_benoit
+        data:
+          message: "Motion alarm enabled again"

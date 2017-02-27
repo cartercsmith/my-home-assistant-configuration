@@ -5,6 +5,7 @@
   default_view:
     view: yes
     entities:
+      - group.alert
       - group.presence_home
       - group.presence_not_home
       - group.climate_inside
@@ -12,10 +13,9 @@
       - group.lights_scenes
       - group.google_player
       - group.soundtouch_player
-#      - group.zwave
       - group.important
       - group.manual_override
-      - group.alert
+      - group.finance
 
 ###############################################################################################################
   tab_media:
@@ -50,17 +50,33 @@
     icon: mdi:settings
     view: yes
     entities:
+      - group.alert
       - group.climate_all
       - group.synology
       - group.presence_all
-#      - group.zwave
+      - group.zwave
       - group.all_lights
       - group.all_livingroom_lights
       - group.all_bedroom_lights
       - group.location_benoit
       - group.location_jurgen
       - group.manual_override
-      - group.alert
+      - group.finance
+
+###############################################################################################################
+  alert:
+    name: "alert"
+    view: no
+    control: hidden
+    entities:
+      - alert.location_jurgen_unknown
+      - alert.location_benoit_unknown
+      - alert.light_on_when_away
+      - alert.media_player_playing_when_away
+      - alert.automations_disabled
+      - alert.usd_xrate_limit
+      - alert.onlyone_home_error
+      - alert.nobody_home_motion
 
 ###############################################################################################################
   mobile_items:
@@ -106,6 +122,41 @@
       - sensor.travel_loc_benoit_to_work_benoit
       - sensor.proximity_person
       - proximity.home
+
+###############################################################################################################
+  items_benoit:
+    name: "other"
+    view: no
+    control: hidden
+    entities:
+      - climate.living_room
+      - group.all_livingroom_lights
+      - group.all_bedroom_lights
+      - input_select.presence_detection_benoit
+      - input_boolean.disable_all_automations
+      - input_boolean.disable_motion_alarm
+
+###############################################################################################################
+  soundtouch_player:
+    name: "soundtouch player"
+    view: no
+    control: hidden
+    entities:
+      - input_select.soundtouch_device
+      - input_select.soundtouch_presets
+      - script.soundtouch_nextsong
+      - script.soundtouch_previoussong
+      - input_slider.soundtouch_volume
+
+###############################################################################################################
+  important:
+    name: "important"
+    view: no
+    control: hidden
+    entities:
+      - script.everything_off
+      - script.daily_reboot
+      - input_boolean.reboot_trigger
 
 ###############################################################################################################
   presence_benoit:
@@ -262,28 +313,6 @@
       - input_slider.google_volume
 
 ###############################################################################################################
-  items_benoit:
-    name: "other"
-    view: no
-    control: hidden
-    entities:
-      - climate.living_room
-      - group.all_livingroom_lights
-      - group.all_bedroom_lights
-
-###############################################################################################################
-  soundtouch_player:
-    name: "soundtouch player"
-    view: no
-    control: hidden
-    entities:
-      - input_select.soundtouch_device
-      - input_select.soundtouch_presets
-      - script.soundtouch_nextsong
-      - script.soundtouch_previoussong
-      - input_slider.soundtouch_volume
-
-###############################################################################################################
   synology:
     name: "synology"
     view: no
@@ -317,30 +346,6 @@
       - script.weather_forecast
 
 ###############################################################################################################
-#  zwave:
-#    name: "zwave"
-#    view: no
-#    entities:
-#      - sensor.aeotec_zw100_multisensor_6_alarm_level_2_1
-#      - sensor.aeotec_zw100_multisensor_6_alarm_type_2_0
-#      - sensor.aeotec_zw100_multisensor_6_burglar_2_10
-#      - sensor.aeotec_zw100_multisensor_6_luminance_2_3
-#      - sensor.aeotec_zw100_multisensor_6_relative_humidity_2_5
-#      - sensor.aeotec_zw100_multisensor_6_sourcenodeid_2_2
-#      - sensor.aeotec_zw100_multisensor_6_temperature_2_1
-#      - sensor.aeotec_zw100_multisensor_6_ultraviolet_2_27
-
-###############################################################################################################
-  important:
-    name: "important"
-    view: no
-    control: hidden
-    entities:
-      - script.everything_off
-      - script.daily_reboot
-      - input_boolean.reboot_trigger
-
-###############################################################################################################
   manual_override:
     name: "manual overrides"
     view: no
@@ -349,15 +354,24 @@
       - input_boolean.disable_all_automations
       - input_select.presence_detection_jurgen
       - input_select.presence_detection_benoit
+      - input_boolean.disable_motion_alarm
 
 ###############################################################################################################
-  alert:
-    name: "alert"
+  finance:
+    name: "finance"
     view: no
     control: hidden
     entities:
-      - alert.location_jurgen_unknown
-      - alert.location_benoit_unknown
-      - alert.light_on_when_away
-      - alert.media_player_playing_when_away
-      - alert.automations_disabled
+      - sensor.usd_eur
+
+
+###############################################################################################################
+  zwave:
+    name: "multisensor bedroom"
+    view: no
+    entities:
+      - binary_sensor.aeotec_zw100_multisensor_6_sensor_2_0
+      - sensor.aeotec_zw100_multisensor_6_burglar_2_10
+      - sensor.aeotec_zw100_multisensor_6_luminance_2_3
+      - sensor.aeotec_zw100_multisensor_6_relative_humidity_2_5
+      - sensor.aeotec_zw100_multisensor_6_temperature_2_1

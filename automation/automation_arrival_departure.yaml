@@ -31,7 +31,7 @@
         entity_id:
           - sensor.location_jurgen
           - sensor.location_benoit
-        state: 'on'
+        state: 'home'
 
     condition:
       - condition: template
@@ -41,9 +41,6 @@
         state: 'off'
       - condition: state
         entity_id: input_boolean.disable_all_automations
-        state: 'off'
-      - condition: state
-        entity_id: group.all_livingroom_lights
         state: 'off'
 
     action:

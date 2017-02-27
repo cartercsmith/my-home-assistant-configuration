@@ -13,10 +13,15 @@
 
   reboot_trigger:
     initial: on
-    name: "Automatic restart (not active / active)"
+    name: "Automatic restart (off / on)"
     icon: mdi:restart
 
   disable_all_automations:
     initial: on
-    name: "Automations (not active / active)"
+    name: "Disable automations (off / on)"
     icon: mdi:close-network
+
+  disable_motion_alarm:
+    initial: off
+    name: "Disable motion alarm for 3h (off / on)"
+    icon: mdi:clock-fast

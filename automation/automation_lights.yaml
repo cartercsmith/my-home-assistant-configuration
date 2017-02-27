@@ -5,44 +5,20 @@
 # Automations for lights and scenes
 #
 ###############################################################################################################
-  - alias: Benoit sleeping nightlamps
+  - alias: Standing lamp activated through motion sensor
 
     trigger:
-      platform: state
-      entity_id: sensor.benoit_sleeping
-      state: 'on - REMOVE THIS'
+      - platform: state
+        entity_id: sensor.aeotec_zw100_multisensor_6_burglar_2_10
+        state: '8'
 
     condition:
       - condition: state
         entity_id: input_boolean.disable_all_automations
         state: 'off'
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'night'
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'evening'
-    action:
-      - service: scene.turn_on
-        entity_id: scene.nightlamp_benoit_sleeping
-      - delay: 10
-      - service: scene.turn_on
-        entity_id: scene.nightlamp_benoit_off
-
-###############################################################################################################
-  - alias: Jurgen sleeping nightlamps
-
-    trigger:
-      platform: state
-      entity_id: sensor.jurgen_sleeping
-      state: 'on - REMOVE THIS'
-
-    condition:
       - condition: state
-        entity_id: input_boolean.disable_all_automations
-        state: 'off'
+        entity_id: sensor.someone_home
+        state: 'yes'
       - condition: or
         conditions:
           - condition: state
@@ -54,10 +30,33 @@
 
     action:
       - service: scene.turn_on
-        entity_id: scene.nightlamp_jurgen_sleeping
-      - delay: 10
+        data_template:
+          entity_id: >
+            {% if is_state("sensor.time_of_day", "evening") %}
+              scene.standinglamp_low, scene.nightlamps_yellow
+            {% elif is_state("sensor.time_of_day", "evening") and is_state("sensor.onlyone_home","benoit") %}
+              scene.standinglamp_low, scene.nightlamp_benoit_sleeping
+            {% elif is_state("sensor.time_of_day", "evening") and is_state("sensor.onlyone_home","jurgen") %}
+              scene.standinglamp_low, scene.nightlamp_jurgen_sleeping
+            {% elif is_state("sensor.time_of_day", "night") and is_state("sensor.onlyone_home","benoit") %}
+              scene.standinglamp_night, scene.nightlamp_benoit_sleeping
+            {% elif is_state("sensor.time_of_day", "night") and is_state("sensor.onlyone_home","jurgen") %}
+              scene.standinglamp_night, scene.nightlamp_jurgen_sleeping
+            {% elif is_state("sensor.time_of_day", "night") %}
+              scene.standinglamp_night
+            {% else %}
+              scene.standinglamp_off
+            {% endif %}
+      - delay: >
+            {% if is_state("sensor.time_of_day", "evening") %}
+              60
+            {% elif is_state("sensor.time_of_day", "night") %}
+              10
+            {% else %}
+              10
+            {% endif %}
       - service: scene.turn_on
-        entity_id: scene.nightlamp_jurgen_off
+        entity_id: scene.standinglamp_off, scene.nightlamps_off
 
 ###############################################################################################################
   - alias: Change lights based on change time of day
@@ -101,6 +100,10 @@
               scene.nightlamps_yellow
             {% elif is_state("input_select.nightlamps", "Red") %}
               scene.nightlamps_red
+            {% elif is_state("input_select.nightlamps", "Jurgen night (low)") %}
+              scene.nightlamp_jurgen_sleeping
+            {% elif is_state("input_select.nightlamps", "Benoit night (low)") %}
+              scene.nightlamp_benoit_sleeping
             {% else %}
               scene.nightlamps_off
             {% endif %}
@@ -126,6 +129,8 @@
             {% elif is_state("input_select.standinglamp", "Medium") %}
               scene.standinglamp_medium
             {% elif is_state("input_select.standinglamp", "High") %}
+              scene.standinglamp_high
+            {% elif is_state("input_select.standinglamp", "Night (very low)") %}
               scene.standinglamp_high
             {% else %}
               scene.standinglamp_off
@@ -175,3 +180,57 @@
       - service: homeassistant.turn_off
         entity_id: group.all_livingroom_lights
 
+###############################################################################################################
+  - alias: Benoit sleeping nightlamps
+
+    trigger:
+      platform: state
+      entity_id: sensor.benoit_sleeping
+      state: 'on - REMOVE THIS'
+# temporary disabled until beacon setup is stable
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'night'
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'evening'
+    action:
+      - service: scene.turn_on
+        entity_id: scene.nightlamp_benoit_sleeping
+      - delay: 10
+      - service: scene.turn_on
+        entity_id: scene.nightlamp_benoit_off
+
+###############################################################################################################
+  - alias: Jurgen sleeping nightlamps
+
+    trigger:
+      platform: state
+      entity_id: sensor.jurgen_sleeping
+      state: 'on - REMOVE THIS'
+# temporary disabled until beacon setup is stable
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'night'
+          - condition: state
+            entity_id: sensor.time_of_day
+            state: 'evening'
+
+    action:
+      - service: scene.turn_on
+        entity_id: scene.nightlamp_jurgen_sleeping
+      - delay: 10
+      - service: scene.turn_on
+        entity_id: scene.nightlamp_jurgen_off

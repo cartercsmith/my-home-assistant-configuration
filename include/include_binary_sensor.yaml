@@ -5,8 +5,26 @@
   - platform: template
     sensors:
 
+      alert_nobody_home_motion:
+        value_template: "{{ is_state('sensor.someone_home','no') and is_state('binary_sensor.aeotec_zw100_multisensor_6_sensor_2_0','on') and is_state('input_boolean.disable_motion_alarm','off') and is_state('input_boolean.disable_all_automations','off') }}"
+        entity_id:
+          - binary_sensor.aeotec_zw100_multisensor_6_sensor_2_0
+          - input_boolean.disable_motion_alarm
+          - input_boolean.disable_all_automations
+
+      alert_onlyone_home_error:
+        value_template: "{{ is_state('sensor.onlyone_home','error') and is_state('input_boolean.disable_all_automations','off') }}"
+        entity_id:
+          - sensor.onlyone_home
+          - input_boolean.disable_all_automations
+
+      alert_usd_xrate_limit:
+        value_template: "{{ ( (states.sensor.usd_eur.state | float) >= 0.96 ) and ( is_state('sensor.time_of_day','morning') or is_state('sensor.time_of_day','day') ) }}"
+        entity_id:
+          - sensor.time_of_day
+
       alert_automations_disabled:
-        value_template: "{{ is_state('input_boolean.disable_all_automations','on') and is_state('input_boolean.disable_all_automations','off') }}"
+        value_template: "{{ is_state('input_boolean.disable_all_automations','on') }}"
         entity_id:
           - input_boolean.disable_all_automations
 

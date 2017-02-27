@@ -19,13 +19,16 @@
     name: Soundtouch living room
 
 ###############################################################################################################
-#Chromecast & Google home
+# Google cast
+# Chromecast video, connected to TV (living room)
   - platform: cast
     host: !secret media_player_cast_host1
 
+# Chromecast audio,connected to speaker (bedroom)
   - platform: cast
     host: !secret media_player_cast_host2
 
+# Google home (living room)
   - platform: cast
     host: !secret media_player_cast_host3
 

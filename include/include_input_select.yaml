@@ -11,6 +11,7 @@
       - 'Radio 1'
       - 'Q-Music'
     initial: 'Songs I like (spotify)'
+    icon: mdi:playlist-play
 
   soundtouch_device:
     name: Device
@@ -31,6 +32,7 @@
       - 'MNM'
       - 'VRT radio nieuws'
     initial: 'VRT radio nieuws'
+    icon: mdi:playlist-play
 
   google_device:
     name: Device
@@ -48,6 +50,8 @@
       - 'Blue'
       - 'Red'
       - 'Yellow'
+      - 'Jurgen night (low)'
+      - 'Benoit night (low)'
       - 'OFF'
     initial: 'Choose'
     icon: mdi:lightbulb
@@ -59,6 +63,7 @@
       - 'Low'
       - 'Medium'
       - 'High'
+      - 'Night (very low)'
       - 'OFF'
     initial: 'Choose'
     icon: mdi:lightbulb

@@ -2,6 +2,29 @@
 # ALERT:
 ###############################################################################################################
 
+  nobody_home_motion:
+    name: "ALERT: Motion in bedroom while nobody is home"
+    entity_id: binary_sensor.alert_nobody_home_motion
+    repeat:
+      - 30
+    can_acknowledge: true
+    skip_first: false
+    notifiers:
+      - iphone_benoit
+      - iphone_jurgen
+      - telegram
+
+  onlyone_home_error:
+    name: "ALERT: Someone home = YES but Location Benoit = AWAY & Location Jurgen = AWAY"
+    entity_id: binary_sensor.alert_onlyone_home_error
+    repeat:
+      - 30
+    can_acknowledge: true
+    skip_first: false
+    notifiers:
+      - iphone_jurgen
+      - telegram
+
   automations_disabled:
     name: "ALERT: All automations DISABLED"
     entity_id: binary_sensor.alert_automations_disabled
@@ -76,3 +99,14 @@
       - iphone_benoit
       - iphone_jurgen
       - telegram
+
+  usd_xrate_limit:
+    name: "ALERT: Exchange rate USD to EUR > 0.96 - TransferWise!!!"
+    entity_id: binary_sensor.alert_usd_xrate_limit
+    repeat:
+      - 60
+    can_acknowledge: true
+    skip_first: false
+    notifiers:
+      - telegram
+

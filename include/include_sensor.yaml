@@ -87,6 +87,14 @@
   - platform: moon
 
 ###############################################################################################################
+# Finance
+  - platform: currencylayer
+    api_key: a531deb5c0856552e6755348253012ae
+    base: USD
+    quote:
+      - EUR
+
+###############################################################################################################
 # Template
   - platform: template
     sensors:
@@ -266,6 +274,24 @@
         entity_id:
           - sensor.location_benoit
           - sensor.location_jurgen
+
+      onlyonehome:
+        value_template: >
+          {% if is_state ("sensor.someone_home","yes") and ( is_state("sensor.location_benoit", "away") or is_state("sensor.location_jurgen", "away") ) %}
+            {% if is_state("sensor.location_benoit", "home") %}
+              benoit
+            {% elif is_state("sensor.location_jurgen", "home") %}
+              jurgen
+            {% else %}
+              error
+            {% endif %}
+          {% else %}
+            no
+          {% endif %}
+        entity_id:
+          - sensor.location_benoit
+          - sensor.location_jurgen
+
 
       jurgen_sleeping:
         value_template: '{% if is_state("binary_sensor.jurgen_sleeping_ifttt","on") %}on{% else %}off{% endif %}'

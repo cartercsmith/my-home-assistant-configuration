@@ -303,8 +303,14 @@
         brightness: 200
 
 ###############################################################################################################
+  - name: standinglamp_night
+    entities:
+      light.bedstandinglampbulb1:
+        state: on
+        brightness: 5
+
+###############################################################################################################
   - name: standinglamp_off
     entities:
       light.bedstandinglampbulb1: off
       light.bedstandinglampbulb2: off
-
