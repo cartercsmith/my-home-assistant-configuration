@@ -28,6 +28,7 @@ Check out the screenshots folder a view on the UI.
   - rooms:
     - living room (lights, media players)
     - bedroom (lights, media players)
+    - bureau (lights)
     - bathroom (media player)
   - device tracking via iPhone, by using:
     - NMAP
@@ -64,6 +65,7 @@ Check out the screenshots folder a view on the UI.
     - template
     - input select, boolean & slider
     - device-tracking
+    - speedtest.net
   - proximity
   - tts (google)
   - emulated hue (google home)
