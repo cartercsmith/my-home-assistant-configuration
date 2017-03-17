@@ -19,7 +19,7 @@
           - input_boolean.disable_all_automations
 
       alert_usd_xrate_limit:
-        value_template: "{{ ( (states.sensor.usd_eur.state | float) >= 0.96 ) and ( is_state('sensor.time_of_day','morning') or is_state('sensor.time_of_day','day') ) }}"
+        value_template: "{{ ( (states('sensor.usd_eur') | float) >= 0.96 ) and ( is_state('sensor.time_of_day','morning') or is_state('sensor.time_of_day','day') ) }}"
         entity_id:
           - sensor.time_of_day
 

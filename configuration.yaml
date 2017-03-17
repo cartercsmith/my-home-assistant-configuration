@@ -77,6 +77,8 @@ device_tracker:
       - !secret device_tracker_nmap_tracker_ip1
       - !secret device_tracker_nmap_tracker_ip2
     consider_home: 180
+    track_new_devices: no
+    interval_seconds: 20
 
 # owntracks
   - platform: owntracks

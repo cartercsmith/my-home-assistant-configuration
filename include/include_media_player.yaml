@@ -22,15 +22,15 @@
 # Google cast
 # Chromecast video, connected to TV (living room)
   - platform: cast
-    host: !secret media_player_cast_host1
+    host: !secret media_player_cast_chromecastvideo
 
 # Chromecast audio,connected to speaker (bedroom)
   - platform: cast
-    host: !secret media_player_cast_host2
+    host: !secret media_player_cast_chromecastaudio
 
 # Google home (living room)
   - platform: cast
-    host: !secret media_player_cast_host3
+    host: !secret media_player_cast_googlehome
 
 ###############################################################################################################
 #AppleTV

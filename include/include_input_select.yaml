@@ -54,7 +54,7 @@
       - 'Benoit night (low)'
       - 'OFF'
     initial: 'Choose'
-    icon: mdi:lightbulb
+    icon: mdi:google-pages
 
   standinglamp:
     name: Standing lamp
@@ -66,10 +66,10 @@
       - 'Night (very low)'
       - 'OFF'
     initial: 'Choose'
-    icon: mdi:lightbulb
+    icon: mdi:google-pages
 
   scenes_livingroom:
-    name: Living room
+    name: Living room scenes
     options:
       - 'Choose'
       - 'Morning'

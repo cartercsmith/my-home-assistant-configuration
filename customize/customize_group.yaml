@@ -8,6 +8,9 @@
     group.bed_standinglamp:
       icon: mdi:lightbulb
 
+    group.bureau_standinglamp:
+      icon: mdi:lightbulb
+
     group.location_jurgen:
       icon: mdi:account
       emulated_hue: false
@@ -21,6 +24,10 @@
       emulated_hue: false
 
     group.all_bedroom_lights:
+      icon: mdi:lightbulb
+      emulated_hue: false
+
+    group.all_bureau_lights:
       icon: mdi:lightbulb
       emulated_hue: false
 
@@ -75,3 +82,5 @@
     group.all_media_players:
       emulated_hue: false
 
+    group.speedtest_net:
+      emulated_hue: false

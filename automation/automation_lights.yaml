@@ -49,7 +49,7 @@
             {% endif %}
       - delay: >
             {% if is_state("sensor.time_of_day", "evening") %}
-              60
+              245
             {% elif is_state("sensor.time_of_day", "night") %}
               10
             {% else %}
@@ -131,7 +131,7 @@
             {% elif is_state("input_select.standinglamp", "High") %}
               scene.standinglamp_high
             {% elif is_state("input_select.standinglamp", "Night (very low)") %}
-              scene.standinglamp_high
+              scene.standinglamp_night
             {% else %}
               scene.standinglamp_off
             {% endif %}

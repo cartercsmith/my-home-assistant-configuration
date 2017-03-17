@@ -4,6 +4,7 @@
 
 ###############################################################################################################
 # Travel
+# Google Travel
   - platform: google_travel_time
     name: travel_loc_benoit_to_home
     api_key: !secret sensor_google_travel
@@ -46,6 +47,7 @@
     origin: zone.work_benoit
     destination: zone.work_jurgen
 
+# Uber
   - platform: uber
     server_token: !secret sensor_uber_server_token
     start_latitude: !secret sensor_uber_start_latitude
@@ -57,6 +59,7 @@
       - !secret sensor_uber_product_id2
 
 ###############################################################################################################
+# IT hardware
 # Synology
   - platform: synologydsm
     host: !secret sensor_synology_host
@@ -69,6 +72,13 @@
       - volume_status
       - volume_percentage_used
       - volume_disk_temp_max
+
+# Speedtest.net
+  - platform: speedtest
+    monitored_conditions:
+      - ping
+      - download
+      - upload
 
 ###############################################################################################################
 # Climate
@@ -198,13 +208,13 @@
       temperature_offset:
         value_template: >
           {% if states.proximity.home.state %}
-            {% if ((states('proximity.home') | float ) <= 10 ) %}
+            {% if ((states('proximity.home') | float ) <= 12 ) and (states('proximity.home') | int % 2 == 0) %}
               {{ (states('proximity.home') | float ) / 2 }}
             {% else %}
-              5
+              4
             {% endif %}
           {% else %}
-            5
+            4
           {% endif %}
         entity_id: proximity.home
         unit_of_measurement: "°C"
@@ -305,3 +315,6 @@
         friendly_name: "Benoit sleeping"
         entity_id: binary_sensor.benoit_sleeping_ifttt
 
+      my_dark_sky_summary:
+        value_template: '{{ states("sensor.dark_sky_summary")}}'
+        entity_id: sensor.dark_sky_summary

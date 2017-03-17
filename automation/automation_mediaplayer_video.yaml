@@ -57,7 +57,7 @@
           - condition: template
             value_template: "{{ states.media_player.chromecast.attributes.media_title != 'Het journaal ' }}"
           - condition: template
-            value_template: "{{ states.media_player.chromecast.attributes.media_title != 'Het journaal - Sportweekend ' }}"
+            value_template: "{{ states.media_player.chromecast.attributes.media_title != 'Het journaal - Sportweekend' }}"
           - condition: state
             entity_id: sun.sun
             state: 'below_horizon'

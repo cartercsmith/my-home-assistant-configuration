@@ -23,7 +23,7 @@
         data_template:
           temperature: "{{ states.input_slider.temperature.state | float }}"
           operation_mode: Heat
-      - delay: 5
+      - delay: 10
       - service: notify.telegram
         data_template:
           message: "Temp input slider: {{ states.input_slider.temperature.state }} °C - Thermostat target temp: {{ states.sensor.living_room_thermostat_target.state }} °C - Actual current temp: {{ states.sensor.living_room_thermostat_temperature.state }} °C"

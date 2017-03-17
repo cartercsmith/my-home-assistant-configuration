@@ -19,10 +19,11 @@
 
 ###############################################################################################################
   tab_media:
-    name: "media"
+    name: "Media"
     icon: mdi:speaker
     view: yes
     entities:
+      - group.alert
       - group.all_media_players
 
 ###############################################################################################################
@@ -31,6 +32,7 @@
     icon: mdi:account
     view: yes
     entities:
+      - group.alert
       - group.soundtouch_player
       - group.presence_benoit
       - group.items_benoit
@@ -38,15 +40,16 @@
 
 ###############################################################################################################
   tab_mobile:
-    name: "mobile"
+    name: "Mobile"
     icon: mdi:cellphone-iphone
     view: yes
     entities:
+      - group.alert
       - group.mobile_items
 
 ###############################################################################################################
   tab_tech:
-    name: "tech"
+    name: "Tech"
     icon: mdi:settings
     view: yes
     entities:
@@ -58,14 +61,16 @@
       - group.all_lights
       - group.all_livingroom_lights
       - group.all_bedroom_lights
+      - group.all_bureau_lights
       - group.location_benoit
       - group.location_jurgen
       - group.manual_override
       - group.finance
+      - group.speedtest_net
 
 ###############################################################################################################
   alert:
-    name: "alert"
+    name: "Alert"
     view: no
     control: hidden
     entities:
@@ -95,7 +100,7 @@
 
 ###############################################################################################################
   presence_home:
-    name: "presence"
+    name: "Presence"
     view: no
     control: hidden
     entities:
@@ -109,7 +114,7 @@
 
 ###############################################################################################################
   presence_not_home:
-    name: "presence"
+    name: "Presence"
     view: no
     control: hidden
     entities:
@@ -125,20 +130,21 @@
 
 ###############################################################################################################
   items_benoit:
-    name: "other"
+    name: "Other"
     view: no
     control: hidden
     entities:
       - climate.living_room
       - group.all_livingroom_lights
       - group.all_bedroom_lights
+      - group.all_bureau_lights
       - input_select.presence_detection_benoit
       - input_boolean.disable_all_automations
       - input_boolean.disable_motion_alarm
 
 ###############################################################################################################
   soundtouch_player:
-    name: "soundtouch player"
+    name: "Soundtouch player"
     view: no
     control: hidden
     entities:
@@ -150,7 +156,7 @@
 
 ###############################################################################################################
   important:
-    name: "important"
+    name: "IMPORTANT"
     view: no
     control: hidden
     entities:
@@ -160,7 +166,7 @@
 
 ###############################################################################################################
   presence_benoit:
-    name: "benoit"
+    name: "Benoit"
     view: no
     control: hidden
     entities:
@@ -174,7 +180,7 @@
 
 ###############################################################################################################
   presence_all:
-    name: "presence all"
+    name: "Presence all"
     view: no
     control: hidden
     entities:
@@ -199,7 +205,7 @@
 
 ###############################################################################################################
   climate_inside:
-    name: "climate indoor"
+    name: "Climate indoor"
     view: no
     control: hidden
     entities:
@@ -213,11 +219,11 @@
 
 ###############################################################################################################
   climate_outside:
-    name: "climate outdoor"
+    name: "Climate outdoor"
     view: no
     control: hidden
     entities:
-      - sensor.dark_sky_summary
+      - sensor.my_dark_sky_summary
       - sensor.yr_temperature
       - sun.sun
       - sensor.moon
@@ -257,8 +263,15 @@
       - group.bed_standinglamp
 
 ###############################################################################################################
+  all_bureau_lights:
+    name: "All bureau lights"
+    view: no
+    entities:
+      - group.bureau_standinglamp
+
+###############################################################################################################
   bed_standinglamp:
-    name: "Standing lamp"
+    name: "Bedroom Standing lamp"
     view: no
     entities:
       - light.BedStandingLampBulb1
@@ -274,8 +287,17 @@
       - light.livingtabledownlightbulb3
 
 ###############################################################################################################
+  bureau_standinglamp:
+    name: "Bureau Standing lamp"
+    view: no
+    entities:
+      - light.BureauStandingLampBulbTop
+      - light.BureauStandingLampBulb1
+      - light.BureauStandingLampBulb2
+
+###############################################################################################################
   lights_scenes:
-    name: "lights & scenes"
+    name: "Lights & scenes"
     view: no
     control: hidden
     entities:
@@ -284,10 +306,11 @@
       - group.all_bedroom_lights
       - input_select.nightlamps
       - input_select.standinglamp
+      - group.all_bureau_lights
 
 ###############################################################################################################
   location_benoit:
-    name: "location Benoit"
+    name: "Location Benoit"
     view: no
     entities:
       - device_tracker.benoitphone_location_benoit
@@ -296,7 +319,7 @@
 
 ###############################################################################################################
   location_jurgen:
-    name: "location Jurgen"
+    name: "Location Jurgen"
     view: no
     entities:
       - device_tracker.jurgenphone_location_jurgen
@@ -304,7 +327,7 @@
 
 ###############################################################################################################
   google_player:
-    name: "google player"
+    name: "Google player"
     view: no
     control: hidden
     entities:
@@ -314,7 +337,7 @@
 
 ###############################################################################################################
   synology:
-    name: "synology"
+    name: "Synology"
     view: no
     entities:
       - sensor.cpu_load_total
@@ -326,8 +349,18 @@
       - sensor.status_sdb
 
 ###############################################################################################################
+  speedtest_net:
+    name: "Speedtest.net"
+    view: no
+    entities:
+      - sensor.speedtest_download
+      - sensor.speedtest_ping
+      - sensor.speedtest_upload
+      - script.run_speedtest
+
+###############################################################################################################
   climate_all:
-    name: "climate all"
+    name: "Climate all"
     view: no
     entities:
       - climate.living_room
@@ -338,7 +371,7 @@
       - binary_sensor.living_room_thermostat_fan
       - sensor.time_of_day
       - input_slider.temperature
-      - sensor.dark_sky_summary
+      - sensor.my_dark_sky_summary
       - sensor.yr_temperature
       - sun.sun
       - sensor.moon
@@ -347,7 +380,7 @@
 
 ###############################################################################################################
   manual_override:
-    name: "manual overrides"
+    name: "Manual overrides"
     view: no
     control: hidden
     entities:
@@ -358,7 +391,7 @@
 
 ###############################################################################################################
   finance:
-    name: "finance"
+    name: "Finance"
     view: no
     control: hidden
     entities:
@@ -367,7 +400,7 @@
 
 ###############################################################################################################
   zwave:
-    name: "multisensor bedroom"
+    name: "Multisensor bedroom"
     view: no
     entities:
       - binary_sensor.aeotec_zw100_multisensor_6_sensor_2_0

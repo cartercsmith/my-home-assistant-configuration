@@ -58,3 +58,8 @@
     script.standinglamp_high:
       friendly_name: "Standing lamp high"
       icon: mdi:lightbulb
+
+    script.run_speedtest:
+      friendly_name: "Run speedtest now"
+      icon: mdi:speedometer
+      emulated_hue: false

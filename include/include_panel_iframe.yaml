@@ -12,17 +12,19 @@
     url: !secret panel_iframe_plex_url
     icon: mdi:plex
 
-  hass_website:
-    title: 'HASS website'
-    url: 'http://home-assistant.io'
-    icon: mdi:home
+  ozwcp:
+    title: 'Open Zwave CP'
+    url: !secret panel_iframe_ozwcp_url
+    icon: mdi:usb
 
-  dyn_dns:
-    title: 'Dyn-DNS'
-    url: 'http://dyn.com'
-    icon: mdi:dns
+  happybubbles:
+    title: 'Happy Bubbles'
+    url: !secret panel_iframe_happybubbles_url
+    icon: mdi:nfc
 
   materialdesign:
     title: 'MD Icons'
     url: 'https://materialdesignicons.com'
     icon: mdi:paperclip
+
+

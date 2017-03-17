@@ -307,7 +307,7 @@
     entities:
       light.bedstandinglampbulb1:
         state: on
-        brightness: 5
+        brightness: 10
 
 ###############################################################################################################
   - name: standinglamp_off

@@ -58,7 +58,7 @@
     sensor.dark_sky_hourly_summary:
       hidden: true
 
-    sensor.dark_sky_summary:
+    sensor.my_dark_sky_summary:
       friendly_name: "Current weather"
       icon: mdi:weather-partlycloudy
 
@@ -147,7 +147,7 @@
 
     sensor.aeotec_zw100_multisensor_6_burglar_2_10:
       friendly_name: "Motion type"
-      icon:  mdi:settings-box
+      icon: mdi:settings-box
 
     sensor.aeotec_zw100_multisensor_6_luminance_2_3:
       friendly_name: "Luminance"
@@ -166,5 +166,17 @@
 
     sensor.aeotec_zw100_multisensor_6_ultraviolet_2_27:
       hidden: true
+
+    sensor.speedtest_download:
+      friendly_name: "Download"
+      icon: mdi:network-download
+
+    sensor.speedtest_ping:
+      friendly_name: "Ping"
+      icon: mdi:network
+
+    sensor.speedtest_upload:
+      friendly_name: "Upload"
+      icon: mdi:network-upload
 
 
