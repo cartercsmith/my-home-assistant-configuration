@@ -5,58 +5,160 @@
 # Automations for lights and scenes
 #
 ###############################################################################################################
-  - alias: Standing lamp activated through motion sensor
+  - alias: Activate bedroom lights through motion sensor
 
     trigger:
       - platform: state
-        entity_id: sensor.aeotec_zw100_multisensor_6_burglar_2_10
+        entity_id: sensor.zwave_bedroom_burglar_3_10
         state: '8'
 
     condition:
       - condition: state
         entity_id: input_boolean.disable_all_automations
         state: 'off'
+      - condition: template
+        value_template: "{{ states.sensor.time_of_day.state != 'day' }}"
+#      - condition: template
+#        value_template: "{{ trigger.from_state.state != '8' }}"
       - condition: state
-        entity_id: sensor.someone_home
-        state: 'yes'
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'night'
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'evening'
+        entity_id: group.all_bedroom_lights
+        state: 'off'
 
     action:
       - service: scene.turn_on
         data_template:
           entity_id: >
-            {% if is_state("sensor.time_of_day", "evening") %}
-              scene.standinglamp_low, scene.nightlamps_yellow
-            {% elif is_state("sensor.time_of_day", "evening") and is_state("sensor.onlyone_home","benoit") %}
-              scene.standinglamp_low, scene.nightlamp_benoit_sleeping
-            {% elif is_state("sensor.time_of_day", "evening") and is_state("sensor.onlyone_home","jurgen") %}
-              scene.standinglamp_low, scene.nightlamp_jurgen_sleeping
-            {% elif is_state("sensor.time_of_day", "night") and is_state("sensor.onlyone_home","benoit") %}
-              scene.standinglamp_night, scene.nightlamp_benoit_sleeping
+            {% if is_state("sensor.time_of_day", "night") and is_state("sensor.onlyone_home","benoit") %}
+              scene.bedroom_standinglamp_night, scene.bedroom_nightlamp_benoit_sleeping
             {% elif is_state("sensor.time_of_day", "night") and is_state("sensor.onlyone_home","jurgen") %}
-              scene.standinglamp_night, scene.nightlamp_jurgen_sleeping
-            {% elif is_state("sensor.time_of_day", "night") %}
-              scene.standinglamp_night
-            {% else %}
-              scene.standinglamp_off
+              scene.bedroom_standinglamp_night, scene.bedroom_nightlamp_jurgen_sleeping
+            {% elif is_state("sensor.time_of_day", "night") and is_state("sensor.onlyone_home","no") %}
+              scene.bedroom_standinglamp_night
+            {% elif is_state("sensor.onlyone_home","no") %}
+              scene.bedroom_standinglamp_low, scene.bedroom_nightlamps_yellow
+            {% elif is_state("sensor.onlyone_home","benoit") %}
+              scene.bedroom_standinglamp_low, scene.bedroom_nightlamp_benoit_sleeping
+            {% elif is_state("sensor.onlyone_home","jurgen") %}
+              scene.bedroom_standinglamp_low, scene.bedroom_nightlamp_jurgen_sleeping
             {% endif %}
-      - delay: >
-            {% if is_state("sensor.time_of_day", "evening") %}
-              245
-            {% elif is_state("sensor.time_of_day", "night") %}
-              10
-            {% else %}
-              10
-            {% endif %}
+
+###############################################################################################################
+  - alias: Turn off bedroom lights after no motion when not night
+
+    trigger:
+      - platform: state
+        entity_id: sensor.zwave_bedroom_burglar_3_10
+        state: '0'
+        for:
+          seconds: 90
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+      - condition: template
+        value_template: "{{ states.sensor.time_of_day.state != 'night' }}"
+      - condition: state
+        entity_id: group.all_bedroom_lights
+        state: 'on'
+
+    action:
+      - service: light.turn_off
+        entity_id: group.all_bedroom_lights
+      - delay: 10
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_nightlamps
+          option: 'OFF'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_standinglamp
+          option: 'OFF'
+
+###############################################################################################################
+  - alias: Turn off bedroom lights at night after no motion
+
+    trigger:
+      - platform: state
+        entity_id: sensor.zwave_bedroom_burglar_3_10
+        state: '0'
+        for:
+          seconds: 5
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+      - condition: state
+        entity_id: sensor.time_of_day
+        state: 'night'
+      - condition: state
+        entity_id: group.all_bedroom_lights
+        state: 'on'
+
+    action:
+      - service: light.turn_off
+        entity_id: group.all_bedroom_lights
+      - delay: 10
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_nightlamps
+          option: 'OFF'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_standinglamp
+          option: 'OFF'
+
+###############################################################################################################
+  - alias: Activate bureau lights through motion sensor
+
+    trigger:
+      - platform: state
+        entity_id: sensor.zwave_bureau_burglar_2_10
+        state: '8'
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+      - condition: template
+        value_template: "{{ states.sensor.time_of_day.state != 'day' }}"
+#      - condition: template
+#        value_template: "{{ trigger.from_state.state != '8' }}"
+      - condition: state
+        entity_id: group.all_bureau_lights
+        state: 'off'
+
+    action:
       - service: scene.turn_on
-        entity_id: scene.standinglamp_off, scene.nightlamps_off
+        entity_id: scene.bureau_standinglamp_medium
+
+###############################################################################################################
+  - alias: Turn off bureau lights after no motion
+
+    trigger:
+      - platform: state
+        entity_id: sensor.zwave_bureau_burglar_2_10
+        state: '0'
+        for:
+          seconds: 90
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+      - condition: state
+        entity_id: group.all_bureau_lights
+        state: 'on'
+
+    action:
+      - service: light.turn_off
+        entity_id: group.all_bureau_lights
+      - delay: 10
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bureau_standinglamp
+          option: 'OFF'
 
 ###############################################################################################################
   - alias: Change lights based on change time of day
@@ -79,11 +181,11 @@
       - service: script.change_lights_based_on_time_of_day
 
 ###############################################################################################################
-  - alias: nightlamps select
+  - alias: bedroom nightlamps select
 
     trigger:
       - platform: state
-        entity_id: input_select.nightlamps
+        entity_id: input_select.bedroom_nightlamps
 
     condition:
       - condition: state
@@ -94,26 +196,26 @@
       - service: scene.turn_on
         data_template:
           entity_id: >
-            {% if is_state("input_select.nightlamps", "Blue") %}
-              scene.nightlamps_blue
-            {% elif is_state("input_select.nightlamps", "Yellow") %}
-              scene.nightlamps_yellow
-            {% elif is_state("input_select.nightlamps", "Red") %}
-              scene.nightlamps_red
-            {% elif is_state("input_select.nightlamps", "Jurgen night (low)") %}
-              scene.nightlamp_jurgen_sleeping
-            {% elif is_state("input_select.nightlamps", "Benoit night (low)") %}
-              scene.nightlamp_benoit_sleeping
+            {% if is_state("input_select.bedroom_nightlamps", "Blue") %}
+              scene.bedroom_nightlamps_blue
+            {% elif is_state("input_select.bedroom_nightlamps", "Yellow") %}
+              scene.bedroom_nightlamps_yellow
+            {% elif is_state("input_select.bedroom_nightlamps", "Red") %}
+              scene.bedroom_nightlamps_red
+            {% elif is_state("input_select.bedroom_nightlamps", "Jurgen night (low)") %}
+              scene.bedroom_nightlamp_jurgen_sleeping
+            {% elif is_state("input_select.bedroom_nightlamps", "Benoit night (low)") %}
+              scene.bedroom_nightlamp_benoit_sleeping
             {% else %}
-              scene.nightlamps_off
+              scene.bedroom_nightlamps_off
             {% endif %}
 
 ###############################################################################################################
-  - alias: standinglamp select
+  - alias: standinglamp bedroom select
 
     trigger:
       - platform: state
-        entity_id: input_select.standinglamp
+        entity_id: input_select.bedroom_standinglamp
 
     condition:
       - condition: state
@@ -124,16 +226,44 @@
       - service: scene.turn_on
         data_template:
           entity_id: >
-            {% if is_state("input_select.standinglamp", "Low") %}
-              scene.standinglamp_low
-            {% elif is_state("input_select.standinglamp", "Medium") %}
-              scene.standinglamp_medium
-            {% elif is_state("input_select.standinglamp", "High") %}
-              scene.standinglamp_high
-            {% elif is_state("input_select.standinglamp", "Night (very low)") %}
-              scene.standinglamp_night
+            {% if is_state("input_select.bedroom_standinglamp", "Low") %}
+              scene.bedroom_standinglamp_low
+            {% elif is_state("input_select.bedroom_standinglamp", "Medium") %}
+              scene.bedroom_standinglamp_medium
+            {% elif is_state("input_select.bedroom_standinglamp", "High") %}
+              scene.bedroom_standinglamp_high
+            {% elif is_state("input_select.bedroom_standinglamp", "Night (very low)") %}
+              scene.bedroom_standinglamp_night
             {% else %}
-              scene.standinglamp_off
+              scene.bedroom_standinglamp_off
+            {% endif %}
+
+###############################################################################################################
+  - alias: standinglamp bureau select
+
+    trigger:
+      - platform: state
+        entity_id: input_select.bureau_standinglamp
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: scene.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.bureau_standinglamp", "Low") %}
+              scene.bureau_standinglamp_low
+            {% elif is_state("input_select.bureau_standinglamp", "Medium") %}
+              scene.bureau_standinglamp_medium
+            {% elif is_state("input_select.bureau_standinglamp", "High") %}
+              scene.bureau_standinglamp_high
+            {% elif is_state("input_select.bureau_standinglamp", "Dimmed") %}
+              scene.bureau_standinglamp_dimmed
+            {% else %}
+              scene.bureau_standinglamp_off
             {% endif %}
 
 ###############################################################################################################
@@ -153,41 +283,32 @@
         data_template:
           entity_id: >
             {% if is_state("input_select.scenes_livingroom", "Morning") %}
-              scene.morning
+              scene.livingroom_morning
             {% elif is_state("input_select.scenes_livingroom", "Dinner") %}
-              scene.dinner
+              scene.livingroom_dinner
             {% elif is_state("input_select.scenes_livingroom", "Dimmed") %}
-              scene.dimmed
+              scene.livingroom_dimmed
             {% elif is_state("input_select.scenes_livingroom", "Watch TV blue") %}
-              scene.watch_tv_blue
+              scene.livingroom_watch_tv_blue
             {% elif is_state("input_select.scenes_livingroom", "Watch TV red") %}
-              scene.watch_tv_red
+              scene.livingroom_watch_tv_red
             {% elif is_state("input_select.scenes_livingroom", "Maximum") %}
-              scene.maximum
+              scene.livingroom_maximum
             {% elif is_state("input_select.scenes_livingroom", "Late arrival") %}
-              scene.late_arrival
+              scene.livingroom_late_arrival
             {% else %}
-              scene.dummy
+              scene.livingroom_off
             {% endif %}
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: input_select.scenes_livingroom
-            state: 'OFF'
-          - condition: state
-            entity_id: input_select.scenes_livingroom
-            state: 'Choose'
-      - service: homeassistant.turn_off
-        entity_id: group.all_livingroom_lights
 
 ###############################################################################################################
-  - alias: Benoit sleeping nightlamps
+  - alias: Benoit sleeping bedroom nightlamps
 
     trigger:
       platform: state
       entity_id: sensor.benoit_sleeping
       state: 'on - REMOVE THIS'
 # temporary disabled until beacon setup is stable
+
     condition:
       - condition: state
         entity_id: input_boolean.disable_all_automations
@@ -202,19 +323,20 @@
             state: 'evening'
     action:
       - service: scene.turn_on
-        entity_id: scene.nightlamp_benoit_sleeping
+        entity_id: scene.bedroom_nightlamp_benoit_sleeping
       - delay: 10
       - service: scene.turn_on
-        entity_id: scene.nightlamp_benoit_off
+        entity_id: scene.bedroom_nightlamp_benoit_off
 
 ###############################################################################################################
-  - alias: Jurgen sleeping nightlamps
+  - alias: Jurgen sleeping bedroom nightlamps
 
     trigger:
       platform: state
       entity_id: sensor.jurgen_sleeping
       state: 'on - REMOVE THIS'
 # temporary disabled until beacon setup is stable
+
     condition:
       - condition: state
         entity_id: input_boolean.disable_all_automations
@@ -230,7 +352,113 @@
 
     action:
       - service: scene.turn_on
-        entity_id: scene.nightlamp_jurgen_sleeping
+        entity_id: scene.bedroom_nightlamp_jurgen_sleeping
       - delay: 10
       - service: scene.turn_on
-        entity_id: scene.nightlamp_jurgen_off
+        entity_id: scene.bedroom_nightlamp_jurgen_off
+
+###############################################################################################################
+  - alias: Flic button Jurgen - single click
+
+    trigger:
+      platform: event
+      event_type: flic_click
+      event_data:
+        button_name: flic_80e4da721b69
+        click_type: single
+
+    action:
+      - service: scene.turn_on
+        entity_id: scene.bedroom_nightlamp_jurgen_sleeping
+
+###############################################################################################################
+  - alias: Flic button Jurgen - hold click
+
+    trigger:
+      platform: event
+      event_type: flic_click
+      event_data:
+        button_name: flic_80e4da721b69
+        click_type: hold
+
+    action:
+      - service: scene.turn_on
+        entity_id: scene.bedroom_nightlamp_jurgen_sleeping
+      - service: scene.turn_on
+        entity_id: scene.bedroom_standinglamp_low
+
+###############################################################################################################
+  - alias: Flic button Jurgen - double click
+
+    trigger:
+      platform: event
+      event_type: flic_click
+      event_data:
+        button_name: flic_80e4da721b69
+        click_type: double
+
+    action:
+      - service: light.turn_off
+        entity_id: group.all_bedroom_lights
+      - delay: 10
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_nightlamps
+          option: 'OFF'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_standinglamp
+          option: 'OFF'
+
+###############################################################################################################
+  - alias: Flic button Benoit - single click
+
+    trigger:
+      platform: event
+      event_type: flic_click
+      event_data:
+        button_name: flic_80e4da7228eb
+        click_type: single
+
+    action:
+      - service: scene.turn_on
+        entity_id: scene.bedroom_nightlamp_benoit_sleeping
+
+###############################################################################################################
+  - alias: Flic button Benoit - hold click
+
+    trigger:
+      platform: event
+      event_type: flic_click
+      event_data:
+        button_name: flic_80e4da7228eb
+        click_type: hold
+
+    action:
+      - service: scene.turn_on
+        entity_id: scene.bedroom_nightlamp_benoit_sleeping
+      - service: scene.turn_on
+        entity_id: scene.bedroom_standinglamp_low
+
+###############################################################################################################
+  - alias: Flic button Benoit - double click
+
+    trigger:
+      platform: event
+      event_type: flic_click
+      event_data:
+        button_name: flic_80e4da7228eb
+        click_type: double
+
+    action:
+      - service: light.turn_off
+        entity_id: group.all_bedroom_lights
+      - delay: 10
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_nightlamps
+          option: 'OFF'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_standinglamp
+          option: 'OFF'

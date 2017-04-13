@@ -5,7 +5,7 @@
     group.living_diningtablelights:
       icon: mdi:lightbulb
 
-    group.bed_standinglamp:
+    group.bedroom_standinglamp:
       icon: mdi:lightbulb
 
     group.bureau_standinglamp:
@@ -34,7 +34,10 @@
     group.synology:
       emulated_hue: false
 
-    group.zwave:
+    group.zwave_multisensor_bedroom:
+      emulated_hue: false
+
+    group.zwave_multisensor_bureau:
       emulated_hue: false
 
     group.important:
@@ -83,4 +86,13 @@
       emulated_hue: false
 
     group.speedtest_net:
+      emulated_hue: false
+
+    group.plants_orangetree:
+      emulated_hue: false
+
+    group.plants_succulent:
+      emulated_hue: false
+
+    group.beacons:
       emulated_hue: false

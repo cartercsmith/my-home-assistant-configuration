@@ -43,35 +43,43 @@
     initial: 'OFF'
     icon: mdi:speaker-wireless
 
-  nightlamps:
-    name: Night lamps
+  bedroom_nightlamps:
+    name: Night lamps bedroom
     options:
-      - 'Choose'
       - 'Blue'
       - 'Red'
       - 'Yellow'
       - 'Jurgen night (low)'
       - 'Benoit night (low)'
       - 'OFF'
-    initial: 'Choose'
+    initial: 'OFF'
     icon: mdi:google-pages
 
-  standinglamp:
-    name: Standing lamp
+  bedroom_standinglamp:
+    name: Standing lamp bedroom
     options:
-      - 'Choose'
       - 'Low'
       - 'Medium'
       - 'High'
       - 'Night (very low)'
       - 'OFF'
-    initial: 'Choose'
+    initial: 'OFF'
+    icon: mdi:google-pages
+
+  bureau_standinglamp:
+    name: Standing lamp bureau
+    options:
+      - 'Low'
+      - 'Medium'
+      - 'High'
+      - 'Dimmed'
+      - 'OFF'
+    initial: 'OFF'
     icon: mdi:google-pages
 
   scenes_livingroom:
-    name: Living room scenes
+    name: Scenes Living room
     options:
-      - 'Choose'
       - 'Morning'
       - 'Dinner'
       - 'Dimmed'
@@ -80,7 +88,7 @@
       - 'Maximum'
       - 'Late arrival'
       - 'OFF'
-    initial: 'Choose'
+    initial: 'OFF'
     icon: mdi:google-pages
 
   presence_detection_jurgen:

@@ -26,4 +26,8 @@
     alert.nobody_home_motion:
       icon: mdi:account-alert
 
+    alert.temperature_automations_disabled:
+      icon: mdi:alert
+
+
 

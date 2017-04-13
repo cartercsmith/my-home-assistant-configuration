@@ -2,7 +2,11 @@
 # CUSTOMIZE_BINARY_SENSOR:
 ###############################################################################################################
 
-    binary_sensor.aeotec_zw100_multisensor_6_sensor_2_0:
+    binary_sensor.zwave_bedroom_sensor_3_0:
+      friendly_name: "Motion detected"
+      icon: mdi:remote
+
+    binary_sensor.zwave_bureau_sensor_2_0:
       friendly_name: "Motion detected"
       icon: mdi:remote
 
@@ -45,3 +49,14 @@
 
     binary_sensor.alert_nobody_home_motion:
       hidden: true
+
+    binary_sensor.alert_temperature_automations_disabled:
+      hidden: true
+
+    binary_sensor.flic_80e4da721b69:
+      friendly_name: "Flic button Jurgen - ID 1 (80:e4:da:72:1b:69)"
+      icon: mdi:gesture-double-tap
+
+    binary_sensor.flic_80e4da7228eb:
+      friendly_name: "Flic button Benoit - ID 2 (80:e4:da:72:28:eb)"
+      icon: mdi:gesture-double-tap

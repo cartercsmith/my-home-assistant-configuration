@@ -58,12 +58,37 @@
 ###############################################################################################################
   everything_off:
     sequence:
-      - service: light.turn_off
-      - service: media_player.turn_off
       - service: input_boolean.turn_off
         entity_id:
           - input_boolean.alarm_jurgen_onoff
           - input_boolean.alarm_benoit_onoff
+      - service: light.turn_off
+      - service: media_player.turn_off
+      - delay: 10
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.soundtouch_device
+          option: 'OFF'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.google_device
+          option: 'OFF'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_nightlamps
+          option: 'OFF'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_standinglamp
+          option: 'OFF'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bureau_standinglamp
+          option: 'OFF'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.scenes_livingroom
+          option: 'OFF'
 
 ###############################################################################################################
   change_lights_based_on_time_of_day:
@@ -71,20 +96,15 @@
       - service: scene.turn_on
         data_template:
           entity_id: >
-            {% if is_state('sensor.time_of_day','morning') %}
-              scene.morning
-            {% elif is_state('sensor.time_of_day','evening') %}
-              scene.dinner
-            {% elif is_state('sensor.time_of_day','night') %}
-              scene.late_arrival
-            {% else %}
-              scene.late_arrival
+            {% if is_state('sensor.time_of_day','morning') and is_state('group.all_livingroom_lights','off') %}
+              scene.livingroom_morning
+            {% elif is_state('sensor.time_of_day','evening') and is_state('group.all_livingroom_lights','off') %}
+              scene.livingroom_dinner
+            {% elif is_state('sensor.time_of_day','night') and is_state('group.all_livingroom_lights','off') %}
+              scene.livingroom_late_arrival
+            {% elif is_state('sensor.time_of_day','day') %}
+              scene.livingroom_off
             {% endif %}
-      - condition: state
-        entity_id: sensor.time_of_day
-        state: 'day'
-      - service: light.turn_off
-        entity_id: group.all_lights
 
 ###############################################################################################################
   jurgens_favorite_music:
@@ -138,7 +158,7 @@
       - service: homeassistant.restart
 
 ###############################################################################################################
-  nightlamps_morning:
+  bedroom_nightlamps_morning:
     sequence:
       - service: light.turn_on
         data:

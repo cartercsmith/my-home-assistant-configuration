@@ -96,13 +96,75 @@
 
   - platform: moon
 
+# Xiaoma MiFlora
+#  - platform: miflora
+#    mac: !secret sensor_miflora_planter1_mac
+#    name: planter1
+#    median: 5
+#    timeout: 20
+#    adapter: hci1
+#    monitored_conditions:
+#      - moisture
+#      - light
+#      - temperature
+#      - conductivity
+#      - battery
+
+#  - platform: miflora
+#    mac: !secret sensor_miflora_planter2_mac
+#    name: planter2
+#    adapter: hci1
+#    monitored_conditions:
+#      - moisture
+#      - light
+#      - temperature
+#      - conductivity
+#      - battery
+
 ###############################################################################################################
 # Finance
   - platform: currencylayer
-    api_key: a531deb5c0856552e6755348253012ae
+    api_key: !secret sensor_currencylayer_api
     base: USD
     quote:
       - EUR
+
+###############################################################################################################
+# MQTT room
+  - platform: mqtt_room
+    device_id: !secret sensor_mqtt_room_id1
+    name: 'beacon_istubb_keys_jurgen'
+    state_topic: 'happy-bubbles/presence/ha'
+    timeout: 5
+    away_timeout: 60
+
+  - platform: mqtt_room
+    device_id: !secret sensor_mqtt_room_id2
+    name: 'beacon_estimote_mint_cocktail'
+    state_topic: 'happy-bubbles/presence/ha'
+    timeout: 5
+    away_timeout: 60
+
+  - platform: mqtt_room
+    device_id: !secret sensor_mqtt_room_id3
+    name: 'beacon_estimote_blueberry_pie'
+    state_topic: 'happy-bubbles/presence/ha'
+    timeout: 5
+    away_timeout: 60
+
+  - platform: mqtt_room
+    device_id: !secret sensor_mqtt_room_id4
+    name: 'beacon_shine_wrist_benoit'
+    state_topic: 'happy-bubbles/presence/ha'
+    timeout: 5
+    away_timeout: 60
+
+  - platform: mqtt_room
+    device_id: !secret sensor_mqtt_room_id5
+    name: 'beacon_istubb_keys_benoit'
+    state_topic: 'happy-bubbles/presence/ha'
+    timeout: 5
+    away_timeout: 60
 
 ###############################################################################################################
 # Template
@@ -182,41 +244,46 @@
           - input_boolean.alarm_benoit_onoff
           - input_boolean.alarm_jurgen_onoff
 
+# during winter: night=15, morning=20, day=19, evening=22, else=15 and offset is substracted instead of added
       target_temperature:
         value_template: >
-          {% if states.sensor.time_of_day.state and states.sensor.temperature_offset.state and states.input_boolean.disable_all_automations.state =='off' %}
-            {% if is_state("sensor.time_of_day", "night") %}
-              {{ (15.0 - (states('sensor.temperature_offset') | float )) | float }}
-            {% elif is_state("sensor.time_of_day", "morning") %}
-              {{ (20.0 - (states('sensor.temperature_offset') | float )) | float }}
-            {% elif is_state("sensor.time_of_day", "day") %}
-              {{ (19.0 - (states('sensor.temperature_offset') | float )) | float }}
-            {% elif is_state("sensor.time_of_day", "evening") %}
-              {{ (22.0 - (states('sensor.temperature_offset') | float )) | float }}
+          {% if states.input_boolean.disable_temperature_automations.state =='off' %}
+            {% if states.sensor.time_of_day.state and states.sensor.temperature_offset.state and states.input_boolean.disable_all_automations.state =='off' %}
+              {% if is_state("sensor.time_of_day", "night") %}
+                {{ (26.5 + (states('sensor.temperature_offset') | float )) | float }}
+              {% elif is_state("sensor.time_of_day", "morning") %}
+                {{ (25.0 + (states('sensor.temperature_offset') | float )) | float }}
+              {% elif is_state("sensor.time_of_day", "day") %}
+                {{ (25.0 + (states('sensor.temperature_offset') | float )) | float }}
+              {% elif is_state("sensor.time_of_day", "evening") %}
+                {{ (25.0 + (states('sensor.temperature_offset') | float )) | float }}
+              {% else %}
+                {{ (26.5 + (states('sensor.temperature_offset') | float )) | float }}
+              {% endif %}
             {% else %}
-              {{ (15.0 - (states('sensor.temperature_offset') | float )) | float }}
+              26.5
             {% endif %}
-          {% else %}
-            15
           {% endif %}
         entity_id:
           - sensor.time_of_day
           - sensor.temperature_offset
           - input_boolean.disable_all_automations
+          - input_boolean.disable_temperature_automations
         unit_of_measurement: "°C"
 
+# during winter: divide by 2 instead 4, else=6
       temperature_offset:
         value_template: >
-          {% if states.proximity.home.state %}
-            {% if ((states('proximity.home') | float ) <= 12 ) and (states('proximity.home') | int % 2 == 0) %}
-              {{ (states('proximity.home') | float ) / 2 }}
+          {% if states.input_boolean.disable_temperature_automations.state =='off' %}
+            {% if states.proximity.home.state  | float  <= 12 %}
+              {{ (states('proximity.home') | float ) / 4 }}
             {% else %}
-              4
+              3
             {% endif %}
-          {% else %}
-            4
           {% endif %}
-        entity_id: proximity.home
+        entity_id:
+          - proximity.home
+          - input_boolean.disable_temperature_automations
         unit_of_measurement: "°C"
 
       location_jurgen:
@@ -285,7 +352,7 @@
           - sensor.location_benoit
           - sensor.location_jurgen
 
-      onlyonehome:
+      onlyone_home:
         value_template: >
           {% if is_state ("sensor.someone_home","yes") and ( is_state("sensor.location_benoit", "away") or is_state("sensor.location_jurgen", "away") ) %}
             {% if is_state("sensor.location_benoit", "home") %}
@@ -301,6 +368,7 @@
         entity_id:
           - sensor.location_benoit
           - sensor.location_jurgen
+          - sensor.someone_home
 
 
       jurgen_sleeping:

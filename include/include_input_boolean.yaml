@@ -25,3 +25,8 @@
     initial: off
     name: "Disable motion alarm for 3h (off / on)"
     icon: mdi:clock-fast
+
+  disable_temperature_automations:
+    initial: off
+    name: "Disable automatic target temperature setting (off / on)"
+    icon: mdi:thermometer

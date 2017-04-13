@@ -35,7 +35,7 @@
 
     condition:
       - condition: template
-        value_template: "{{ states.sensor.time_of_day.state != 'unknown' }}"
+        value_template: "{{ states.sensor.time_of_day.state != 'day' }}"
       - condition: state
         entity_id: group.all_livingroom_lights
         state: 'off'
@@ -57,17 +57,8 @@
           seconds: 3
 
     condition:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'morning'
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'day'
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'evening'
+      - condition: template
+        value_template: "{{ states.sensor.time_of_day.state != 'night' }}"
       - condition: state
         entity_id: sensor.location_jurgen
         state: 'away'
@@ -83,6 +74,35 @@
       - service: script.benoits_favorite_music
 
 ###############################################################################################################
+  - alias: Benoit location change
+
+    trigger:
+      - platform: state
+        entity_id: device_tracker.benoitphone_location_benoit
+        from: '2.5K radius'
+        to: '1.0K radius'
+      - platform: state
+        entity_id: device_tracker.benoitphone_location_benoit
+        from: '1.0K radius'
+        to: 'home'
+      - platform: state
+        entity_id: device_tracker.benoitphone_location_benoit
+        from: 'work Benoit'
+
+    condition:
+      - condition: state
+        entity_id: sensor.location_jurgen
+        state: 'home'
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: notify.iphone_jurgen
+        data_template:
+          message: "!!! {{ trigger.from_state.state }} to {{ trigger.to_state.state }} !!!"
+
+###############################################################################################################
   - alias: Jurgen arrives home alone
 
     trigger:
@@ -91,17 +111,8 @@
       to: 'home'
 
     condition:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'morning'
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'day'
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'evening'
+      - condition: template
+        value_template: "{{ states.sensor.time_of_day.state != 'night' }}"
       - condition: state
         entity_id: sensor.location_benoit
         state: 'away'

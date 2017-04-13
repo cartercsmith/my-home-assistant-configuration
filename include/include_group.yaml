@@ -16,6 +16,7 @@
       - group.important
       - group.manual_override
       - group.finance
+      - group.beacons
 
 ###############################################################################################################
   tab_media:
@@ -57,7 +58,8 @@
       - group.climate_all
       - group.synology
       - group.presence_all
-      - group.zwave
+      - group.zwave_multisensor_bedroom
+      - group.zwave_multisensor_bureau
       - group.all_lights
       - group.all_livingroom_lights
       - group.all_bedroom_lights
@@ -67,6 +69,9 @@
       - group.manual_override
       - group.finance
       - group.speedtest_net
+      - group.plants_orangetree
+      - group.plants_succulent
+      - group.beacons
 
 ###############################################################################################################
   alert:
@@ -79,6 +84,7 @@
       - alert.light_on_when_away
       - alert.media_player_playing_when_away
       - alert.automations_disabled
+      - alert.temperature_automations_disabled
       - alert.usd_xrate_limit
       - alert.onlyone_home_error
       - alert.nobody_home_motion
@@ -91,9 +97,11 @@
     entities:
       - group.all_livingroom_lights
       - group.all_bedroom_lights
+      - group.all_bureau_lights
       - input_select.scenes_livingroom
-      - input_select.nightlamps
-      - input_select.standinglamp
+      - input_select.bedroom_nightlamps
+      - input_select.bedroom_standinglamp
+      - input_select.bureau_standinglamp
       - script.everything_off
       - input_boolean.reboot_trigger
       - climate.living_room
@@ -260,7 +268,8 @@
     entities:
       - light.bednightlamp_benoit
       - light.bednightlamp_jurgen
-      - group.bed_standinglamp
+      - group.bedroom_standinglamp
+
 
 ###############################################################################################################
   all_bureau_lights:
@@ -270,7 +279,7 @@
       - group.bureau_standinglamp
 
 ###############################################################################################################
-  bed_standinglamp:
+  bedroom_standinglamp:
     name: "Bedroom Standing lamp"
     view: no
     entities:
@@ -302,11 +311,12 @@
     control: hidden
     entities:
       - group.all_livingroom_lights
-      - input_select.scenes_livingroom
       - group.all_bedroom_lights
-      - input_select.nightlamps
-      - input_select.standinglamp
       - group.all_bureau_lights
+      - input_select.scenes_livingroom
+      - input_select.bedroom_nightlamps
+      - input_select.bedroom_standinglamp
+      - input_select.bureau_standinglamp
 
 ###############################################################################################################
   location_benoit:
@@ -384,10 +394,11 @@
     view: no
     control: hidden
     entities:
-      - input_boolean.disable_all_automations
       - input_select.presence_detection_jurgen
       - input_select.presence_detection_benoit
+      - input_boolean.disable_all_automations
       - input_boolean.disable_motion_alarm
+      - input_boolean.disable_temperature_automations
 
 ###############################################################################################################
   finance:
@@ -399,12 +410,59 @@
 
 
 ###############################################################################################################
-  zwave:
+  zwave_multisensor_bedroom:
     name: "Multisensor bedroom"
     view: no
     entities:
-      - binary_sensor.aeotec_zw100_multisensor_6_sensor_2_0
-      - sensor.aeotec_zw100_multisensor_6_burglar_2_10
-      - sensor.aeotec_zw100_multisensor_6_luminance_2_3
-      - sensor.aeotec_zw100_multisensor_6_relative_humidity_2_5
-      - sensor.aeotec_zw100_multisensor_6_temperature_2_1
+      - binary_sensor.zwave_bedroom_sensor_3_0
+      - sensor.zwave_bedroom_burglar_3_10
+      - sensor.zwave_bedroom_luminance_3_3
+      - sensor.zwave_bedroom_relative_humidity_3_5
+      - sensor.zwave_bedroom_temperature_3_1
+
+###############################################################################################################
+  zwave_multisensor_bureau:
+    name: "Multisensor bureau"
+    view: no
+    entities:
+      - binary_sensor.zwave_bureau_sensor_2_0
+      - sensor.zwave_bureau_alarm_level_2_1
+      - sensor.zwave_bureau_alarm_type_2_0
+      - sensor.zwave_bureau_burglar_2_10
+      - sensor.zwave_bureau_clock_2_14
+      - sensor.zwave_bureau_luminance_2_3
+      - sensor.zwave_bureau_relative_humidity_2_5
+      - sensor.zwave_bureau_temperature_2_1
+
+###############################################################################################################
+  plants_orangetree:
+    name: "Plant monitor - orange tree"
+    view: no
+    entities:
+      - sensor.planter1_battery
+      - sensor.planter1_conductivity
+      - sensor.planter1_light_intensity
+      - sensor.planter1_moisture
+      - sensor.planter1_temperature
+
+###############################################################################################################
+  plants_succulent:
+    name: "Plant monitor - succulent"
+    view: no
+    entities:
+      - sensor.planter2_battery
+      - sensor.planter2_conductivity
+      - sensor.planter2_light_intensity
+      - sensor.planter2_moisture
+      - sensor.planter2_temperature
+
+###############################################################################################################
+  beacons:
+    name: "Beacons"
+    view: no
+    entities:
+      - sensor.beacon_estimote_mint_cocktail
+      - sensor.beacon_istubb_keys_jurgen
+      - sensor.beacon_estimote_blueberry_pie
+      - sensor.beacon_shine_wrist_benoit
+      - sensor.beacon_istubb_keys_benoit

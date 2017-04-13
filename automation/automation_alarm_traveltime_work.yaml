@@ -41,7 +41,7 @@
 #         message: "Opgepast, reistijd naar XXX bedraagt momenteel al {{ states.sensor.duration_home_to_work_benoit.state }} minuten."
           language: 'nl'
       - service: scene.turn_on
-        entity_id: scene.morning
+        entity_id: scene.livingroom_morning
       - service: input_boolean.turn_off
         data:
           entity_id: input_boolean.alarm_benoit_onoff
@@ -86,7 +86,7 @@
 #         message: "Opgepast, reistijd naar XXX bedraagt momenteel al {{ states.sensor.duration_home_to_work_jurgen.state }} minuten."
           language: 'nl'
       - service: scene.turn_on
-        entity_id: scene.morning
+        entity_id: scene.livingroom_morning
       - service: input_boolean.turn_off
         data:
           entity_id: input_boolean.alarm_jurgen_onoff
@@ -128,7 +128,7 @@
 #         message: "Opgepast, reistijd naar XXX via XXX bedraagt momenteel al {{ states.sensor.duration_home_to_work_jurgen_via_work_benoit.state }} minuten.  Ter informatie, reistijd tot XXX bedraagt {{ states.sensor.duration_home_to_work_benoit.state }} minuten, reistijd van XXX naar XXX is {{ states.sensor.duration_work_benoit_to_work_jurgen.state }} minuten."
           language: 'nl'
       - service: scene.turn_on
-        entity_id: scene.morning
+        entity_id: scene.livingroom_morning
       - service: input_boolean.turn_off
         data:
           entity_id: input_boolean.alarm_jurgen_onoff

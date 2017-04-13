@@ -27,8 +27,8 @@
   - alias: HA Startup
 
     trigger:
-      platform: event
-      event_type: homeassistant_start
+      platform: homeassistant
+      event: start
 
     action:
       - service: persistent_notification.create

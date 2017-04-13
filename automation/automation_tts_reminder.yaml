@@ -2,7 +2,7 @@
 # AUTOMATION_TTS_REMINDER:
 ###############################################################################################################
 #
-# Text-to-speech reminders imported from Google calendar through google home
+# Text-to-speech reminders through google home
 #
 ###############################################################################################################
   - alias: Text-to-speech reminder via Google calendar
@@ -47,3 +47,43 @@
             {% else %}
               Herinnering {{ states.calendar.google_reminder.attributes.message.replace("#REMINDER#"," ") }}
             {% endif %}
+
+###############################################################################################################
+  - alias: Text-to-speech reminder to water the plants
+
+    trigger:
+      - platform: time
+        minutes: 15
+        seconds: 00
+
+    condition:
+      - condition: state
+        entity_id: sensor.someone_home
+        state: 'yes'
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.planter1_moisture
+        below: 15
+      - condition: template
+        value_template: "{{ states.sensor.time_of_day.state != 'unknown' }}"
+      - condition: template
+        value_template: "{{ states.sensor.time_of_day.state != 'night' }}"
+
+    action:
+      - service: media_player.turn_on
+        entity_id: media_player.google_home
+      - service: media_player.volume_set
+        entity_id: media_player.google_home
+        data:
+          volume_level: 0.50
+      - service: light.turn_on
+        data:
+          entity_id: group.all_livingroom_lights
+          flash: short
+      - service: tts.google_say
+        entity_id: media_player.google_home
+        data_template:
+          language: 'nl'
+          message: "Gemeten vochtigheid voor de plantenbank buiten is {{ states.sensor.planter1_moisture.state }} procent.  Planten water geven."

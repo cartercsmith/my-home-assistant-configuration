@@ -18,12 +18,26 @@
         entity_id: input_boolean.disable_all_automations
         state: 'off'
 
+# during winter: operation_mode=Heat
     action:
       - service: climate.set_temperature
         data_template:
           temperature: "{{ states.input_slider.temperature.state | float }}"
-          operation_mode: Heat
-      - delay: 10
+          operation_mode: Cool
+
+
+###############################################################################################################
+  - alias: send Telegram message when NEST target temperature changes
+    trigger:
+      - platform: state
+        entity_id: sensor.living_room_thermostat_target
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
       - service: notify.telegram
         data_template:
           message: "Temp input slider: {{ states.input_slider.temperature.state }} °C - Thermostat target temp: {{ states.sensor.living_room_thermostat_target.state }} °C - Actual current temp: {{ states.sensor.living_room_thermostat_temperature.state }} °C"

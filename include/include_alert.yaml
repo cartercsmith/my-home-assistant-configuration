@@ -18,6 +18,7 @@
     name: "ALERT: Someone home = YES but Location Benoit = AWAY & Location Jurgen = AWAY"
     entity_id: binary_sensor.alert_onlyone_home_error
     repeat:
+      - 2
       - 30
     can_acknowledge: true
     skip_first: false
@@ -28,6 +29,18 @@
   automations_disabled:
     name: "ALERT: All automations DISABLED"
     entity_id: binary_sensor.alert_automations_disabled
+    repeat:
+      - 2
+      - 60
+    can_acknowledge: true
+    skip_first: true
+    notifiers:
+      - iphone_jurgen
+      - telegram
+
+  temperature_automations_disabled:
+    name: "ALERT: Temeperature automations DISABLED"
+    entity_id: binary_sensor.alert_temperature_automations_disabled
     repeat:
       - 2
       - 60

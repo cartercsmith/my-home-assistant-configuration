@@ -24,7 +24,7 @@
 
     action:
       - service: scene.turn_on
-        entity_id: scene.dimmed
+        entity_id: scene.livingroom_dimmed
       - service: input_boolean.turn_off
         data:
           entity_id: input_boolean.tv_onoff
@@ -39,6 +39,8 @@
           - media_player.chromecast
           - media_player.plex_apple_tv
         to: 'playing'
+        for:
+          seconds: 2
 
     condition:
       - condition: state
@@ -64,5 +66,5 @@
       - service: input_boolean.turn_on
         entity_id: input_boolean.tv_onoff
       - service: scene.turn_on
-        entity_id: scene.watch_tv_blue
+        entity_id: scene.livingroom_watch_tv_blue
 

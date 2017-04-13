@@ -1,5 +1,10 @@
 # My Home Assistant configuration
 
+**Update April 2017**
+
+Having quite some issues with my Home Assisstant lately, making me reboot at least once per day and getting quite desperate as to what may be causing all those problems...
+Anyone who notices something in my config that may be causing the issues, feel free to contact me.
+
 **Sharing my HASS configuration for two main reasons:**
   - Studying, copying and modifying other users configurations was a great help when I started using HASS
   - Looking forward to improvement suggestions from other users
@@ -17,7 +22,7 @@
   - motion triggered lights in bedroom
 
 Check out the screenshots folder a view on the UI.
-  
+
 **Setup:**
   - Raspberry Pi 3 (Complete Starter Kit - 32 GB edition)
   - Hassbian
@@ -32,17 +37,20 @@ Check out the screenshots folder a view on the UI.
     - bathroom (media player)
   - device tracking via iPhone, by using:
     - NMAP
-    - Owntracks (GPS), combined with MQTT through cloudMQTT
-    - iBEACONS (trigger IFTTT maker channel via Beecon IOS app)
+    - Owntracks (GPS), combined with MQTT through cloudMQTT (bridged through Mosquitto)
+    - Various beacons tracked with Happy Bubbles and MQTT_room for micro-location (currently testing)
     - iCLOUD (not used currently because 2-factor authentication not supported)
-    
+     - Flic butt
+
 **Hardware devices installed:**
   - Lights: Philips Hue (color, white, go, led, etc..) & Flux WiFi Smart LED Light Bulbs
   - Thermostat: Nest
-  - Motion sensor: Zwave multisensor 
-  - iBeacons: estimote (not used currently because no reliable results)
+  - Motion sensor: Zwave multisensor
+  - Beacons: estimote, istubb, Shine
+  - Flic buttons
+  - MiFlora plant sensors
   - Media-players: Bose SoundTouch, Apple TV, Google Home, Chromecast & Chromecast audio
-    
+
 **Components used:**
   - automations
   - alerts
@@ -56,7 +64,7 @@ Check out the screenshots folder a view on the UI.
     - multiple circles around home for proximity
     - workplace both users
   - scenes
-  - sensors & binary sensors: 
+  - sensors & binary sensors:
     - google travel
     - uber
     - synology
@@ -71,11 +79,12 @@ Check out the screenshots folder a view on the UI.
   - emulated hue (google home)
   - notify (telegram & instapush)
   - plex
-  
+  - flic
+  - miflora
+   mqtt_room
+  ...
+
 **On the to-do list:**
-  - Microlocation (reliably knowing who is in which room):
-    - Understanding why the iBEACON setup fails
-    - Waiting for my HappyBubbles devices to arrive to explore alternatives for microlocation
   - Reboot through shell command (root issue)
   - Append text containing template values to text file (root issue I think)
   - Relevant automations (beyond the fun to implement them, also actually useful)
@@ -91,4 +100,4 @@ Check out the screenshots folder a view on the UI.
   - www.happybubbles.tech
 
 
-  
+

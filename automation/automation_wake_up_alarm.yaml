@@ -20,7 +20,7 @@
         state: 'off'
 
     action:
-      - service: script.nightlamps_morning
+      - service: script.bedroom_nightlamps_morning
 
 ###############################################################################################################
   - alias: Morning alarm

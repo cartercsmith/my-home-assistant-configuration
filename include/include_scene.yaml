@@ -3,7 +3,7 @@
 ###############################################################################################################
 
 ###############################################################################################################
-  - name: morning
+  - name: livingroom_morning
     entities:
       light.livingtabledownlightbulb1:
         state: on
@@ -29,7 +29,7 @@
         brightness: 45
 
 ###############################################################################################################
-  - name: dinner
+  - name: livingroom_dinner
     entities:
       light.livingtabledownlightbulb1:
         state: on
@@ -57,7 +57,7 @@
         color_temp: 467
 
 ###############################################################################################################
-  - name: dimmed
+  - name: livingroom_dimmed
     entities:
       light.livingtabledownlightbulb1:
         state: on
@@ -85,7 +85,7 @@
         color_temp: 467
 
 ###############################################################################################################
-  - name: late_Arrival
+  - name: livingroom_late_Arrival
     entities:
       light.livingtabledownlightbulb1:
         state: on
@@ -101,7 +101,7 @@
         color_name: blue
 
 ###############################################################################################################
-  - name: maximum
+  - name: livingroom_maximum
     entities:
       light.livingtabledownlightbulb1:
         state: on
@@ -129,7 +129,7 @@
         color_temp: 231
 
 ###############################################################################################################
-  - name: watch_TV_blue
+  - name: livingroom_watch_TV_blue
     entities:
       light.livingtabledownlightbulb1:
         state: on
@@ -163,7 +163,7 @@
         color_name: blue
 
 ###############################################################################################################
-  - name: watch_TV_red
+  - name: livingroom_watch_TV_red
     entities:
       light.livingtabledownlightbulb1:
         state: on
@@ -197,15 +197,17 @@
         color_name: red
 
 ###############################################################################################################
-  - name: dummy
+  - name: livingroom_off
     entities:
-      light.livinggolight:
-        state: on
-        brightness: 1
-        color_temp: 231
+      light.livingtabledownlightbulb1: off
+      light.livingtabledownlightbulb2: off
+      light.livingtabledownlightbulb3: off
+      light.livinggolight: off
+      light.livingarcolamp: off
+      light.livingtelevisionledstrip: off
 
 ###############################################################################################################
-  - name: nightlamps_yellow
+  - name: bedroom_nightlamps_yellow
     entities:
       light.bednightlamp_jurgen:
         state: on
@@ -217,7 +219,7 @@
         brightness: 50
 
 ###############################################################################################################
-  - name: nightlamps_red
+  - name: bedroom_nightlamps_red
     entities:
       light.bednightlamp_jurgen:
         state: on
@@ -229,7 +231,7 @@
         brightness: 50
 
 ###############################################################################################################
-  - name: nightlamps_blue
+  - name: bedroom_nightlamps_blue
     entities:
       light.bednightlamp_jurgen:
         state: on
@@ -241,39 +243,39 @@
         brightness: 50
 
 ###############################################################################################################
-  - name: nightlamps_off
+  - name: bedroom_nightlamps_off
     entities:
       light.bednightlamp_jurgen: off
       light.bednightlamp_benoit: off
 
 ###############################################################################################################
-  - name: nightlamp_jurgen_sleeping
+  - name: bedroom_nightlamp_jurgen_sleeping
     entities:
       light.bednightlamp_jurgen:
         state: on
         color_name: orange
-        brightness: 15
+        brightness: 3
 
 ###############################################################################################################
-  - name: nightlamp_benoit_sleeping
+  - name: bedroom_nightlamp_benoit_sleeping
     entities:
       light.bednightlamp_benoit:
         state: on
         color_name: orange
-        brightness: 15
+        brightness: 3
 
 ###############################################################################################################
-  - name: nightlamp_jurgen_off
+  - name: bedroom_nightlamp_jurgen_off
     entities:
       light.bednightlamp_jurgen: off
 
 ###############################################################################################################
-  - name: nightlamp_benoit_off
+  - name: bedroom_nightlamp_benoit_off
     entities:
       light.bednightlamp_benoit: off
 
 ###############################################################################################################
-  - name: standinglamp_low
+  - name: bedroom_standinglamp_low
     entities:
       light.bedstandinglampbulb1:
         state: on
@@ -283,7 +285,7 @@
         brightness: 50
 
 ###############################################################################################################
-  - name: standinglamp_medium
+  - name: bedroom_standinglamp_medium
     entities:
       light.bedstandinglampbulb1:
         state: on
@@ -293,7 +295,7 @@
         brightness: 100
 
 ###############################################################################################################
-  - name: standinglamp_high
+  - name: bedroom_standinglamp_high
     entities:
       light.bedstandinglampbulb1:
         state: on
@@ -303,14 +305,73 @@
         brightness: 200
 
 ###############################################################################################################
-  - name: standinglamp_night
+  - name: bedroom_standinglamp_night
     entities:
       light.bedstandinglampbulb1:
         state: on
-        brightness: 10
+        brightness: 3
 
 ###############################################################################################################
-  - name: standinglamp_off
+  - name: bedroom_standinglamp_off
     entities:
       light.bedstandinglampbulb1: off
       light.bedstandinglampbulb2: off
+
+###############################################################################################################
+  - name: bureau_standinglamp_low
+    entities:
+      light.BureauStandingLampBulbTop:
+        state: on
+        brightness: 50
+      light.BureauStandingLampBulb1:
+        state: on
+        brightness: 50
+      light.BureauStandingLampBulb2:
+        state: on
+        brightness: 50
+
+###############################################################################################################
+  - name: bureau_standinglamp_medium
+    entities:
+      light.BureauStandingLampBulbTop:
+        state: on
+        brightness: 100
+      light.BureauStandingLampBulb1:
+        state: on
+        brightness: 100
+      light.BureauStandingLampBulb2:
+        state: on
+        brightness: 100
+
+###############################################################################################################
+  - name: bureau_standinglamp_high
+    entities:
+      light.BureauStandingLampBulbTop:
+        state: on
+        brightness: 200
+      light.BureauStandingLampBulb1:
+        state: on
+        brightness: 200
+      light.BureauStandingLampBulb2:
+        state: on
+        brightness: 200
+
+###############################################################################################################
+  - name: bureau_standinglamp_dimmed
+    entities:
+      light.BureauStandingLampBulbTop:
+        state: on
+        brightness: 5
+      light.BureauStandingLampBulb1:
+        state: on
+        brightness: 5
+      light.BureauStandingLampBulb2:
+        state: on
+        brightness: 5
+
+###############################################################################################################
+  - name: bureau_standinglamp_off
+    entities:
+      light.BureauStandingLampBulbTop: off
+      light.BureauStandingLampBulb1: off
+      light.BureauStandingLampBulb2: off

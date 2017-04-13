@@ -35,27 +35,27 @@
       friendly_name: "Benoit's favorite music"
       emulated_hue_name: "Benoits favorite music"
 
-    script.nightlamps_yellow:
+    script.bedroom_nightlamps_yellow:
       friendly_name: "Night lamps yellow"
       icon: mdi:lightbulb
 
-    script.nightlamps_red:
+    script.bedroom_nightlamps_red:
       friendly_name: "Night lamps red"
       icon: mdi:lightbulb
 
-    script.nightlamps_blue:
+    script.bedroom_nightlamps_blue:
       friendly_name: "Night lamps blue"
       icon: mdi:lightbulb
 
-    script.standinglamp_low:
+    script.bedroom_standinglamp_low:
       friendly_name: "Standing lamp low"
       icon: mdi:lightbulb
 
-    script.standinglamp_medium:
+    script.bedroom_standinglamp_medium:
       friendly_name: "Standing lamp medium"
       icon: mdi:lightbulb
 
-    script.standinglamp_high:
+    script.bedroom_standinglamp_high:
       friendly_name: "Standing lamp high"
       icon: mdi:lightbulb
 

@@ -25,6 +25,18 @@
     light.bednightlamp_jurgen:
       friendly_name: "Night lamp Jurgen"
 
+    light.BureauStandingLampBulbTop:
+      hidden: true
+      emulated_hue: false
+
+    light.BureauStandingLampBulb1:
+      hidden: true
+      emulated_hue: false
+
+    light.BureauStandingLampBulb2:
+      hidden: true
+      emulated_hue: false
+
     light.all_living_room_lights:
       hidden: true
 
