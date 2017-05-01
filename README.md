@@ -1,8 +1,8 @@
 # My Home Assistant configuration
 
-###########################################################################
+----------------------------------------------------------------------------
 Latest news (April 30th)
-###########################################################################
+----------------------------------------------------------------------------
 The Happy Bubbles implementation seems pretty stable by now and and I start to trust the state of the beacons:
   - istubb beacons on our keyrings
   - estimote beacons in our laptop bag for work
@@ -12,8 +12,7 @@ Furthermore, iOS app addition was a major recent change too.
 
 The issues cauding 'timer out of sync' still seem to be there.   But overall my HA is pretty stable for the moment.
 Still hoping to understand what can be done about it, so anyone who had similar issues but was able to solve them, feel free to contact me.
-###########################################################################
-
+----------------------------------------------------------------------------
 
 **Sharing my HASS configuration for two main reasons:**
   - Studying, copying and modifying other users configurations was a great help when I started using HASS
