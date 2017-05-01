@@ -12,7 +12,7 @@
         entity_id:
           - media_player.plex_apple_tv
           - media_player.chromecast
-        from: 'playing'
+          - media_player.apple_tv
 
     condition:
       - condition: state
@@ -21,13 +21,15 @@
       - condition: state
         entity_id: input_boolean.disable_all_automations
         state: 'off'
+      - condition: template
+        value_template: "{{ trigger.from_state.state == 'playing' }}"
+
 
     action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.tv_onoff
       - service: scene.turn_on
         entity_id: scene.livingroom_dimmed
-      - service: input_boolean.turn_off
-        data:
-          entity_id: input_boolean.tv_onoff
 
 
 ###############################################################################################################
@@ -41,6 +43,8 @@
         to: 'playing'
         for:
           seconds: 2
+      - platform: template
+        value_template: "{{ states.media_player.apple_tv.state == 'playing' and states.media_player.plex_apple_tv.state != 'playing' }}"
 
     condition:
       - condition: state
@@ -63,8 +67,8 @@
           - condition: state
             entity_id: sun.sun
             state: 'below_horizon'
-      - service: input_boolean.turn_on
-        entity_id: input_boolean.tv_onoff
       - service: scene.turn_on
         entity_id: scene.livingroom_watch_tv_blue
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.tv_onoff
 

@@ -46,9 +46,9 @@
   bedroom_nightlamps:
     name: Night lamps bedroom
     options:
-      - 'Blue'
-      - 'Red'
-      - 'Yellow'
+      - 'Low'
+      - 'Medium'
+      - 'High'
       - 'Jurgen night (low)'
       - 'Benoit night (low)'
       - 'OFF'
@@ -58,6 +58,8 @@
   bedroom_standinglamp:
     name: Standing lamp bedroom
     options:
+      - 'Red'
+      - 'Blue'
       - 'Low'
       - 'Medium'
       - 'High'

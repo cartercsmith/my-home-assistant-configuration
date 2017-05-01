@@ -2,21 +2,28 @@
 # CUSTOMIZE_SENSOR:
 ###############################################################################################################
 
-    sensor.living_room_thermostat_hvac_state:
+    sensor.someone_sleeping:
       hidden: true
 
-    sensor.living_room_thermostat_target:
+    sensor.camera_status:
+      friendly_name: "NEST camera"
+      icon: mdi:video
+
+    sensor.nest_thermostat_hvac_state:
+      hidden: true
+
+    sensor.nest_thermostat_target:
       friendly_name: "Target temperature"
       icon: mdi:thermometer
 
-    sensor.living_room_thermostat_temperature:
+    sensor.nest_thermostat_temperature:
       friendly_name: "Current temperature"
 
-    sensor.living_room_thermostat_operation_mode:
+    sensor.nest_thermostat_operation_mode:
       friendly_name: "Mode"
       icon: mdi:nest-thermostat
 
-    sensor.living_room_thermostat_humidity:
+    sensor.nest_thermostat_humidity:
       friendly_name: "Humidity"
       icon: mdi:water-percent
 
@@ -62,25 +69,25 @@
       friendly_name: "Current weather"
       icon: mdi:weather-partlycloudy
 
-    sensor.cpu_load_total:
+    sensor.synology_cpu_load_total:
       friendly_name: "CPU usage"
 
-    sensor.memory_usage_real:
+    sensor.synology_memory_usage_real:
       friendly_name: "Memory usage"
 
-    sensor.status_volume_2:
+    sensor.synology_status_volume_2:
       friendly_name: "Volume status"
 
-    sensor.volume_used_volume_2:
+    sensor.synology_volume_used_volume_2:
       friendly_name: "Volume usage"
 
-    sensor.status_sda:
+    sensor.synology_status_sda:
       friendly_name: "Volume disk 1 status"
 
-    sensor.status_sdb:
+    sensor.synology_status_sdb:
       friendly_name: "Volume disk 2 status"
 
-    sensor.maximum_disk_temp_volume_2:
+    sensor.synology_maximum_disk_temp_volume_2:
       friendly_name: "Volume temperature"
 
     sensor.temperature_offset:
@@ -139,33 +146,40 @@
       friendly_name: "Exchange rate USD to EUR"
       icon: mdi:currency-usd
 
-    sensor.zwave_bureau_alarm_level_2_1:
+    sensor.zwave_bureau_alarm_level_4_1:
       hidden: true
 
-    sensor.zwave_bureau_alarm_type_2_0:
+    sensor.zwave_bureau_alarm_type_4_0:
       hidden: true
 
-    sensor.zwave_bureau_burglar_2_10:
+    sensor.zwave_bureau_burglar_4_10:
       friendly_name: "Motion type"
       icon: mdi:settings-box
 
-    sensor.zwave_bureau_clock_2_14:
+    sensor.zwave_bureau_clock_4_14:
       hidden: true
 
-    sensor.zwave_bureau_luminance_2_3:
+    sensor.zwave_bureau_luminance_4_3:
       friendly_name: "Luminance"
       icon: mdi:theme-light-dark
 
-    sensor.zwave_bureau_relative_humidity_2_5:
+    sensor.zwave_bureau_relative_humidity_4_5:
       friendly_name: "Humidity"
       icon: mdi:water-percent
 
-    sensor.zwave_bureau_sourcenodeid_2_2:
+    sensor.zwave_bureau_sourcenodeid_4_2:
       hidden: true
 
-    sensor.zwave_bureau_temperature_2_1:
+    sensor.zwave_bureau_temperature_4_1:
       friendly_name: "Current temperature"
       icon: mdi:thermometer
+
+    sensor.zwave_bureau_power_management_4_11:
+       hidden: true
+
+    sensor.zwave_bureau_battery:
+      friendly_name: "Battery level"
+      icon: mdi:battery-charging
 
     sensor.zwave_bedroom_alarm_level_3_1:
       hidden: true
@@ -207,63 +221,71 @@
       friendly_name: "Upload"
       icon: mdi:network-upload
 
-    sensor.planter1_battery:
+    sensor.miflora1_battery:
       friendly_name: "Sensor battery level"
       icon: mdi:battery-charging
 
-    sensor.planter1_conductivity:
+    sensor.miflora1_conductivity:
       friendly_name: "Conductivity"
       icon: mdi:reorder-horizontal
 
-    sensor.planter1_light_intensity:
+    sensor.miflora1_light_intensity:
       friendly_name: "Luminance"
       icon: mdi:theme-light-dark
 
-    sensor.planter1_moisture:
+    sensor.miflora1_moisture:
       friendly_name: "Humidity"
       icon: mdi:water-percent
 
-    sensor.planter1_temperature:
+    sensor.miflora1_temperature:
       friendly_name: "Temperature"
       icon: mdi:thermometer
 
-    sensor.planter2_battery:
+    sensor.miflora2_battery:
       friendly_name: "Sensor battery level"
       icon: mdi:battery-charging
 
-    sensor.planter2_conductivity:
+    sensor.miflora2_conductivity:
       friendly_name: "Conductivity"
       icon: mdi:reorder-horizontal
 
-    sensor.planter2_light_intensity:
+    sensor.miflora2_light_intensity:
       friendly_name: "Lumincance"
       icon: mdi:theme-light-dark
 
-    sensor.planter2_moisture:
+    sensor.miflora2_moisture:
       friendly_name: "Humidity"
       icon: mdi:water-percent
 
-    sensor.planter2_temperature:
+    sensor.miflora2_temperature:
       friendly_name: "Temperature"
       icon: mdi:thermometer
 
-    sensor.beacon_estimote_blueberry_pie:
+    sensor.location_bag_benoit:
       friendly_name: "Laptop bag Benoit"
       icon: mdi:bluetooth-audio
 
-    sensor.beacon_estimote_mint_cocktail:
+    sensor.location_bag_jurgen:
       friendly_name: "Laptop bag Jurgen"
       icon: mdi:bluetooth-audio
 
-    sensor.beacon_istubb_keys_jurgen:
+    sensor.location_keys_jurgen:
       friendly_name: "Keys Jurgen"
       icon: mdi:bluetooth-audio
 
-    sensor.beacon_shine_wrist_benoit:
-      friendly_name: "Wristband Benoit"
+    sensor.location_keys_benoit:
+      friendly_name: "Keys Benoit"
       icon: mdi:bluetooth-audio
 
-    sensor.beacon_istubb_keys_benoit:
-      friendly_name: "Keys Benoit"
+    sensor.location_iphone_jurgen:
+      friendly_name: "iPhone Jurgen"
+      icon: mdi:bluetooth-audio
+
+    sensor.location_iphone_benoit:
+      friendly_name: "iPhone Benoit"
+      icon: mdi:bluetooth-audio
+
+    sensor.beacon_home:
+      friendly_name: "Home beacon status"
       icon: mdi:bluetooth-audio
 

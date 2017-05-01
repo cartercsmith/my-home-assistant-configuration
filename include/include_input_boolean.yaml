@@ -30,3 +30,13 @@
     initial: off
     name: "Disable automatic target temperature setting (off / on)"
     icon: mdi:thermometer
+
+  delay_after_flic_bureau:
+    initial: off
+    name: "Turn bureau lights on for 1h (off/on)"
+    icon: mdi:run-fast
+
+  delay_after_flic_bedroom:
+    initial: off
+    name: "Turn bedroom lights on for 1h (off/on)"
+    icon: mdi:run-fast

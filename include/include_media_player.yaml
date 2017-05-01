@@ -38,3 +38,9 @@
     host: !secret media_player_apple_tv_host
     login_id: !secret media_player_apple_tv_logon_id
 
+###############################################################################################################
+#Spotify
+  - platform: spotify
+    client_id: !secret media_player_spotify_client_id
+    client_secret: !secret media_player_spotify_client_secret
+

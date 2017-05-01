@@ -62,6 +62,7 @@
 # IT hardware
 # Synology
   - platform: synologydsm
+    entity_namespace: synology
     host: !secret sensor_synology_host
     username: !secret sensor_synology_username
     password: !secret sensor_synology_password
@@ -80,6 +81,30 @@
       - download
       - upload
 
+# System monitor
+  - platform: systemmonitor
+    entity_namespace: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /
+      - type: memory_use_percent
+      - type: load_1m
+      - type: load_5m
+      - type: load_15m
+      - type: network_in
+        arg: eth0
+      - type: network_out
+        arg: eth0
+      - type: processor_use
+      - type: process
+        arg: mosquitto
+      - type: process
+        arg: presence
+      - type: process
+        arg: flicd
+      - type: last_boot
+      - type: since_last_boot
+
 ###############################################################################################################
 # Climate
   - platform: yr
@@ -97,23 +122,22 @@
   - platform: moon
 
 # Xiaoma MiFlora
-#  - platform: miflora
-#    mac: !secret sensor_miflora_planter1_mac
-#    name: planter1
-#    median: 5
-#    timeout: 20
-#    adapter: hci1
-#    monitored_conditions:
-#      - moisture
-#      - light
-#      - temperature
-#      - conductivity
-#      - battery
+  - platform: miflora
+    mac: !secret sensor_miflora_miflora1_mac
+    name: miflora1
+    timeout: 60
+    retries: 5
+    scan_interval: 500
+    monitored_conditions:
+      - moisture
+      - light
+      - temperature
+      - conductivity
+      - battery
 
 #  - platform: miflora
-#    mac: !secret sensor_miflora_planter2_mac
-#    name: planter2
-#    adapter: hci1
+#    mac: !secret sensor_miflora_miflora2_mac
+#    name: miflora2
 #    monitored_conditions:
 #      - moisture
 #      - light
@@ -140,28 +164,42 @@
 
   - platform: mqtt_room
     device_id: !secret sensor_mqtt_room_id2
-    name: 'beacon_estimote_mint_cocktail'
+    name: 'beacon_estimote_mint_bag_jurgen'
     state_topic: 'happy-bubbles/presence/ha'
     timeout: 5
     away_timeout: 60
 
   - platform: mqtt_room
     device_id: !secret sensor_mqtt_room_id3
-    name: 'beacon_estimote_blueberry_pie'
+    name: 'beacon_estimote_blueberry_bag_benoit'
     state_topic: 'happy-bubbles/presence/ha'
     timeout: 5
     away_timeout: 60
 
   - platform: mqtt_room
     device_id: !secret sensor_mqtt_room_id4
-    name: 'beacon_shine_wrist_benoit'
+    name: 'beacon_istubb_keys_benoit'
     state_topic: 'happy-bubbles/presence/ha'
     timeout: 5
     away_timeout: 60
 
   - platform: mqtt_room
     device_id: !secret sensor_mqtt_room_id5
-    name: 'beacon_istubb_keys_benoit'
+    name: 'beacon_kontakt_iphone_jurgen'
+    state_topic: 'happy-bubbles/presence/ha'
+    timeout: 5
+    away_timeout: 60
+
+  - platform: mqtt_room
+    device_id: !secret sensor_mqtt_room_id6
+    name: 'beacon_kontakt_iphone_benoit'
+    state_topic: 'happy-bubbles/presence/ha'
+    timeout: 5
+    away_timeout: 60
+
+  - platform: mqtt_room
+    device_id: !secret sensor_mqtt_room_id7
+    name: 'beacon_estimote_icy_home'
     state_topic: 'happy-bubbles/presence/ha'
     timeout: 5
     away_timeout: 60
@@ -370,19 +408,156 @@
           - sensor.location_jurgen
           - sensor.someone_home
 
-
       jurgen_sleeping:
-        value_template: '{% if is_state("binary_sensor.jurgen_sleeping_ifttt","on") %}on{% else %}off{% endif %}'
-        icon_template: '{% if is_state("binary_sensor.jurgen_sleeping_ifttt","on") %}mdi:sleep{% else %}mdi:sleep-off{% endif %}'
+        value_template: '{% if is_state("sensor.beacon_kontakt_iphone_jurgen","BEDROOM") and ( is_state("sensor.jurgen_us_iphone_7_battery_state","Charging") or is_state("sensor.jurgen_us_iphone_7_battery_state","Full") ) and ( is_state("sensor.time_of_day","evening") or is_state("sensor.time_of_day","night") ) %}yes{% else %}no{% endif %}'
+        icon_template: '{% if is_state("sensor.beacon_kontakt_iphone_jurgen","BEDROOM") and ( is_state("sensor.jurgen_us_iphone_7_battery_state","Charging") or is_state("sensor.jurgen_us_iphone_7_battery_state","Full") ) and ( is_state("sensor.time_of_day","evening") or is_state("sensor.time_of_day","night") ) %}mdi:sleep{% else %}mdi:sleep-off{% endif %}'
         friendly_name: "Jurgen sleeping"
-        entity_id: binary_sensor.jurgen_sleeping_ifttt
+        entity_id:
+          - sensor.beacon_kontakt_iphone_jurgen
+          - sensor.jurgen_us_iphone_7_battery_state
 
       benoit_sleeping:
-        value_template: '{% if is_state("binary_sensor.benoit_sleeping_ifttt","on") %}on{% else %}off{% endif %}'
-        icon_template: '{% if is_state("binary_sensor.benoit_sleeping_ifttt","on") %}mdi:sleep{% else %}mdi:sleep-off{% endif %}'
+        value_template: '{% if is_state("sensor.beacon_kontakt_iphone_benoit","BEDROOM") and ( is_state("sensor.benoits_iphone_6s_battery_state","Charging") or is_state("sensor.benoits_iphone_6s_battery_state","Full") )  and ( is_state("sensor.time_of_day","evening") or is_state("sensor.time_of_day","night") ) %}yes{% else %}no{% endif %}'
+        icon_template: '{% if is_state("sensor.beacon_kontakt_iphone_benoit","BEDROOM") and ( is_state("sensor.benoits_iphone_6s_battery_state","Charging") or is_state("sensor.benoits_iphone_6s_battery_state","Full") )  and ( is_state("sensor.time_of_day","evening") or is_state("sensor.time_of_day","night") ) %}mdi:sleep{% else %}mdi:sleep-off{% endif %}'
         friendly_name: "Benoit sleeping"
-        entity_id: binary_sensor.benoit_sleeping_ifttt
+        entity_id:
+          - sensor.beacon_kontakt_iphone_benoit
+          - sensor.benoits_iphone_6s_battery_level
+
+      someone_sleeping:
+        value_template: '{% if is_state("sensor.jurgen_sleeping","yes") or is_state("sensor.benoit_sleeping","yes") %}yes{% else %}no{% endif %}'
+        entity_id:
+          - sensor.benoit_sleeping
+          - sensor.jurgen_sleeping
 
       my_dark_sky_summary:
-        value_template: '{{ states("sensor.dark_sky_summary")}}'
+        value_template: '{{ states("sensor.dark_sky_summary") }}'
         entity_id: sensor.dark_sky_summary
+
+      camera_status:
+        value_template: '{{ states("camera.nest") }}'
+        entity_id: camera.nest
+
+      zwave_bureau_battery:
+        value_template: >
+          {% if states.zwave.zwave_bureau_4.state %}
+            {{ states.zwave.zwave_bureau_4.attributes.battery_level }}
+          {% else %}
+            ??
+          {% endif %}
+        unit_of_measurement: "%"
+        entity_id: zwave.zwave_bureau_4
+
+
+      location_keys_benoit:
+        value_template: >
+          {% if is_state("sensor.beacon_istubb_keys_benoit","BUREAU") %}
+            home (bureau)
+          {% elif is_state("sensor.beacon_istubb_keys_benoit","BEDROOM") %}
+            home (bedroom)
+          {% elif is_state("sensor.beacon_istubb_keys_benoit","LIVING_ROOM") or is_state("sensor.beacon_istubb_keys_benoit","LIVING2") %}
+            home (living room)
+          {% elif is_state("sensor.beacon_istubb_keys_benoit","away") %}
+            away
+          {% else %}
+            unknown
+          {% endif %}
+        entity_id:
+          - sensor.beacon_istubb_keys_benoit
+
+      location_keys_jurgen:
+        value_template: >
+          {% if is_state("sensor.beacon_istubb_keys_jurgen","BUREAU") %}
+            home (bureau)
+          {% elif is_state("sensor.beacon_istubb_keys_jurgen","BEDROOM") %}
+            home (bedroom)
+          {% elif is_state("sensor.beacon_istubb_keys_jurgen","LIVING_ROOM") or is_state("sensor.beacon_istubb_keys_jurgen","LIVING2") %}
+            home (living room)
+          {% elif is_state("sensor.beacon_istubb_keys_jurgen","away") %}
+            away
+          {% else %}
+            unknown
+          {% endif %}
+        entity_id:
+          - sensor.beacon_istubb_keys_jurgen
+
+      location_bag_benoit:
+        value_template: >
+          {% if is_state("sensor.beacon_estimote_blueberry_bag_benoit","BUREAU") %}
+            home (bureau)
+          {% elif is_state("sensor.beacon_estimote_blueberry_bag_benoit","BEDROOM") %}
+            home (bedroom)
+          {% elif is_state("sensor.beacon_estimote_blueberry_bag_benoit","LIVING_ROOM") or is_state("sensor.beacon_estimote_blueberry_bag_benoit","LIVING2") %}
+            home (living room)
+          {% elif is_state("sensor.beacon_estimote_blueberry_bag_benoit","away") %}
+            away
+          {% else %}
+            unknown
+          {% endif %}
+        entity_id:
+          - sensor.beacon_estimote_blueberry_bag_benoit
+
+      location_bag_jurgen:
+        value_template: >
+          {% if is_state("sensor.beacon_estimote_mint_bag_jurgen","BUREAU") %}
+            home (bureau)
+          {% elif is_state("sensor.beacon_estimote_mint_bag_jurgen","BEDROOM") %}
+            home (bedroom)
+          {% elif is_state("sensor.beacon_estimote_mint_bag_jurgen","LIVING_ROOM") or is_state("sensor.beacon_estimote_mint_bag_jurgen","LIVING2") %}
+            home (living room)
+          {% elif is_state("sensor.beacon_estimote_mint_bag_jurgen","away") %}
+            away
+          {% else %}
+            unknown
+          {% endif %}
+        entity_id:
+          - sensor.beacon_estimote_mint_bag_jurgen
+
+      location_iphone_benoit:
+        value_template: >
+          {% if is_state("sensor.beacon_kontakt_iphone_benoit","BUREAU") %}
+            home (bureau)
+          {% elif is_state("sensor.beacon_kontakt_iphone_benoit","BEDROOM") %}
+            home (bedroom)
+          {% elif is_state("sensor.beacon_kontakt_iphone_benoit","LIVING_ROOM") or is_state("sensor.beacon_kontakt_iphone_benoit","LIVING2") %}
+            home (living room)
+          {% elif is_state("sensor.beacon_kontakt_iphone_benoit","away") %}
+            away
+          {% else %}
+            unknown
+          {% endif %}
+        entity_id:
+          - sensor.beacon_kontakt_iphone_benoit
+
+      location_iphone_jurgen:
+        value_template: >
+          {% if is_state("sensor.beacon_kontakt_iphone_jurgen","BUREAU") %}
+            home (bureau)
+          {% elif is_state("sensor.beacon_kontakt_iphone_jurgen","BEDROOM") %}
+            home (bedroom)
+          {% elif is_state("sensor.beacon_kontakt_iphone_jurgen","LIVING_ROOM") or is_state("sensor.beacon_kontakt_iphone_jurgen","LIVING2") %}
+            home (living room)
+          {% elif is_state("sensor.beacon_kontakt_iphone_jurgen","away") %}
+            away
+          {% else %}
+            unknown
+          {% endif %}
+        entity_id:
+          - sensor.beacon_kontakt_iphone_jurgen
+
+      beacon_home:
+        value_template: >
+          {% if is_state("sensor.beacon_estimote_icy_home","BUREAU") %}
+            awake
+          {% elif is_state("sensor.beacon_estimote_icy_home","BEDROOM") %}
+            awake
+          {% elif is_state("sensor.beacon_estimote_icy_home","LIVING_ROOM") or is_state("sensor.beacon_estimote_icy_home","LIVING2") %}
+            awake
+          {% elif is_state("sensor.beacon_estimote_icy_home","away") %}
+            away
+          {% else %}
+            unknown
+          {% endif %}
+        entity_id:
+          - sensor.beacon_estimote_icy_home
+

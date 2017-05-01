@@ -5,13 +5,14 @@
   - name: Home
     latitude: !secret zone_home_latitude
     longitude: !secret zone_home_longitude
-    radius: 300
+    radius: 150
     icon: mdi:home
 
   - name: 1.0K radius
     latitude: !secret zone_home_latitude
     longitude: !secret zone_home_longitude
     radius: 1000
+    icon: mdi:home
 
   - name: 2.5K radius
     latitude: !secret zone_home_latitude
@@ -36,4 +37,3 @@
     longitude: !secret zone_work_benoit_longitude
     radius: 200
     icon: mdi:domain
-

@@ -1,0 +1,10 @@
+###############################################################################################################
+# CUSTOMIZE_ZONE:
+###############################################################################################################
+
+    zone.home:
+      beacon:
+        uuid: !secret customize_zone_home_uuid
+        major: !secret customize_zone_home_major
+        minor: !secret customize_zone_home_minor
+

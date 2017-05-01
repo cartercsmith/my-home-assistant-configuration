@@ -17,6 +17,8 @@
       - group.manual_override
       - group.finance
       - group.beacons
+      - group.systemmonitor
+      - group.phone_battery
 
 ###############################################################################################################
   tab_media:
@@ -72,6 +74,111 @@
       - group.plants_orangetree
       - group.plants_succulent
       - group.beacons
+      - group.systemmonitor
+      - group.camera
+      - group.phone_battery
+
+###############################################################################################################
+  zwave_multisensor_bedroom:
+    name: "Multisensor bedroom"
+    view: no
+    entities:
+      - binary_sensor.zwave_bedroom_sensor_3_0
+      - sensor.zwave_bedroom_burglar_3_10
+      - sensor.zwave_bedroom_luminance_3_3
+      - sensor.zwave_bedroom_relative_humidity_3_5
+      - sensor.zwave_bedroom_temperature_3_1
+
+###############################################################################################################
+  zwave_multisensor_bureau:
+    name: "Multisensor bureau"
+    view: no
+    entities:
+      - binary_sensor.zwave_bureau_motion
+      - sensor.zwave_bureau_alarm_level_4_1
+      - sensor.zwave_bureau_alarm_type_4_0
+      - sensor.zwave_bureau_burglar_4_10
+      - sensor.zwave_bureau_luminance_4_3
+      - sensor.zwave_bureau_relative_humidity_4_5
+      - sensor.zwave_bureau_temperature_4_1
+      - sensor.zwave_bureau_battery
+
+
+
+###############################################################################################################
+  plants_orangetree:
+    name: "Plant monitor - orange tree"
+    view: no
+    entities:
+      - sensor.miflora1_battery
+      - sensor.miflora1_conductivity
+      - sensor.miflora1_light_intensity
+      - sensor.miflora1_moisture
+      - sensor.miflora1_temperature
+
+###############################################################################################################
+#  plants_succulent:
+#    name: "Plant monitor - succulent"
+#    view: no
+#    entities:
+#      - sensor.miflora2_battery
+#      - sensor.miflora2_conductivity
+#      - sensor.miflora2_light_intensity
+#      - sensor.miflora2_moisture
+#      - sensor.miflora2_temperature
+
+###############################################################################################################
+  beacons:
+    name: "Beacons"
+    view: no
+    entities:
+      - sensor.location_bag_jurgen
+      - sensor.location_keys_jurgen
+      - sensor.location_iphone_jurgen
+      - sensor.location_bag_benoit
+      - sensor.location_keys_benoit
+      - sensor.location_iphone_benoit
+      - sensor.beacon_home
+
+###############################################################################################################
+  phone_battery:
+    name: "Phone battery"
+    view: no
+    control: hidden
+    entities:
+      - sensor.jurgen_us_iphone_7_battery_level
+      - sensor.jurgen_us_iphone_7_battery_state
+      - sensor.benoits_iphone_6s_battery_level
+      - sensor.benoits_iphone_6s_battery_state
+
+###############################################################################################################
+  camera:
+    name: "Camera"
+    view: no
+    entities:
+      - sensor.camera_status
+      - camera.nest
+      - binary_sensor.nest_camera_motion_detected
+      - binary_sensor.nest_camera_online
+
+###############################################################################################################
+  systemmonitor:
+    name: "System monitor"
+    view: no
+    entities:
+      - sensor.systemmonitor_cpu_use
+      - sensor.systemmonitor_disk_use_
+      - sensor.systemmonitor_ram_use
+      - sensor.systemmonitor_average_load_1m
+      - sensor.systemmonitor_average_load_5m
+      - sensor.systemmonitor_average_load_15m
+      - sensor.systemmonitor_received_eth0
+      - sensor.systemmonitor_sent_eth0
+      - sensor.systemmonitor_process_mosquitto
+      - sensor.systemmonitor_process_presence
+      - sensor.systemmonitor_process_flicd
+      - sensor.systemmonitor_last_boot
+      - sensor.systemmonitor_since_last_boot
 
 ###############################################################################################################
   alert:
@@ -101,10 +208,12 @@
       - input_select.scenes_livingroom
       - input_select.bedroom_nightlamps
       - input_select.bedroom_standinglamp
+      - input_boolean.delay_after_flic_bedroom
       - input_select.bureau_standinglamp
+      - input_boolean.delay_after_flic_bureau
       - script.everything_off
       - input_boolean.reboot_trigger
-      - climate.living_room
+      - climate.nest
 
 ###############################################################################################################
   presence_home:
@@ -112,13 +221,20 @@
     view: no
     control: hidden
     entities:
-      - sensor.location_jurgen
+      - group.location_jurgen
+      - device_tracker.jurgenphone_location_jurgen
+      - device_tracker.jurgenusiphone7hsd1cacomcastnet
+      - device_tracker.jurgen_us_iphone_7
       - sensor.jurgen_sleeping
       - sensor.travel_loc_jurgen_to_work_jurgen
       - sensor.duration_home_to_work_jurgen_via_work_benoit
-      - sensor.location_benoit
+      - group.location_benoit
+      - device_tracker.benoitphone_location_benoit
+      - device_tracker.benoitusiphone6shsd1cacomcastnet
+      - device_tracker.benoits_iphone_6s
       - sensor.benoit_sleeping
       - sensor.travel_loc_benoit_to_work_benoit
+      - automation.location_update
 
 ###############################################################################################################
   presence_not_home:
@@ -126,15 +242,22 @@
     view: no
     control: hidden
     entities:
-      - sensor.location_jurgen
+      - group.location_jurgen
+      - device_tracker.jurgenphone_location_jurgen
+      - device_tracker.jurgenusiphone7hsd1cacomcastnet
+      - device_tracker.jurgen_us_iphone_7
       - sensor.travel_loc_jurgen_to_home
       - sensor.travel_loc_jurgen_to_work_jurgen
       - sensor.travel_work_benoit_to_work_jurgen
-      - sensor.location_benoit
+      - group.location_benoit
+      - device_tracker.benoitphone_location_benoit
+      - device_tracker.benoitusiphone6shsd1cacomcastnet
+      - device_tracker.benoits_iphone_6s
       - sensor.travel_loc_benoit_to_home
       - sensor.travel_loc_benoit_to_work_benoit
       - sensor.proximity_person
       - proximity.home
+      - automation.location_update
 
 ###############################################################################################################
   items_benoit:
@@ -142,7 +265,7 @@
     view: no
     control: hidden
     entities:
-      - climate.living_room
+      - climate.nest
       - group.all_livingroom_lights
       - group.all_bedroom_lights
       - group.all_bureau_lights
@@ -217,11 +340,11 @@
     view: no
     control: hidden
     entities:
-      - sensor.living_room_thermostat_temperature
-      - sensor.living_room_thermostat_target
-      - sensor.living_room_thermostat_operation_mode
-      - sensor.living_room_thermostat_humidity
-      - binary_sensor.living_room_thermostat_fan
+      - sensor.nest_thermostat_temperature
+      - sensor.nest_thermostat_target
+      - sensor.nest_thermostat_operation_mode
+      - sensor.nest_thermostat_humidity
+      - binary_sensor.nest_thermostat_fan
       - sensor.time_of_day
       - input_slider.temperature
 
@@ -245,6 +368,7 @@
     entities:
       - media_player.soundtouch_living_room
       - media_player.soundtouch_bathroom
+      - media_player.spotify
       - media_player.chromecast
       - media_player.chromecastaudio
       - media_player.google_home
@@ -277,14 +401,15 @@
     view: no
     entities:
       - group.bureau_standinglamp
+      - light.lightstrip
 
 ###############################################################################################################
   bedroom_standinglamp:
     name: "Bedroom Standing lamp"
     view: no
     entities:
-      - light.BedStandingLampBulb1
-      - light.BedStandingLampBulb2
+      - light.flux_bedroom_standinglamp_bulb1
+      - light.flux_bedroom_standinglamp_bulb2
 
 ###############################################################################################################
   living_diningtablelights:
@@ -316,7 +441,9 @@
       - input_select.scenes_livingroom
       - input_select.bedroom_nightlamps
       - input_select.bedroom_standinglamp
+      - input_boolean.delay_after_flic_bedroom
       - input_select.bureau_standinglamp
+      - input_boolean.delay_after_flic_bureau
 
 ###############################################################################################################
   location_benoit:
@@ -325,7 +452,7 @@
     entities:
       - device_tracker.benoitphone_location_benoit
       - device_tracker.benoitusiphone6shsd1cacomcastnet
-
+      - device_tracker.benoits_iphone_6s
 
 ###############################################################################################################
   location_jurgen:
@@ -334,6 +461,7 @@
     entities:
       - device_tracker.jurgenphone_location_jurgen
       - device_tracker.jurgenusiphone7hsd1cacomcastnet
+      - device_tracker.jurgen_us_iphone_7
 
 ###############################################################################################################
   google_player:
@@ -350,13 +478,13 @@
     name: "Synology"
     view: no
     entities:
-      - sensor.cpu_load_total
-      - sensor.memory_usage_real
-      - sensor.status_volume_2
-      - sensor.volume_used_volume_2
-      - sensor.maximum_disk_temp_volume_2
-      - sensor.status_sda
-      - sensor.status_sdb
+      - sensor.synology_cpu_load_total
+      - sensor.synology_memory_usage_real
+      - sensor.synology_status_volume_2
+      - sensor.synology_volume_used_volume_2
+      - sensor.synology_maximum_disk_temp_volume_2
+      - sensor.synology_status_sda
+      - sensor.synology_status_sdb
 
 ###############################################################################################################
   speedtest_net:
@@ -373,12 +501,12 @@
     name: "Climate all"
     view: no
     entities:
-      - climate.living_room
-      - sensor.living_room_thermostat_temperature
-      - sensor.living_room_thermostat_target
-      - sensor.living_room_thermostat_operation_mode
-      - sensor.living_room_thermostat_humidity
-      - binary_sensor.living_room_thermostat_fan
+      - climate.nest
+      - sensor.nest_thermostat_temperature
+      - sensor.nest_thermostat_target
+      - sensor.nest_thermostat_operation_mode
+      - sensor.nest_thermostat_humidity
+      - binary_sensor.nest_thermostat_fan
       - sensor.time_of_day
       - input_slider.temperature
       - sensor.my_dark_sky_summary
@@ -409,60 +537,6 @@
       - sensor.usd_eur
 
 
-###############################################################################################################
-  zwave_multisensor_bedroom:
-    name: "Multisensor bedroom"
-    view: no
-    entities:
-      - binary_sensor.zwave_bedroom_sensor_3_0
-      - sensor.zwave_bedroom_burglar_3_10
-      - sensor.zwave_bedroom_luminance_3_3
-      - sensor.zwave_bedroom_relative_humidity_3_5
-      - sensor.zwave_bedroom_temperature_3_1
 
-###############################################################################################################
-  zwave_multisensor_bureau:
-    name: "Multisensor bureau"
-    view: no
-    entities:
-      - binary_sensor.zwave_bureau_sensor_2_0
-      - sensor.zwave_bureau_alarm_level_2_1
-      - sensor.zwave_bureau_alarm_type_2_0
-      - sensor.zwave_bureau_burglar_2_10
-      - sensor.zwave_bureau_clock_2_14
-      - sensor.zwave_bureau_luminance_2_3
-      - sensor.zwave_bureau_relative_humidity_2_5
-      - sensor.zwave_bureau_temperature_2_1
 
-###############################################################################################################
-  plants_orangetree:
-    name: "Plant monitor - orange tree"
-    view: no
-    entities:
-      - sensor.planter1_battery
-      - sensor.planter1_conductivity
-      - sensor.planter1_light_intensity
-      - sensor.planter1_moisture
-      - sensor.planter1_temperature
 
-###############################################################################################################
-  plants_succulent:
-    name: "Plant monitor - succulent"
-    view: no
-    entities:
-      - sensor.planter2_battery
-      - sensor.planter2_conductivity
-      - sensor.planter2_light_intensity
-      - sensor.planter2_moisture
-      - sensor.planter2_temperature
-
-###############################################################################################################
-  beacons:
-    name: "Beacons"
-    view: no
-    entities:
-      - sensor.beacon_estimote_mint_cocktail
-      - sensor.beacon_istubb_keys_jurgen
-      - sensor.beacon_estimote_blueberry_pie
-      - sensor.beacon_shine_wrist_benoit
-      - sensor.beacon_istubb_keys_benoit

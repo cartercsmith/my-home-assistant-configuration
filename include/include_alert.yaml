@@ -12,6 +12,7 @@
     notifiers:
       - iphone_benoit
       - iphone_jurgen
+      - ios_jurgen_us_iphone_7
       - telegram
 
   onlyone_home_error:
@@ -21,21 +22,23 @@
       - 2
       - 30
     can_acknowledge: true
-    skip_first: false
+    skip_first: true
     notifiers:
       - iphone_jurgen
+      - ios_jurgen_us_iphone_7
       - telegram
 
   automations_disabled:
     name: "ALERT: All automations DISABLED"
     entity_id: binary_sensor.alert_automations_disabled
     repeat:
-      - 2
+      - 3
       - 60
     can_acknowledge: true
     skip_first: true
     notifiers:
       - iphone_jurgen
+      - ios_jurgen_us_iphone_7
       - telegram
 
   temperature_automations_disabled:
@@ -48,6 +51,7 @@
     skip_first: true
     notifiers:
       - iphone_jurgen
+      - ios_jurgen_us_iphone_7
       - telegram
 
   location_jurgen_unknown:
@@ -63,6 +67,7 @@
     skip_first: false
     notifiers:
       - iphone_jurgen
+      - ios_jurgen_us_iphone_7
       - telegram
 
   location_benoit_unknown:
@@ -79,6 +84,7 @@
     notifiers:
       - iphone_benoit
       - iphone_jurgen
+      - ios_jurgen_us_iphone_7
       - telegram
 
   light_on_when_away:
@@ -95,6 +101,7 @@
     notifiers:
       - iphone_benoit
       - iphone_jurgen
+      - ios_jurgen_us_iphone_7
       - telegram
 
   media_player_playing_when_away:
@@ -111,6 +118,7 @@
     notifiers:
       - iphone_benoit
       - iphone_jurgen
+      - ios_jurgen_us_iphone_7
       - telegram
 
   usd_xrate_limit:
@@ -122,4 +130,5 @@
     skip_first: false
     notifiers:
       - telegram
+      - ios_jurgen_us_iphone_7
 

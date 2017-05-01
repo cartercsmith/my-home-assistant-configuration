@@ -9,7 +9,8 @@
     sun.sun:
       friendly_name: "Position of the sun"
 
-    climate.living_room:
+    climate.nest:
       friendly_name: "NEST thermostat"
       icon: mdi:nest-thermostat
+
 

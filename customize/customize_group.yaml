@@ -96,3 +96,12 @@
 
     group.beacons:
       emulated_hue: false
+
+    group.systemmonitor:
+      emulated_hue: false
+
+    group.camera:
+      emulated_hue: false
+
+    group.phone_battery:
+      emulated_hue: false

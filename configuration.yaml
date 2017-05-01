@@ -12,15 +12,6 @@ homeassistant:
 # Enables the frontend
 frontend:
 
-# Number of days history is stored in DB
-recorder:
-  purge_days: 1
-  db_url: postgres://@/homeassistant
-  exclude:
-    domains:
-      - group
-      - proximity
-
 # Password to log on to Front-End
 http:
   api_password: !secret http_api_password
@@ -30,19 +21,26 @@ http:
 updater:
 
 # Enables support for tracking state changes over time.
-#history:
-
-# View all events in a logbook
-logbook:
+history:
 
 # Track the sun
 sun:
 
 # Discover some devices automatically
-#discovery:
+discovery:
+
+# Activity logging
+logger:
+  default: warning
+  logs:
+    homeassistant.components.logbook: info
+    homeassistant.components.flicd: info
+    homeassistant.components.nmap_tracker: info
 
 ###########################################################################################
 # includes
+recorder: !include include/include_recorder.yaml
+logbook: !include include/include_logbook.yaml
 sensor: !include include/include_sensor.yaml
 automation: !include_dir_merge_list automation/
 script: !include include/include_script.yaml
@@ -80,21 +78,35 @@ device_tracker:
     hosts:
       - !secret device_tracker_nmap_tracker_ip1
       - !secret device_tracker_nmap_tracker_ip2
-    consider_home: 180
-    track_new_devices: no
-    interval_seconds: 20
+    home_interval: 5
+    track_new_devices: false
+    interval_seconds: 30
 
 # owntracks
   - platform: owntracks
     max_gps_accuracy: 250
-    consider_home: 60
+
 
 ###########################################################################################
 proximity:
   home:
     devices:
-      - device_tracker.benoitphone_location_benoit
-      - device_tracker.jurgenphone_location_jurgen
+      - group.location_benoit
+      - group.location_jurgen
+#      - device_tracker.benoitphone_location_benoit
+#      - device_tracker.jurgenphone_location_jurgen
+    tolerance: 100
+    unit_of_measurement: km
+
+  benoit_home:
+    devices:
+      - group.location_benoit
+    tolerance: 100
+    unit_of_measurement: km
+
+  jurgen_home:
+    devices:
+      - group.location_jurgen
     tolerance: 100
     unit_of_measurement: km
 
@@ -145,11 +157,11 @@ light:
 # !!! added entry in hosts file to translate device names into IP addresses !!!
   - platform: flux_led
     devices:
-      flux-nightlamp-benoit:
-        name: bednightlamp_benoit
+      flux_bedroom_standinglamp_bulb1:
+        name: flux_bedroom_standinglamp_bulb1
         mode: "rgbw"
-      flux-nightlamp-jurgen:
-        name: bednightlamp_jurgen
+      flux_bedroom_standinglamp_bulb2:
+        name: flux_bedroom_standinglamp_bulb2
         mode: "rgbw"
 
 ###########################################################################################
@@ -181,3 +193,10 @@ nest:
   client_id: !secret nest_client_id
   client_secret: !secret nest_client_secret
 
+###########################################################################################
+# Home Assistant iPhone app
+ios:
+
+###########################################################################################
+# Displays panels in the frontend to configure and manage parts of HA
+config:

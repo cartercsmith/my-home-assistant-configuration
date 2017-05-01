@@ -98,9 +98,10 @@
         state: 'off'
 
     action:
-      - service: notify.iphone_jurgen
+      - service: notify.ios_jurgen_us_iphone_7
         data_template:
-          message: "!!! {{ trigger.from_state.state }} to {{ trigger.to_state.state }} !!!"
+          title: "ALERT"
+          message: "{{ trigger.from_state.state }} to {{ trigger.to_state.state }}"
 
 ###############################################################################################################
   - alias: Jurgen arrives home alone

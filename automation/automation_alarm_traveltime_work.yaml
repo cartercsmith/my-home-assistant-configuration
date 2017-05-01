@@ -33,7 +33,7 @@
       - service: media_player.volume_set
         entity_id: media_player.google_home
         data:
-          volume_level: 0.80
+          volume_level: 0.70
       - service: tts.google_say
         entity_id: media_player.google_home
         data_template:
@@ -78,7 +78,7 @@
       - service: media_player.volume_set
         entity_id: media_player.google_home
         data:
-          volume_level: 0.80
+          volume_level: 0.70
       - service: tts.google_say
         entity_id: media_player.google_home
         data_template:
@@ -120,7 +120,7 @@
       - service: media_player.volume_set
         entity_id: media_player.google_home
         data:
-          volume_level: 0.80
+          volume_level: 0.70
       - service: tts.google_say
         entity_id: media_player.google_home
         data_template:

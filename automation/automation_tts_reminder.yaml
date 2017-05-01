@@ -30,7 +30,7 @@
       - service: media_player.volume_set
         entity_id: media_player.google_home
         data:
-          volume_level: 0.50
+          volume_level: 0.70
       - service: light.turn_on
         data:
           entity_id: group.all_livingroom_lights
@@ -64,7 +64,7 @@
         entity_id: input_boolean.disable_all_automations
         state: 'off'
       - condition: numeric_state
-        entity_id: sensor.planter1_moisture
+        entity_id: sensor.miflora1_moisture
         below: 15
       - condition: template
         value_template: "{{ states.sensor.time_of_day.state != 'unknown' }}"
@@ -77,7 +77,7 @@
       - service: media_player.volume_set
         entity_id: media_player.google_home
         data:
-          volume_level: 0.50
+          volume_level: 0.70
       - service: light.turn_on
         data:
           entity_id: group.all_livingroom_lights
@@ -86,4 +86,4 @@
         entity_id: media_player.google_home
         data_template:
           language: 'nl'
-          message: "Gemeten vochtigheid voor de plantenbank buiten is {{ states.sensor.planter1_moisture.state }} procent.  Planten water geven."
+          message: "Gemeten vochtigheid voor de plantenbank buiten is {{ states.sensor.miflora1_moisture.state }} procent.. Planten water geven."

@@ -5,12 +5,15 @@
 # Automations for lights and scenes
 #
 ###############################################################################################################
-  - alias: Activate bedroom lights through motion sensor
+  - alias: Bedroom lights on after motion or flic button single click
 
     trigger:
       - platform: state
         entity_id: sensor.zwave_bedroom_burglar_3_10
         state: '8'
+      - platform: state
+        entity_id: input_boolean.delay_after_flic_bedroom
+        state: 'on'
 
     condition:
       - condition: state
@@ -18,32 +21,37 @@
         state: 'off'
       - condition: template
         value_template: "{{ states.sensor.time_of_day.state != 'day' }}"
-#      - condition: template
-#        value_template: "{{ trigger.from_state.state != '8' }}"
-      - condition: state
-        entity_id: group.all_bedroom_lights
-        state: 'off'
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ is_state('group.all_bedroom_lights','off') and trigger.entity_id == 'sensor.zwave_bedroom_burglar_3_10' }}"
+          - condition: template
+            value_template: "{{ trigger.entity_id == 'input_boolean.delay_after_flic_bedroom' }}"
 
     action:
       - service: scene.turn_on
         data_template:
           entity_id: >
-            {% if is_state("sensor.time_of_day", "night") and is_state("sensor.onlyone_home","benoit") %}
-              scene.bedroom_standinglamp_night, scene.bedroom_nightlamp_benoit_sleeping
-            {% elif is_state("sensor.time_of_day", "night") and is_state("sensor.onlyone_home","jurgen") %}
-              scene.bedroom_standinglamp_night, scene.bedroom_nightlamp_jurgen_sleeping
-            {% elif is_state("sensor.time_of_day", "night") and is_state("sensor.onlyone_home","no") %}
-              scene.bedroom_standinglamp_night
-            {% elif is_state("sensor.onlyone_home","no") %}
-              scene.bedroom_standinglamp_low, scene.bedroom_nightlamps_yellow
-            {% elif is_state("sensor.onlyone_home","benoit") %}
-              scene.bedroom_standinglamp_low, scene.bedroom_nightlamp_benoit_sleeping
-            {% elif is_state("sensor.onlyone_home","jurgen") %}
-              scene.bedroom_standinglamp_low, scene.bedroom_nightlamp_jurgen_sleeping
+            {% if is_state("sensor.someone_sleeping", "yes") and trigger.entity_id == "sensor.zwave_bedroom_burglar_3_10" %}
+              {% if is_state("sensor.onlyone_home","benoit") %}
+                scene.bedroom_standinglamp_night, scene.bedroom_nightlamp_benoit_sleeping
+              {% elif is_state("sensor.onlyone_home","jurgen") %}
+                scene.bedroom_standinglamp_night, scene.bedroom_nightlamp_jurgen_sleeping
+              {% elif is_state("sensor.onlyone_home","no") %}
+                scene.bedroom_standinglamp_night
+              {% endif %}
+            {% else %}
+              {% if is_state("sensor.onlyone_home","no") %}
+                scene.bedroom_standinglamp_low, scene.bedroom_nightlamps_medium
+              {% elif is_state("sensor.onlyone_home","benoit") %}
+                scene.bedroom_standinglamp_low, scene.bedroom_nightlamp_benoit_sleeping
+              {% elif is_state("sensor.onlyone_home","jurgen") %}
+                scene.bedroom_standinglamp_low, scene.bedroom_nightlamp_jurgen_sleeping
+              {% endif %}
             {% endif %}
 
 ###############################################################################################################
-  - alias: Turn off bedroom lights after no motion when not night
+  - alias: Turn off bedroom lights after no motion or flic button double_or_hold click when nobody sleeps
 
     trigger:
       - platform: state
@@ -51,32 +59,29 @@
         state: '0'
         for:
           seconds: 90
+      - platform: state
+        entity_id: input_boolean.delay_after_flic_bedroom
+        state: 'off'
 
     condition:
       - condition: state
         entity_id: input_boolean.disable_all_automations
         state: 'off'
-      - condition: template
-        value_template: "{{ states.sensor.time_of_day.state != 'night' }}"
       - condition: state
         entity_id: group.all_bedroom_lights
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.delay_after_flic_bedroom
+        state: 'off'
 
     action:
       - service: light.turn_off
         entity_id: group.all_bedroom_lights
-      - delay: 10
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.bedroom_nightlamps
-          option: 'OFF'
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.bedroom_standinglamp
-          option: 'OFF'
+
+
 
 ###############################################################################################################
-  - alias: Turn off bedroom lights at night after no motion
+  - alias: Turn off bedroom lights after no motion or flic button double_or_hold click while someone sleeps
 
     trigger:
       - platform: state
@@ -90,32 +95,29 @@
         entity_id: input_boolean.disable_all_automations
         state: 'off'
       - condition: state
-        entity_id: sensor.time_of_day
-        state: 'night'
+        entity_id: sensor.someone_sleeping
+        state: 'yes'
       - condition: state
         entity_id: group.all_bedroom_lights
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.delay_after_flic_bedroom
+        state: 'off'
 
     action:
       - service: light.turn_off
         entity_id: group.all_bedroom_lights
-      - delay: 10
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.bedroom_nightlamps
-          option: 'OFF'
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.bedroom_standinglamp
-          option: 'OFF'
 
 ###############################################################################################################
-  - alias: Activate bureau lights through motion sensor
+  - alias: Bureau lights on after motion or flic button single click
 
     trigger:
       - platform: state
-        entity_id: sensor.zwave_bureau_burglar_2_10
+        entity_id: sensor.zwave_bureau_burglar_4_10
         state: '8'
+      - platform: state
+        entity_id: input_boolean.delay_after_flic_bureau
+        state: 'on'
 
     condition:
       - condition: state
@@ -123,42 +125,66 @@
         state: 'off'
       - condition: template
         value_template: "{{ states.sensor.time_of_day.state != 'day' }}"
-#      - condition: template
-#        value_template: "{{ trigger.from_state.state != '8' }}"
       - condition: state
-        entity_id: group.all_bureau_lights
+        entity_id: group.bureau_standinglamp
         state: 'off'
 
     action:
       - service: scene.turn_on
         entity_id: scene.bureau_standinglamp_medium
+      - service: automation.turn_off
+        data:
+          entity_id:
+            - automation.standinglamp_bureau_select
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bureau_standinglamp
+          option: 'Medium'
+      - service: automation.turn_on
+        data:
+          entity_id:
+            - automation.standinglamp_bureau_select
+
 
 ###############################################################################################################
-  - alias: Turn off bureau lights after no motion
+  - alias: Turn off bureau lights after no motion or flic button double_or_hold click
 
     trigger:
       - platform: state
-        entity_id: sensor.zwave_bureau_burglar_2_10
+        entity_id: sensor.zwave_bureau_burglar_4_10
         state: '0'
         for:
           seconds: 90
+      - platform: state
+        entity_id: input_boolean.delay_after_flic_bureau
+        state: 'off'
 
     condition:
       - condition: state
         entity_id: input_boolean.disable_all_automations
         state: 'off'
       - condition: state
-        entity_id: group.all_bureau_lights
+        entity_id: group.bureau_standinglamp
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.delay_after_flic_bureau
+        state: 'off'
 
     action:
-      - service: light.turn_off
-        entity_id: group.all_bureau_lights
-      - delay: 10
+      - service: scene.turn_on
+        entity_id: scene.bureau_standinglamp_off
+      - service: automation.turn_off
+        data:
+          entity_id:
+            - automation.standinglamp_bureau_select
       - service: input_select.select_option
         data:
           entity_id: input_select.bureau_standinglamp
           option: 'OFF'
+      - service: automation.turn_on
+        data:
+          entity_id:
+            - automation.standinglamp_bureau_select
 
 ###############################################################################################################
   - alias: Change lights based on change time of day
@@ -196,12 +222,12 @@
       - service: scene.turn_on
         data_template:
           entity_id: >
-            {% if is_state("input_select.bedroom_nightlamps", "Blue") %}
-              scene.bedroom_nightlamps_blue
-            {% elif is_state("input_select.bedroom_nightlamps", "Yellow") %}
-              scene.bedroom_nightlamps_yellow
-            {% elif is_state("input_select.bedroom_nightlamps", "Red") %}
-              scene.bedroom_nightlamps_red
+            {% if is_state("input_select.bedroom_nightlamps", "Low") %}
+              scene.bedroom_nightlamps_low
+            {% elif is_state("input_select.bedroom_nightlamps", "Medium") %}
+              scene.bedroom_nightlamps_medium
+            {% elif is_state("input_select.bedroom_nightlamps", "High") %}
+              scene.bedroom_nightlamps_high
             {% elif is_state("input_select.bedroom_nightlamps", "Jurgen night (low)") %}
               scene.bedroom_nightlamp_jurgen_sleeping
             {% elif is_state("input_select.bedroom_nightlamps", "Benoit night (low)") %}
@@ -232,6 +258,10 @@
               scene.bedroom_standinglamp_medium
             {% elif is_state("input_select.bedroom_standinglamp", "High") %}
               scene.bedroom_standinglamp_high
+            {% elif is_state("input_select.bedroom_standinglamp", "Red") %}
+              scene.bedroom_standinglamp_red
+            {% elif is_state("input_select.bedroom_standinglamp", "Blue") %}
+              scene.bedroom_standinglamp_blue
             {% elif is_state("input_select.bedroom_standinglamp", "Night (very low)") %}
               scene.bedroom_standinglamp_night
             {% else %}
@@ -300,65 +330,9 @@
               scene.livingroom_off
             {% endif %}
 
-###############################################################################################################
-  - alias: Benoit sleeping bedroom nightlamps
-
-    trigger:
-      platform: state
-      entity_id: sensor.benoit_sleeping
-      state: 'on - REMOVE THIS'
-# temporary disabled until beacon setup is stable
-
-    condition:
-      - condition: state
-        entity_id: input_boolean.disable_all_automations
-        state: 'off'
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'night'
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'evening'
-    action:
-      - service: scene.turn_on
-        entity_id: scene.bedroom_nightlamp_benoit_sleeping
-      - delay: 10
-      - service: scene.turn_on
-        entity_id: scene.bedroom_nightlamp_benoit_off
 
 ###############################################################################################################
-  - alias: Jurgen sleeping bedroom nightlamps
-
-    trigger:
-      platform: state
-      entity_id: sensor.jurgen_sleeping
-      state: 'on - REMOVE THIS'
-# temporary disabled until beacon setup is stable
-
-    condition:
-      - condition: state
-        entity_id: input_boolean.disable_all_automations
-        state: 'off'
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'night'
-          - condition: state
-            entity_id: sensor.time_of_day
-            state: 'evening'
-
-    action:
-      - service: scene.turn_on
-        entity_id: scene.bedroom_nightlamp_jurgen_sleeping
-      - delay: 10
-      - service: scene.turn_on
-        entity_id: scene.bedroom_nightlamp_jurgen_off
-
-###############################################################################################################
-  - alias: Flic button Jurgen - single click
+  - alias: Flic button Bureau - single click
 
     trigger:
       platform: event
@@ -367,98 +341,166 @@
         button_name: flic_80e4da721b69
         click_type: single
 
-    action:
-      - service: scene.turn_on
-        entity_id: scene.bedroom_nightlamp_jurgen_sleeping
-
-###############################################################################################################
-  - alias: Flic button Jurgen - hold click
-
-    trigger:
-      platform: event
-      event_type: flic_click
-      event_data:
-        button_name: flic_80e4da721b69
-        click_type: hold
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
 
     action:
-      - service: scene.turn_on
-        entity_id: scene.bedroom_nightlamp_jurgen_sleeping
-      - service: scene.turn_on
-        entity_id: scene.bedroom_standinglamp_low
-
-###############################################################################################################
-  - alias: Flic button Jurgen - double click
-
-    trigger:
-      platform: event
-      event_type: flic_click
-      event_data:
-        button_name: flic_80e4da721b69
-        click_type: double
-
-    action:
-      - service: light.turn_off
-        entity_id: group.all_bedroom_lights
-      - delay: 10
-      - service: input_select.select_option
+      - service: automation.turn_off
         data:
-          entity_id: input_select.bedroom_nightlamps
-          option: 'OFF'
-      - service: input_select.select_option
+          entity_id:
+            - automation.turn_off_bureau_lights_after_no_motion_or_flic_button_double_or_hold_click
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.delay_after_flic_bureau
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.delay_after_flic_bureau
+      - service: automation.turn_on
         data:
-          entity_id: input_select.bedroom_standinglamp
-          option: 'OFF'
+          entity_id:
+            - automation.turn_off_bureau_lights_after_no_motion_or_flic_button_double_or_hold_click
+
 
 ###############################################################################################################
-  - alias: Flic button Benoit - single click
+  - alias: Flash bureau lights after 55 minutes to announce 60 min delay again
 
     trigger:
-      platform: event
-      event_type: flic_click
-      event_data:
-        button_name: flic_80e4da7228eb
-        click_type: single
+      - platform: state
+        entity_id: input_boolean.delay_after_flic_bureau
+        state: 'on'
+        for:
+          minutes: 55
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
 
     action:
-      - service: scene.turn_on
-        entity_id: scene.bedroom_nightlamp_benoit_sleeping
+      - service: light.turn_on
+        data:
+          entity_id: group.all_bureau_lights
+          flash: short
 
 ###############################################################################################################
-  - alias: Flic button Benoit - hold click
+  - alias: Flic button bureau - hold or double click or delay active for 60 minutes
 
     trigger:
-      platform: event
-      event_type: flic_click
-      event_data:
-        button_name: flic_80e4da7228eb
-        click_type: hold
+      - platform: event
+        event_type: flic_click
+        event_data:
+          button_name: flic_80e4da721b69
+          click_type: hold
+      - platform: event
+        event_type: flic_click
+        event_data:
+          button_name: flic_80e4da721b69
+          click_type: double
+      - platform: state
+        entity_id: input_boolean.delay_after_flic_bureau
+        state: 'on'
+        for:
+          minutes: 60
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
 
     action:
-      - service: scene.turn_on
-        entity_id: scene.bedroom_nightlamp_benoit_sleeping
-      - service: scene.turn_on
-        entity_id: scene.bedroom_standinglamp_low
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.delay_after_flic_bureau
 
 ###############################################################################################################
-  - alias: Flic button Benoit - double click
+  - alias: Flic button Jurgen or Benoit - single click
 
     trigger:
-      platform: event
-      event_type: flic_click
-      event_data:
-        button_name: flic_80e4da7228eb
-        click_type: double
+      - platform: event
+        event_type: flic_click
+        event_data:
+          button_name: flic_80e4da722a9c
+          click_type: single
+      - platform: event
+        event_type: flic_click
+        event_data:
+          button_name: flic_80e4da7228eb
+          click_type: single
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
 
     action:
-      - service: light.turn_off
-        entity_id: group.all_bedroom_lights
-      - delay: 10
-      - service: input_select.select_option
+      - service: automation.turn_off
         data:
-          entity_id: input_select.bedroom_nightlamps
-          option: 'OFF'
-      - service: input_select.select_option
+          entity_id:
+            - automation.turn_off_bedroom_lights_after_no_motion_or_flic_button_double_or_hold_click_when_nobody_sleeps
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.delay_after_flic_bedroom
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.delay_after_flic_bedroom
+      - service: automation.turn_on
         data:
-          entity_id: input_select.bedroom_standinglamp
-          option: 'OFF'
+          entity_id:
+            - automation.turn_off_bedroom_lights_after_no_motion_or_flic_button_double_or_hold_click_when_nobody_sleeps
+
+###############################################################################################################
+  - alias: Flash bedroom lights after 55 minutes to announce 60 min delay again
+
+    trigger:
+      - platform: state
+        entity_id: input_boolean.delay_after_flic_bedroom
+        state: 'on'
+        for:
+          minutes: 55
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: group.all_bedroom_lights
+          flash: short
+
+###############################################################################################################
+  - alias: Flic button Jurgen or Benoit - hold or double click
+
+    trigger:
+      - platform: event
+        event_type: flic_click
+        event_data:
+          button_name: flic_80e4da722a9c
+          click_type: hold
+      - platform: event
+        event_type: flic_click
+        event_data:
+          button_name: flic_80e4da7228eb
+          click_type: hold
+      - platform: event
+        event_type: flic_click
+        event_data:
+          button_name: flic_80e4da722a9c
+          click_type: double
+      - platform: event
+        event_type: flic_click
+        event_data:
+          button_name: flic_80e4da7228eb
+          click_type: double
+      - platform: state
+        entity_id: input_boolean.delay_after_flic_bedroom
+        state: 'on'
+        for:
+          minutes: 60
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.disable_all_automations
+        state: 'off'
+
+    action:
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.delay_after_flic_bedroom

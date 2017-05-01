@@ -49,10 +49,14 @@
 ###############################################################################################################
   weather_forecast:
     sequence:
+      - service: media_player.volume_set
+        entity_id: media_player.google_home
+        data:
+          volume_level: 0.70
       - service: tts.google_say
         entity_id: media_player.google_home
         data_template:
-          message: "This is the weather forecast for today and the coming days. Today, {{ states.sensor.dark_sky_hourly_summary.state }}. {{ states.sensor.dark_sky_daily_summary.state }}"
+          message: "This is the weather forecast for today and the coming days... Today, {{ states.sensor.dark_sky_hourly_summary.state }}.. {{ states.sensor.dark_sky_daily_summary.state }}"
           language: 'en'
 
 ###############################################################################################################
@@ -64,7 +68,15 @@
           - input_boolean.alarm_benoit_onoff
       - service: light.turn_off
       - service: media_player.turn_off
-      - delay: 10
+      - service: automation.turn_off
+        data:
+          entity_id:
+            - automation.google_on_or_off_and_device_or_preset_change
+            - automation.soundtouch_on_or_off_and_device_or_preset_change
+            - automation.bedroom_nightlamps_select
+            - automation.standinglamp_bedroom_select
+            - automation.standinglamp_bureau_select
+            - automation.livingroom_scene_select
       - service: input_select.select_option
         data:
           entity_id: input_select.soundtouch_device
@@ -89,6 +101,15 @@
         data:
           entity_id: input_select.scenes_livingroom
           option: 'OFF'
+      - service: automation.turn_on
+        data:
+          entity_id:
+            - automation.google_on_or_off_and_device_or_preset_change
+            - automation.soundtouch_on_or_off_and_device_or_preset_change
+            - automation.bedroom_nightlamps_select
+            - automation.standinglamp_bedroom_select
+            - automation.standinglamp_bureau_select
+            - automation.livingroom_scene_select
 
 ###############################################################################################################
   change_lights_based_on_time_of_day:
@@ -105,6 +126,10 @@
             {% elif is_state('sensor.time_of_day','day') %}
               scene.livingroom_off
             {% endif %}
+      - condition: template
+        value_template: "{{ states.group.bedroom_standinglamp.state == 'off' and states.sensor.time_of_day.state == 'morning' }}"
+      - service: scene.turn_on
+        entity_id: scene.bedroom_standinglamp_medium
 
 ###############################################################################################################
   jurgens_favorite_music:
@@ -165,101 +190,13 @@
           entity_id:
             - light.bednightlamp_jurgen
             - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
           brightness: 1
-      - delay: 2
+      - delay: 5
       - service: light.turn_on
         data:
           entity_id:
             - light.bednightlamp_jurgen
             - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
-          brightness: 3
-      - delay: 2
-      - service: light.turn_on
-        data:
-          entity_id:
-            - light.bednightlamp_jurgen
-            - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
-          brightness: 5
-      - delay: 2
-      - service: light.turn_on
-        data:
-          entity_id:
-            - light.bednightlamp_jurgen
-            - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
-          brightness: 7
-      - delay: 2
-      - service: light.turn_on
-        data:
-          entity_id:
-            - light.bednightlamp_jurgen
-            - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
-          brightness: 9
-      - delay: 2
-      - service: light.turn_on
-        data:
-          entity_id:
-            - light.bednightlamp_jurgen
-            - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
-          brightness: 11
-      - delay: 2
-      - service: light.turn_on
-        data:
-          entity_id:
-            - light.bednightlamp_jurgen
-            - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
-          brightness: 13
-      - delay: 2
-      - service: light.turn_on
-        data:
-          entity_id:
-            - light.bednightlamp_jurgen
-            - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
-          brightness: 15
-      - delay: 2
-      - service: light.turn_on
-        data:
-          entity_id:
-            - light.bednightlamp_jurgen
-            - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
-          brightness: 17
-      - delay: 2
-      - service: light.turn_on
-        data:
-          entity_id:
-            - light.bednightlamp_jurgen
-            - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
-          brightness: 19
-      - delay: 2
-      - service: light.turn_on
-        data:
-          entity_id:
-            - light.bednightlamp_jurgen
-            - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
-          brightness: 21
-      - delay: 2
-      - service: light.turn_on
-        data:
-          entity_id:
-            - light.bednightlamp_jurgen
-            - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
-          brightness: 23
-      - delay: 2
-      - service: light.turn_on
-        data:
-          entity_id:
-            - light.bednightlamp_jurgen
-            - light.bednightlamp_benoit
-          rgb_color: [255,128,0]
-          brightness: 25
+          brightness: 50
+          transition: 50
+

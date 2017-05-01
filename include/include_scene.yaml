@@ -21,12 +21,12 @@
         state: on
         brightness: 254
         color_temp: 467
-      light.bedstandinglampbulb1:
+      light.bednightlamp_jurgen:
         state: on
-        brightness: 45
-      light.bedstandinglampbulb2:
+        brightness: 50
+      light.bednightlamp_benoit:
         state: on
-        brightness: 45
+        brightness: 50
 
 ###############################################################################################################
   - name: livingroom_dinner
@@ -207,40 +207,34 @@
       light.livingtelevisionledstrip: off
 
 ###############################################################################################################
-  - name: bedroom_nightlamps_yellow
+  - name: bedroom_nightlamps_low
     entities:
       light.bednightlamp_jurgen:
         state: on
-        color_name: yellow
         brightness: 50
       light.bednightlamp_benoit:
         state: on
-        color_name: yellow
         brightness: 50
 
 ###############################################################################################################
-  - name: bedroom_nightlamps_red
+  - name: bedroom_nightlamps_medium
     entities:
       light.bednightlamp_jurgen:
         state: on
-        color_name: red
-        brightness: 50
+        brightness: 100
       light.bednightlamp_benoit:
         state: on
-        color_name: red
-        brightness: 50
+        brightness: 100
 
 ###############################################################################################################
-  - name: bedroom_nightlamps_blue
+  - name: bedroom_nightlamps_high
     entities:
       light.bednightlamp_jurgen:
         state: on
-        color_name: blue
-        brightness: 50
+        brightness: 200
       light.bednightlamp_benoit:
         state: on
-        color_name: blue
-        brightness: 50
+        brightness: 200
 
 ###############################################################################################################
   - name: bedroom_nightlamps_off
@@ -253,7 +247,6 @@
     entities:
       light.bednightlamp_jurgen:
         state: on
-        color_name: orange
         brightness: 3
 
 ###############################################################################################################
@@ -261,7 +254,6 @@
     entities:
       light.bednightlamp_benoit:
         state: on
-        color_name: orange
         brightness: 3
 
 ###############################################################################################################
@@ -277,45 +269,78 @@
 ###############################################################################################################
   - name: bedroom_standinglamp_low
     entities:
-      light.bedstandinglampbulb1:
+      light.flux_bedroom_standinglamp_bulb1:
         state: on
+        rgb_color: [200, 154, 12]
         brightness: 50
-      light.bedstandinglampbulb2:
+      light.flux_bedroom_standinglamp_bulb2:
         state: on
+        rgb_color: [200, 154, 12]
         brightness: 50
 
 ###############################################################################################################
   - name: bedroom_standinglamp_medium
     entities:
-      light.bedstandinglampbulb1:
+      light.flux_bedroom_standinglamp_bulb1:
         state: on
+        rgb_color: [200, 154, 12]
         brightness: 100
-      light.bedstandinglampbulb2:
+      light.flux_bedroom_standinglamp_bulb2:
         state: on
+        rgb_color: [200, 154, 12]
         brightness: 100
 
 ###############################################################################################################
   - name: bedroom_standinglamp_high
     entities:
-      light.bedstandinglampbulb1:
+      light.flux_bedroom_standinglamp_bulb1:
         state: on
+        rgb_color: [200, 154, 12]
         brightness: 200
-      light.bedstandinglampbulb2:
+      light.flux_bedroom_standinglamp_bulb2:
         state: on
+        rgb_color: [200, 154, 12]
         brightness: 200
+
+###############################################################################################################
+  - name: bedroom_standinglamp_red
+    entities:
+      light.flux_bedroom_standinglamp_bulb1:
+        state: on
+        rgb_color: [255, 0, 0]
+        brightness: 100
+      light.flux_bedroom_standinglamp_bulb2:
+        state: on
+        rgb_color: [255, 0, 0]
+        brightness: 100
+
+###############################################################################################################
+  - name: bedroom_standinglamp_blue
+    entities:
+      light.flux_bedroom_standinglamp_bulb1:
+        state: on
+        rgb_color: [0, 0, 255]
+        brightness: 150
+      light.flux_bedroom_standinglamp_bulb2:
+        state: on
+        rgb_color: [0, 0, 255]
+        brightness: 150
 
 ###############################################################################################################
   - name: bedroom_standinglamp_night
     entities:
-      light.bedstandinglampbulb1:
+      light.flux_bedroom_standinglamp_bulb2:
+        state: off
+      light.flux_bedroom_standinglamp_bulb1:
         state: on
+        color_name: red
         brightness: 3
 
 ###############################################################################################################
   - name: bedroom_standinglamp_off
     entities:
-      light.bedstandinglampbulb1: off
-      light.bedstandinglampbulb2: off
+      light.flux_bedroom_standinglamp_bulb1: off
+      light.flux_bedroom_standinglamp_bulb2: off
 
 ###############################################################################################################
   - name: bureau_standinglamp_low

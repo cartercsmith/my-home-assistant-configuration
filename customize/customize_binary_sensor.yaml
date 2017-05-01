@@ -6,24 +6,34 @@
       friendly_name: "Motion detected"
       icon: mdi:remote
 
-    binary_sensor.zwave_bureau_sensor_2_0:
-      friendly_name: "Motion detected"
-      icon: mdi:remote
+    binary_sensor.zwave_bureau_sensor_4_0:
+      hiddden: true
 
-    binary_sensor.living_room_thermostat_has_leaf:
+
+    binary_sensor.nest_camera_online:
+      friendly_name: "Status"
+      icon: mdi:video
+
+    binary_sensor.nest_camera_person_detected:
       hidden: true
 
-    binary_sensor.living_room_thermostat_is_locked:
+    binary_sensor.nest_camera_sound_detected:
       hidden: true
 
-    binary_sensor.living_room_thermostat_is_using_emergency_heat:
+    binary_sensor.nest_thermostat_has_leaf:
       hidden: true
 
-    binary_sensor.living_room_thermostat_fan:
+    binary_sensor.nest_thermostat_is_locked:
+      hidden: true
+
+    binary_sensor.nest_thermostat_is_using_emergency_heat:
+      hidden: true
+
+    binary_sensor.nest_thermostat_fan:
       friendly_name: "Fan"
       icon: mdi:fan
 
-    binary_sensor.living_room_thermostat_online:
+    binary_sensor.nest_thermostat_online:
       hidden: true
 
     binary_sensor.alert_location_jurgen_unknown:
@@ -54,9 +64,11 @@
       hidden: true
 
     binary_sensor.flic_80e4da721b69:
-      friendly_name: "Flic button Jurgen - ID 1 (80:e4:da:72:1b:69)"
-      icon: mdi:gesture-double-tap
+      friendly_name: "Flic button Bureau - ID 1"
 
     binary_sensor.flic_80e4da7228eb:
-      friendly_name: "Flic button Benoit - ID 2 (80:e4:da:72:28:eb)"
-      icon: mdi:gesture-double-tap
+      friendly_name: "Flic button Benoit - ID 2"
+
+    binary_sensor.flic_80e4da722a9c:
+      friendly_name: "Flic button Jurgen - ID 3"
+

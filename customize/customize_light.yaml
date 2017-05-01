@@ -2,6 +2,9 @@
 # CUSTOMIZE_LIGHT:
 ###############################################################################################################
 
+    light.lightstrip:
+      friendly_name: "Spare light strip"
+
     light.livinggolight:
       friendly_name: "Hue Go lamp living room"
 
@@ -11,11 +14,11 @@
     light.livingtelevisionledstrip:
       friendly_name: "LED strip behind TV"
 
-    light.bedstandinglampbulb1:
+    light.flux_bedroom_standinglamp_bulb1:
       hidden: true
       emulated_hue: false
 
-    light.bedstandinglampbulb2:
+    light.flux_bedroom_standinglamp_bulb2:
       hidden: true
       emulated_hue: false
 
@@ -41,4 +44,7 @@
       hidden: true
 
     light.all_bedroom_lights:
+      hidden: true
+
+    light.all_bureau_lights:
       hidden: true

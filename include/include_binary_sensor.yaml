@@ -9,10 +9,10 @@
     sensors:
 
       alert_nobody_home_motion:
-        value_template: "{{ is_state('sensor.someone_home','no') and (is_state('binary_sensor.zwave_bedroom_sensor_3_0','on') or is_state('binary_sensor.zwave_bureau_sensor_2_0','on')) and is_state('input_boolean.disable_motion_alarm','off') and is_state('input_boolean.disable_all_automations','off') }}"
+        value_template: "{{ is_state('sensor.someone_home','no') and (is_state('binary_sensor.zwave_bedroom_sensor_3_0','on') or is_state('binary_sensor.zwave_bureau_motion','on')) and is_state('input_boolean.disable_motion_alarm','off') and is_state('input_boolean.disable_all_automations','off') }}"
         entity_id:
           - binary_sensor.zwave_bedroom_sensor_3_0
-          - binary_sensor.zwave_bureau_sensor_2_0
+          - binary_sensor.zwave_bureau_motion
           - input_boolean.disable_motion_alarm
           - input_boolean.disable_all_automations
 
@@ -73,3 +73,9 @@
           - media_player.google_home
           - media_player.apple_tv
           - sensor.someone_home
+
+      zwave_bureau_motion:
+        value_template: "{{ ( states('sensor.zwave_bureau_alarm_level_4_1') | int ) > 0 }}"
+        friendly_name: "Motion"
+        device_class: motion
+        entity_id: sensor.zwave_bureau_alarm_level_4_1

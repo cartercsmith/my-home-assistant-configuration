@@ -55,20 +55,20 @@
         data:
           entity_id: input_select.soundtouch_presets
           option: 'JOEfm'
-      - delay:
-          seconds: 1
+#      - delay:
+#          seconds: 1
       - service: input_select.select_option
         data:
           entity_id: input_select.soundtouch_device
           option: 'Both'
-      - delay:
-          seconds: 1
+#      - delay:
+#          seconds: 1
       - service: input_select.select_option
         data:
           entity_id: input_select.google_presets
           option: 'VRT radio nieuws'
-      - delay:
-          seconds: 1
+#      - delay:
+#          seconds: 1
       - service: input_select.select_option
         data:
           entity_id: input_select.google_device
@@ -105,5 +105,5 @@
       - service: tts.google_say
         entity_id: media_player.chromecastaudio
         data_template:
-          message: "This is the weather forecast for today and the coming days.   Today, {{ states.sensor.dark_sky_hourly_summary.state }}.  {{ states.sensor.dark_sky_daily_summary.state }}"
+          message: "This is the weather forecast for today and the coming days... Today, {{ states.sensor.dark_sky_hourly_summary.state }}..  {{ states.sensor.dark_sky_daily_summary.state }}"
           language: 'en'
