@@ -152,7 +152,7 @@
 
     trigger:
       - platform: time
-        minutes: '/15'
+        minutes: '/30'
         seconds: 00
       - platform: state
         entity_id: input_boolean.disable_all_automations
@@ -174,19 +174,17 @@
             entity_id: device_tracker.jurgenusiphone7hsd1cacomcastnet
             state: 'not_home'
             for:
-              minutes: 5
+              minutes: 10
 
     action:
-      - service: notify.ios_jurgen_us_iphone_7
-        data:
-          message: "request_location_update"
+      - service: script.ios_location_update_jurgen
 
 ###############################################################################################################
   - alias: Location update Benoit
 
     trigger:
       - platform: time
-        minutes: '/15'
+        minutes: '/30'
         seconds: 00
       - platform: state
         entity_id: input_boolean.disable_all_automations
@@ -208,11 +206,10 @@
             entity_id: device_tracker.benoitusiphone6shsd1cacomcastnet
             state: 'not_home'
             for:
-              minutes: 5
+              minutes: 10
 
     action:
-      - service: notify.ios_benoits_iphone_6s
-        data:
-          message: "request_location_update"
+      - service: script.ios_location_update_benoit
+
 
 

@@ -63,3 +63,11 @@
       friendly_name: "Run speedtest now"
       icon: mdi:speedometer
       emulated_hue: false
+
+    script.ios_location_update_benoit:
+      friendly_name: "Update location iPhone Benoit"
+      icon: mdi:google-maps
+
+    script.ios_location_update_jurgen:
+      friendly_name: "Update location iPhone Jurgen"
+      icon: mdi:google-maps

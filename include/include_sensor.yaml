@@ -156,54 +156,53 @@
 ###############################################################################################################
 # MQTT room
   - platform: mqtt_room
-    device_id: !secret sensor_mqtt_room_id1
+    device_id: !secret sensor_mqtt_room_keys_jurgen
     name: 'beacon_istubb_keys_jurgen'
     state_topic: 'happy-bubbles/presence/ha'
     timeout: 5
     away_timeout: 60
 
   - platform: mqtt_room
-    device_id: !secret sensor_mqtt_room_id2
+    device_id: !secret sensor_mqtt_room_bag_jurgen
     name: 'beacon_estimote_mint_bag_jurgen'
     state_topic: 'happy-bubbles/presence/ha'
     timeout: 5
     away_timeout: 60
 
   - platform: mqtt_room
-    device_id: !secret sensor_mqtt_room_id3
+    device_id: !secret sensor_mqtt_room_bag_benoit
     name: 'beacon_estimote_blueberry_bag_benoit'
     state_topic: 'happy-bubbles/presence/ha'
     timeout: 5
     away_timeout: 60
 
   - platform: mqtt_room
-    device_id: !secret sensor_mqtt_room_id4
+    device_id: !secret sensor_mqtt_room_keys_benoit
     name: 'beacon_istubb_keys_benoit'
     state_topic: 'happy-bubbles/presence/ha'
     timeout: 5
     away_timeout: 60
 
   - platform: mqtt_room
-    device_id: !secret sensor_mqtt_room_id5
+    device_id: !secret sensor_mqtt_room_iphone_jurgen
     name: 'beacon_kontakt_iphone_jurgen'
     state_topic: 'happy-bubbles/presence/ha'
     timeout: 5
     away_timeout: 60
 
   - platform: mqtt_room
-    device_id: !secret sensor_mqtt_room_id6
+    device_id: !secret sensor_mqtt_room_iphone_benoit
     name: 'beacon_kontakt_iphone_benoit'
     state_topic: 'happy-bubbles/presence/ha'
     timeout: 5
     away_timeout: 60
 
   - platform: mqtt_room
-    device_id: !secret sensor_mqtt_room_id7
+    device_id: !secret sensor_mqtt_room_home
     name: 'beacon_estimote_icy_home'
     state_topic: 'happy-bubbles/presence/ha'
     timeout: 5
     away_timeout: 60
-
 ###############################################################################################################
 # Template
   - platform: template
@@ -288,18 +287,18 @@
           {% if states.input_boolean.disable_temperature_automations.state =='off' %}
             {% if states.sensor.time_of_day.state and states.sensor.temperature_offset.state and states.input_boolean.disable_all_automations.state =='off' %}
               {% if is_state("sensor.time_of_day", "night") %}
-                {{ (26.5 + (states('sensor.temperature_offset') | float )) | float }}
+                {{ (26.0 + (states('sensor.temperature_offset') | float )) | float }}
               {% elif is_state("sensor.time_of_day", "morning") %}
-                {{ (25.0 + (states('sensor.temperature_offset') | float )) | float }}
+                {{ (24.0 + (states('sensor.temperature_offset') | float )) | float }}
               {% elif is_state("sensor.time_of_day", "day") %}
                 {{ (25.0 + (states('sensor.temperature_offset') | float )) | float }}
               {% elif is_state("sensor.time_of_day", "evening") %}
-                {{ (25.0 + (states('sensor.temperature_offset') | float )) | float }}
+                {{ (24.0 + (states('sensor.temperature_offset') | float )) | float }}
               {% else %}
-                {{ (26.5 + (states('sensor.temperature_offset') | float )) | float }}
+                {{ (26.0 + (states('sensor.temperature_offset') | float )) | float }}
               {% endif %}
             {% else %}
-              26.5
+              26.0
             {% endif %}
           {% endif %}
         entity_id:

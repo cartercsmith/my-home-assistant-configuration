@@ -330,7 +330,9 @@
   - name: bedroom_standinglamp_night
     entities:
       light.flux_bedroom_standinglamp_bulb2:
-        state: off
+        state: on
+        color_name: red
+        brightness: 3
       light.flux_bedroom_standinglamp_bulb1:
         state: on
         color_name: red

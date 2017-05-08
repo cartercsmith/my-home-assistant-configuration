@@ -289,3 +289,49 @@
       friendly_name: "Home beacon status"
       icon: mdi:bluetooth-audio
 
+    sensor.eight_left_bed_state:
+      friendly_name: "Benoit bed state"
+      icon: mdi:settings-box
+
+    sensor.eight_left_bed_temperature:
+      friendly_name: "Benoit bed temperature"
+      icon: mdi:thermometer
+
+    sensor.eight_left_previous_sleep_session:
+      friendly_name: "Benoit previous sleep score"
+      icon: mdi:trophy-variant-outline
+
+    sensor.eight_left_sleep_session:
+      friendly_name: "Benoit last sleep score"
+      icon: mdi:trophy-variant
+
+    sensor.eight_left_sleep_stage:
+      friendly_name: "Benoit sleep stage"
+      icon: mdi:seat-individual-suite
+
+    sensor.eight_right_bed_state:
+      friendly_name: "Jurgen bed state"
+      icon: mdi:settings-box
+
+    sensor.eight_right_bed_temperature:
+      friendly_name: "Jurgen bed temperature"
+      icon: mdi:thermometer
+
+    sensor.eight_right_previous_sleep_session:
+      friendly_name: "Jurgen previous sleep score"
+      icon: mdi:trophy-variant-outline
+
+    sensor.eight_right_sleep_session:
+      friendly_name: "Jurgen last sleep score"
+      icon: mdi:trophy-variant
+
+    sensor.eight_right_sleep_stage:
+      friendly_name: "Jurgen sleep stage"
+      icon: mdi:seat-individual-suite
+
+    sensor.eight_room_temperature:
+      friendly_name: "Bedroom temperature"
+      icon: mdi:thermometer
+
+
+

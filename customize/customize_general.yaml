@@ -13,4 +13,6 @@
       friendly_name: "NEST thermostat"
       icon: mdi:nest-thermostat
 
+    plant.miflora1:
+      friendly_name: "Status"
 

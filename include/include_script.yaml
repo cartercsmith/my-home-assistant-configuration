@@ -200,3 +200,16 @@
           brightness: 50
           transition: 50
 
+###############################################################################################################
+  ios_location_update_benoit:
+    sequence:
+      - service: notify.ios_benoits_iphone_6s
+        data:
+          message: "request_location_update"
+
+###############################################################################################################
+  ios_location_update_jurgen:
+    sequence:
+      - service: notify.ios_jurgen_us_iphone_7
+        data:
+          message: "request_location_update"

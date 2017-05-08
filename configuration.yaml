@@ -36,6 +36,9 @@ logger:
     homeassistant.components.logbook: info
     homeassistant.components.flicd: info
     homeassistant.components.nmap_tracker: info
+    homeassistant.helpers.entity: debug
+    homeassistant.setup: info
+    homeassistant.helpers.condition: debug
 
 ###########################################################################################
 # includes
@@ -78,9 +81,9 @@ device_tracker:
     hosts:
       - !secret device_tracker_nmap_tracker_ip1
       - !secret device_tracker_nmap_tracker_ip2
-    home_interval: 5
+    home_interval: 3
     track_new_devices: false
-    interval_seconds: 30
+    consider_home: 0:10
 
 # owntracks
   - platform: owntracks
@@ -90,23 +93,28 @@ device_tracker:
 ###########################################################################################
 proximity:
   home:
+    zone: home
     devices:
-      - group.location_benoit
-      - group.location_jurgen
-#      - device_tracker.benoitphone_location_benoit
-#      - device_tracker.jurgenphone_location_jurgen
+      - device_tracker.benoitphone_location_benoit
+      - device_tracker.jurgenphone_location_jurgen
+      - device_tracker.benoits_iphone_6s
+      - device_tracker.jurgen_us_iphone_7
     tolerance: 100
     unit_of_measurement: km
 
   benoit_home:
+    zone: home
     devices:
-      - group.location_benoit
+      - device_tracker.benoitphone_location_benoit
+      - device_tracker.benoits_iphone_6s
     tolerance: 100
     unit_of_measurement: km
 
   jurgen_home:
+    zone: home
     devices:
-      - group.location_jurgen
+      - device_tracker.jurgenphone_location_jurgen
+      - device_tracker.jurgen_us_iphone_7
     tolerance: 100
     unit_of_measurement: km
 
@@ -200,3 +208,26 @@ ios:
 ###########################################################################################
 # Displays panels in the frontend to configure and manage parts of HA
 config:
+
+###########################################################################################
+# Eight Sleep smart cover support
+eight_sleep:
+  username: !secret eight_sleep_username
+  password: !secret eight_sleep_password
+  partner: true
+
+###########################################################################################
+# Plant Observer
+plant:
+  miflora1:
+    sensors:
+      moisture: sensor.miflora1_moisture
+      battery: sensor.miflora1_battery
+      temperature: sensor.miflora1_temperature
+      conductivity: sensor.miflora1_conductivity
+      brightness: sensor.miflora1_light_intensity
+    min_moisture: 20
+    max_moisture: 60
+    min_battery: 15
+    min_temperature: 5
+    max_temperature: 35

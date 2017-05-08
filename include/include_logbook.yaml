@@ -4,50 +4,10 @@
 
   exclude:
     entities:
-      - binary_sensor.alert_usd_xrate_limit
-      - sensor.beacon_estimote_blueberry_bag_benoit
-      - sensor.beacon_estimote_mint_bag_jurgen
-      - sensor.beacon_istubb_keys_benoit
-      - sensor.beacon_istubb_keys_jurgen
-      - sensor.beacon_kontakt_iphone_benoit
-      - sensor.beacon_kontakt_iphone_jurgen
-      - sensor.systemmonitor_average_load_15m
-      - sensor.systemmonitor_average_load_1m
-      - sensor.systemmonitor_average_load_5m
-      - sensor.systemmonitor_cpu_use
-      - sensor.systemmonitor_disk_use_
-      - sensor.systemmonitor_last_boot
-      - sensor.systemmonitor_process_flicd
-      - sensor.systemmonitor_process_mosquitto
-      - sensor.systemmonitor_process_presence
-      - sensor.systemmonitor_ram_use
-      - sensor.systemmonitor_received_eth0
-      - sensor.systemmonitor_sent_eth0
-      - sensor.systemmonitor_since_last_boot
-      - sensor.miflora1_battery
-      - sensor.miflora1_conductivity
-      - sensor.miflora1_light_intensity
-      - sensor.miflora1_moisture
-      - sensor.miflora1_temperature
-      - sensor.miflora2_battery
-      - sensor.miflora2_conductivity
-      - sensor.miflora2_light_intensity
-      - sensor.miflora2_moisture
-      - sensor.miflora2_temperature
       - sensor.benoits_iphone_6s_battery_level
       - sensor.benoits_iphone_6s_battery_state
-      - sensor.dark_sky_cloud_coverage
-      - sensor.dark_sky_daily_summary
-      - sensor.dark_sky_hourly_summary
-      - sensor.dark_sky_summary
-      - sensor.duration_home_to_work_benoit
-      - sensor.duration_home_to_work_jurgen
-      - sensor.duration_home_to_work_jurgen_via_work_benoit
-      - sensor.duration_work_benoit_to_work_jurgen
       - sensor.jurgen_us_iphone_7_battery_level
       - sensor.jurgen_us_iphone_7_battery_state
-      - sensor.moon
-      - sensor.my_dark_sky_summary
       - sensor.speedtest_download
       - sensor.speedtest_ping
       - sensor.speedtest_upload
@@ -58,20 +18,21 @@
       - sensor.synology_status_sdb
       - sensor.synology_status_volume_2
       - sensor.synology_volume_used_volume_2
-      - sensor.travel_home_to_work_benoit
-      - sensor.travel_home_to_work_jurgen
-      - sensor.travel_loc_benoit_to_home
-      - sensor.travel_loc_benoit_to_work_benoit
-      - sensor.travel_loc_jurgen_to_home
-      - sensor.travel_loc_jurgen_to_work_jurgen
-      - sensor.travel_work_benoit_to_work_jurgen
-      - sensor.uberpool_price
-      - sensor.uberpool_time
-      - sensor.uberx_price
-      - sensor.uberx_time
       - sensor.usd_eur
-      - sensor.yr_temperature
-      - sun.sun
+      - sensor.eight_left_bed_temperature
+      - sensor.eight_left_sleep_session
+      - sensor.eight_left_previous_sleep_session
+      - sensor.eight_left_sleep_stage
+      - sensor.eight_right_bed_temperature
+      - sensor.eight_right_sleep_session
+      - sensor.eight_right_previous_sleep_session
+      - sensor.eight_right_sleep_stage
+      - sensor.eight_room_temperature
+      - sensor.systemmonitor_average_load_15m
+      - sensor.systemmonitor_average_load_5m
+      - sensor.systemmonitor_cpu_use
+      - sensor.systemmonitor_disk_use_
+      - sensor.systemmonitor_ram_use
     domains:
       - calendar
       - group

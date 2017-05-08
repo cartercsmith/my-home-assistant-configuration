@@ -24,13 +24,20 @@
       - condition: template
         value_template: "{{ trigger.from_state.state == 'playing' }}"
 
-
     action:
+      - service: automation.turn_off
+        data:
+          entity_id:
+            - automation.mediaplayer_on_tv_paused_or_stopped
       - service: input_boolean.turn_off
         entity_id: input_boolean.tv_onoff
       - service: scene.turn_on
         entity_id: scene.livingroom_dimmed
-
+      - delay: 3
+      - service: automation.turn_on
+        data:
+          entity_id:
+            - automation.mediaplayer_on_tv_paused_or_stopped
 
 ###############################################################################################################
   - alias: Mediaplayer on TV playing
@@ -40,11 +47,8 @@
         entity_id:
           - media_player.chromecast
           - media_player.plex_apple_tv
+          - media_player.apple_tv
         to: 'playing'
-        for:
-          seconds: 2
-      - platform: template
-        value_template: "{{ states.media_player.apple_tv.state == 'playing' and states.media_player.plex_apple_tv.state != 'playing' }}"
 
     condition:
       - condition: state
@@ -52,23 +56,31 @@
         state: 'off'
 
     action:
+      - service: automation.turn_off
+        data:
+          entity_id:
+            - automation.mediaplayer_on_tv_playing
       - service: media_player.turn_off
         data:
           entity_id:
             - media_player.soundtouch_living_room
             - media_player.google_home
-      - delay: 2
-      - condition: and
-        conditions:
-          - condition: template
-            value_template: "{{ states.media_player.chromecast.attributes.media_title != 'Het journaal ' }}"
-          - condition: template
-            value_template: "{{ states.media_player.chromecast.attributes.media_title != 'Het journaal - Sportweekend' }}"
-          - condition: state
-            entity_id: sun.sun
-            state: 'below_horizon'
+#      - condition: and
+#        conditions:
+#          - condition: template
+#            value_template: "{{ states.media_player.chromecast.attributes.media_title != 'Het journaal ' }}"
+#          - condition: template
+#            value_template: "{{ states.media_player.chromecast.attributes.media_title != 'Het journaal - Sportweekend' }}"
+#          - condition: state
+#            entity_id: sun.sun
+#            state: 'below_horizon'
       - service: scene.turn_on
         entity_id: scene.livingroom_watch_tv_blue
       - service: input_boolean.turn_on
         entity_id: input_boolean.tv_onoff
+      - delay: 3
+      - service: automation.turn_on
+        data:
+          entity_id:
+            - automation.mediaplayer_on_tv_playing
 

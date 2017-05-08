@@ -2,13 +2,20 @@
 # CUSTOMIZE_BINARY_SENSOR:
 ###############################################################################################################
 
+    binary_sensor.eight_right_bed_presence:
+      friendly_name: "Jurgen in bed"
+      icon: mdi:hotel
+
+    binary_sensor.eight_left_bed_presence:
+      friendly_name: "Benoit in bed"
+      icon: mdi:hotel
+
     binary_sensor.zwave_bedroom_sensor_3_0:
       friendly_name: "Motion detected"
       icon: mdi:remote
 
     binary_sensor.zwave_bureau_sensor_4_0:
       hiddden: true
-
 
     binary_sensor.nest_camera_online:
       friendly_name: "Status"

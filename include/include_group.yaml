@@ -37,7 +37,6 @@
     entities:
       - group.alert
       - group.soundtouch_player
-      - group.presence_benoit
       - group.items_benoit
       - group.important
 
@@ -77,6 +76,7 @@
       - group.systemmonitor
       - group.camera
       - group.phone_battery
+      - group.eightsleep
 
 ###############################################################################################################
   zwave_multisensor_bedroom:
@@ -115,6 +115,7 @@
       - sensor.miflora1_light_intensity
       - sensor.miflora1_moisture
       - sensor.miflora1_temperature
+      - plant.miflora1
 
 ###############################################################################################################
 #  plants_succulent:
@@ -181,6 +182,25 @@
       - sensor.systemmonitor_since_last_boot
 
 ###############################################################################################################
+  eightsleep:
+    name: "eight Sleep"
+    view: no
+    entities:
+      - binary_sensor.eight_left_bed_presence
+      - sensor.eight_left_bed_state
+      - sensor.eight_left_bed_temperature
+      - sensor.eight_left_sleep_session
+      - sensor.eight_left_previous_sleep_session
+      - sensor.eight_left_sleep_stage
+      - binary_sensor.eight_right_bed_presence
+      - sensor.eight_right_bed_state
+      - sensor.eight_right_bed_temperature
+      - sensor.eight_right_sleep_session
+      - sensor.eight_right_previous_sleep_session
+      - sensor.eight_right_sleep_stage
+      - sensor.eight_room_temperature
+
+###############################################################################################################
   alert:
     name: "Alert"
     view: no
@@ -228,13 +248,14 @@
       - sensor.jurgen_sleeping
       - sensor.travel_loc_jurgen_to_work_jurgen
       - sensor.duration_home_to_work_jurgen_via_work_benoit
+      - script.ios_location_update_jurgen
       - group.location_benoit
       - device_tracker.benoitphone_location_benoit
       - device_tracker.benoitusiphone6shsd1cacomcastnet
       - device_tracker.benoits_iphone_6s
       - sensor.benoit_sleeping
       - sensor.travel_loc_benoit_to_work_benoit
-      - automation.location_update
+      - script.ios_location_update_benoit
 
 ###############################################################################################################
   presence_not_home:
@@ -249,12 +270,14 @@
       - sensor.travel_loc_jurgen_to_home
       - sensor.travel_loc_jurgen_to_work_jurgen
       - sensor.travel_work_benoit_to_work_jurgen
+      - script.ios_location_update_jurgen
       - group.location_benoit
       - device_tracker.benoitphone_location_benoit
       - device_tracker.benoitusiphone6shsd1cacomcastnet
       - device_tracker.benoits_iphone_6s
       - sensor.travel_loc_benoit_to_home
       - sensor.travel_loc_benoit_to_work_benoit
+      - script.ios_location_update_benoit
       - sensor.proximity_person
       - proximity.home
       - automation.location_update
@@ -269,6 +292,10 @@
       - group.all_livingroom_lights
       - group.all_bedroom_lights
       - group.all_bureau_lights
+      - input_select.scenes_livingroom
+      - sensor.camera_status
+      - sensor.miflora1_moisture
+      - sensor.eight_left_sleep_session
       - input_select.presence_detection_benoit
       - input_boolean.disable_all_automations
       - input_boolean.disable_motion_alarm
@@ -294,20 +321,6 @@
       - script.everything_off
       - script.daily_reboot
       - input_boolean.reboot_trigger
-
-###############################################################################################################
-  presence_benoit:
-    name: "Benoit"
-    view: no
-    control: hidden
-    entities:
-      - sensor.location_benoit
-      - sensor.travel_loc_benoit_to_home
-      - sensor.travel_loc_benoit_to_work_benoit
-      - sensor.uberpool_time
-      - sensor.uberpool_price
-      - sensor.uberx_time
-      - sensor.uberx_price
 
 ###############################################################################################################
   presence_all:
